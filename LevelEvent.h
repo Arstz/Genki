@@ -1,13 +1,18 @@
 #pragma once
 class LevelEvent
 {
+public:
 	float initTime = 0;
 
-	virtual void endEvent() {
+	virtual void end() {
 
 	}
 
-	virtual void initEvent() {
+	virtual void init() {
+
+	}
+
+	virtual void update() {
 
 	}
 };

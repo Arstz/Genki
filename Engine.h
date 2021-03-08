@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "EventController.h"
+#include "RenderHandler.h"
 
 #include <chrono>
 #include <fstream>
@@ -22,16 +24,22 @@ private:
 
 	float playerPosX;
 	float playerPosY;
+
 	int lastDirX;
 	int lastDirY;
 
 	int moveDirectionX;
 	int moveDirectionY;
 
+	float currentTime;
+
 	sf::RenderWindow* mainWindow;
 	sf::Event eventHandler;
 
-	sf::RectangleShape player;
+	sf::ConvexShape player;
+	std::list<sf::ConvexShape> shapes;
+	EventController eventController;
+	RenderHandler renderHandler;
 
 public:
 	Engine();
