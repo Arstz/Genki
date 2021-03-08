@@ -7,14 +7,15 @@ void Engine::initVars(){
 
 //Game Objects
 void Engine::initGameObjects(){
-	player.setPointCount(4);
-	player.setPoint(0, sf::Vector2f(0.f, 0.f));
-	player.setPoint(1, sf::Vector2f(0.f, 15.f));
-	player.setPoint(2, sf::Vector2f(15.f, 15.f));
-	player.setPoint(3, sf::Vector2f(15.f, 0.f));
-	player.setFillColor(sf::Color::Yellow);
-	player.setPosition(sf::Vector2f(500.f, 500.f));
-	shapes.push_back(player);
+	player = new sf::ConvexShape;
+	player->setPointCount(4);
+	player->setPoint(0, sf::Vector2f(0.f, 0.f));
+	player->setPoint(1, sf::Vector2f(0.f, 15.f));
+	player->setPoint(2, sf::Vector2f(15.f, 15.f));
+	player->setPoint(3, sf::Vector2f(15.f, 0.f));
+	player->setFillColor(sf::Color::Yellow);
+	player->setPosition(sf::Vector2f(500.f, 500.f));
+	shapes.push_back(*player);
 }
 
 //Main Window
@@ -25,11 +26,11 @@ void Engine::initWindow(){
 
 //Construct
 Engine::Engine() {
-	this->eventController = EventController(currentTime);
-	this->renderHandler = RenderHandler(shapes);
+	this->eventController = EventController(currentTime);	
 	initVars();
 	initWindow();
 	initGameObjects();
+	this->renderHandler = RenderHandler(shapes);
 }
 
 //Destruct
@@ -105,12 +106,13 @@ void Engine::update(){
 	stopPlayer();
 	setMoveDirection();
 	movePlayer();
-	player.setPosition(sf::Vector2f(playerPosX, playerPosY));
+	player->setPosition(sf::Vector2f(playerPosX, playerPosY));
 }
 
 void Engine::render(){
 	mainWindow->clear();
-	mainWindow->draw(player);
+	renderHandler.render();
+	//mainWindow->draw(player);
 	mainWindow->display();
 }
 

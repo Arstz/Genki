@@ -62,5 +62,8 @@
     <ClInclude Include="RenderHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SEX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

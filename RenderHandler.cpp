@@ -8,7 +8,7 @@ RenderHandler::RenderHandler(std::list<sf::ConvexShape> shapes){
 
 void RenderHandler::render()
 {
-	for (auto &shape : shapes) {
-		mainWindow->draw(shape);
+	for (auto &shape : shapes) {		
+		mainWindow->draw(shape);		///////aaaaaa ne rabotaet, sho delat pamaGITe
 	}
 }
