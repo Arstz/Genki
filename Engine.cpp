@@ -7,6 +7,7 @@ void Engine::initVars(){
 
 //Game Objects
 void Engine::initGameObjects(){
+	shapes = new std::list<sf::ConvexShape>;
 	player = new sf::ConvexShape;
 	player->setPointCount(4);
 	player->setPoint(0, sf::Vector2f(0.f, 0.f));
@@ -15,7 +16,6 @@ void Engine::initGameObjects(){
 	player->setPoint(3, sf::Vector2f(15.f, 0.f));
 	player->setFillColor(sf::Color::Yellow);
 	player->setPosition(sf::Vector2f(500.f, 500.f));
-	shapes.push_back(*player);
 }
 
 //Main Window
@@ -30,7 +30,7 @@ Engine::Engine() {
 	initVars();
 	initWindow();
 	initGameObjects();
-	this->renderHandler = RenderHandler(shapes);
+	this->renderHandler = RenderHandler(shapes,mainWindow,player);
 }
 
 //Destruct
@@ -111,8 +111,8 @@ void Engine::update(){
 
 void Engine::render(){
 	mainWindow->clear();
-	renderHandler.render();
-	//mainWindow->draw(player);
+	renderHandler.renderPlayer();
+	renderHandler.renderShapes();
 	mainWindow->display();
 }
 

@@ -9,12 +9,14 @@ class RenderHandler
 	float offsetY;
 	float scale;
 	int shapeCount;
+	std::list<sf::ConvexShape>* shapes;
+	sf::ConvexShape* player;
 
 	sf::RenderWindow* mainWindow;
 public:
-	RenderHandler();
-	std::list<sf::ConvexShape> shapes;
-	RenderHandler(std::list<sf::ConvexShape> shapes);
+	RenderHandler();	
+	RenderHandler(std::list<sf::ConvexShape>* &shapes, sf::RenderWindow* &mainWindow, sf::ConvexShape* &player);
 
-	void render();
+	void renderPlayer();
+	void renderShapes();
 };
