@@ -7,17 +7,15 @@ class EventController
 private:
 	LevelEvent* level;
 	std::list<LevelEvent> activeEvents;
-	int eventsCount;
+	int eventCount;
 	int currentEvent;
 	float* currentTime;
 public:
 	void updateEvents();
 	void updateActiveEventList();
 
-	EventController() {};
+	EventController();
 
-	EventController(float &currentTime) {
-		this->currentTime = &currentTime;
-	}
+	EventController(float& currentTime);
 };
 

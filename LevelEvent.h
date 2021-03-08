@@ -1,14 +1,21 @@
 #pragma once
+enum LevelEventType {
+	CAMERA_EVENT,
+	GEOMETRY_EVENT,
+	AUDIO_EVENT,
+};
+
 class LevelEvent
 {
 public:
 	float initTime = 0;
+	LevelEventType type;
 
 	virtual void end() {
 
 	}
 
-	virtual void init() {
+	virtual void start() {
 
 	}
 

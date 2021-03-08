@@ -7,5 +7,14 @@ void EventController::updateEvents(){
 }
 
 void EventController::updateActiveEventList() {
-	//while()
+	while (currentEvent < eventCount && level[currentEvent].initTime < *currentTime) {
+		currentEvent++;
+	}
+}
+
+EventController::EventController(){}
+
+EventController::EventController(float& currentTime)
+{
+	this->currentTime = &currentTime;
 };
