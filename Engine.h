@@ -37,7 +37,7 @@ private:
 	sf::Event eventHandler;
 
 	sf::ConvexShape* player;
-	std::list<sf::ConvexShape>* shapes;
+	std::list<sf::ConvexShape*>* shapes;
 	EventController eventController;
 	RenderHandler renderHandler;
 
