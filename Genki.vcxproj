@@ -176,7 +176,6 @@
     <ClInclude Include="EventController.h" />
     <ClInclude Include="LevelEvent.h" />
     <ClInclude Include="RenderHandler.h" />
-    <ClInclude Include="SEX.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
