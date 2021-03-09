@@ -7,15 +7,20 @@ void Engine::initVars(){
 
 //Game Objects
 void Engine::initGameObjects(){
-	shapes = new std::list<sf::ConvexShape*>;
-	player = new sf::ConvexShape;
-	player->setPointCount(4);
-	player->setPoint(0, sf::Vector2f(0.f, 0.f));
-	player->setPoint(1, sf::Vector2f(0.f, 15.f));
-	player->setPoint(2, sf::Vector2f(15.f, 15.f));
-	player->setPoint(3, sf::Vector2f(15.f, 0.f));
-	player->setFillColor(sf::Color::Yellow);
-	player->setPosition(sf::Vector2f(500.f, 500.f));
+	shapes = new std::list<sf::VertexArray*>;
+	player = new sf::VertexArray(sf::Triangles, 3);
+
+
+
+	(*player)[0].position = sf::Vector2f(0.f, 0.f);
+	(*player)[1].position = sf::Vector2f(0.f, 15.f);
+	(*player)[2].position = sf::Vector2f(15.f, 15.f);
+
+
+	(*player)[0].color = sf::Color(255, 255, 255, 255);
+	(*player)[1].color = sf::Color(255, 255, 255, 255);
+	(*player)[2].color = sf::Color(255, 255, 255, 255);
+
 	shapes->push_back(player);
 }
 
@@ -107,7 +112,16 @@ void Engine::update(){
 	stopPlayer();
 	setMoveDirection();
 	movePlayer();
-	player->setPosition(sf::Vector2f(playerPosX, playerPosY));
+
+	(*player)[0].position.x = playerPosX + 0.f;
+	(*player)[0].position.y = playerPosY + 0.f;
+
+	(*player)[1].position.x = playerPosX + 0.f;
+	(*player)[1].position.y = playerPosY + 15.f;
+
+	(*player)[2].position.x = playerPosX + 15.f;
+	(*player)[2].position.y = playerPosY + 15.f;
+
 }
 
 void Engine::render(){

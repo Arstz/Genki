@@ -9,13 +9,13 @@ class RenderHandler
 	float offsetY;
 	float scale;
 	int shapeCount;
-	std::list<sf::ConvexShape*>* shapes;
-	sf::ConvexShape* player;
+	std::list<sf::VertexArray*>* shapes;
+	sf::VertexArray* player;
 
 	sf::RenderWindow* mainWindow;
 public:
 	RenderHandler();	
-	RenderHandler(std::list<sf::ConvexShape*>* &shapes, sf::RenderWindow* &mainWindow);
+	RenderHandler(std::list<sf::VertexArray*>* &shapes, sf::RenderWindow* &mainWindow);
 
 	void renderShapes();
 };
