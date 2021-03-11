@@ -3,19 +3,17 @@
 #include <list>
 
 class RenderHandler
-{
-	
+{	
 	float offsetX;
 	float offsetY;
 	float scale;
 	int shapeCount;
-	std::list<sf::VertexArray*>* shapes;
-	sf::VertexArray* player;
+	std::list<sf::VertexArray>* shapes;
 
 	sf::RenderWindow* mainWindow;
 public:
 	RenderHandler();	
-	RenderHandler(std::list<sf::VertexArray*>* &shapes, sf::RenderWindow* &mainWindow);
+	RenderHandler(std::list<sf::VertexArray>* shapes, sf::RenderWindow* &mainWindow);
 
 	void renderShapes();
 };

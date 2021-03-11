@@ -3,7 +3,7 @@
 
 RenderHandler::RenderHandler(){}
 
-RenderHandler::RenderHandler(std::list<sf::VertexArray*>* &shapes, sf::RenderWindow* &mainWindow){
+RenderHandler::RenderHandler(std::list<sf::VertexArray>* shapes, sf::RenderWindow* &mainWindow){
 	this->shapes = shapes;
 	this->mainWindow = mainWindow;
 }
@@ -11,6 +11,6 @@ RenderHandler::RenderHandler(std::list<sf::VertexArray*>* &shapes, sf::RenderWin
 void RenderHandler::renderShapes()
 {
 	for (auto &shape : *shapes) {		
-		mainWindow->draw(*shape);
+		mainWindow->draw(shape);
 	}
 }

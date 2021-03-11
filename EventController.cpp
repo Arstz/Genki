@@ -1,10 +1,12 @@
 #include "EventController.h"
 
+/*
 void EventController::updateEvents(){
 	for (auto &levelEvent : activeEvents){
 		levelEvent.update();
 	}
 }
+*/
 
 void EventController::updateActiveEventList() {
 	while (currentEvent < eventCount && level[currentEvent].initTime < *currentTime) {
@@ -12,9 +14,16 @@ void EventController::updateActiveEventList() {
 	}
 }
 
-EventController::EventController(){}
+EventController::EventController(){
+}
 
 EventController::EventController(float& currentTime)
 {
 	this->currentTime = &currentTime;
-};
+}
+
+void EventController::startEvent(LevelEvent &levelEvent)
+{
+	
+	
+}
