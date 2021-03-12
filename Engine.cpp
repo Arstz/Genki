@@ -31,8 +31,8 @@ void Engine::initGameObjects() {
 	shape[1].color = sf::Color(255, 255, 255, 255);
 	shape[2].color = sf::Color(255, 255, 255, 255);
 
-	ShapeSpawnEvent* a = new ShapeSpawnEvent(shape, 0, LevelEventType::SHAPE_SPAWN, 0);
-	PlayerBindingEvent* b = new PlayerBindingEvent(0, LevelEventType::PLAYER_BINDING, 0);
+	ShapeSpawnEvent* a = new ShapeSpawnEvent(shape, 0, 0);
+	PlayerBindingEvent* b = new PlayerBindingEvent(0, 0);
 	level[0] = a;
 	level[1] = b;
 

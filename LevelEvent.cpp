@@ -26,8 +26,7 @@ LevelEvent::LevelEvent() {
 
 }
 
-LevelEvent::LevelEvent(LevelEventType type, float initTime) {
-	this->type = type;
+LevelEvent::LevelEvent(float initTime) {
 	this->initTime = initTime;
 }
 
@@ -67,7 +66,7 @@ void ShapeSpawnEvent::start()
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 
-ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, int shapeID, LevelEventType type, float initTime) : LevelEvent(type, initTime) {
+ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, int shapeID,float initTime) : LevelEvent(initTime) {
 
 	this->shapeID = shapeID;
 	this->shape = shape;
@@ -113,6 +112,6 @@ void PlayerBindingEvent::start()
 	player->shape = &(*(dynamicShapes[shapeID]));
 }
 
-PlayerBindingEvent::PlayerBindingEvent(int shapeID, LevelEventType type, float initTime) : LevelEvent(type, initTime) {
+PlayerBindingEvent::PlayerBindingEvent(int shapeID, float initTime) : LevelEvent(initTime) {
 	this->shapeID = shapeID;
 }

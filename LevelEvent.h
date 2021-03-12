@@ -5,18 +5,19 @@
 #include "AnimationTask.h"
 #include "Player.h"
 
-enum LevelEventType {
-	BACKGROUND_COLOR_ANIMATION, //cherez 200 let sdelaem
-	CAMERA_ANIMATION,
-	SHAPE_SPAWN,
-	SHAPE_DESTRUCTION,
-	SHAPE_ANIMATION,
-	PLAYER_BINDING,
-};
 
 class LevelEvent
 {
 protected:
+	enum LevelEventType {
+		BACKGROUND_COLOR_ANIMATION, //cherez 200 let sdelaem
+		CAMERA_ANIMATION,
+		SHAPE_SPAWN,
+		SHAPE_DESTRUCTION,
+		SHAPE_ANIMATION,
+		PLAYER_BINDING,
+	};
+
 	enum AnimatedValueType {
 		CAMERA_SCALE,
 		CAMERA_OFFSET_X,
@@ -40,10 +41,8 @@ public:
 	virtual LevelEvent* load();
 	float getInitTime();
 
-	LevelEventType type;
-
 	LevelEvent();
-	LevelEvent(LevelEventType type, float initTime);
+	LevelEvent(float initTime);
 
 };
 
@@ -61,7 +60,7 @@ public:
 	int shapeID;
 	sf::VertexArray shape;
 	ShapeSpawnEvent();
-	ShapeSpawnEvent(sf::VertexArray shape, int shapeID, LevelEventType type, float initTime);
+	ShapeSpawnEvent(sf::VertexArray shape, int shapeID, float initTime);
 
 	void start() override;
 };
@@ -87,7 +86,7 @@ class PlayerBindingEvent : public LevelEvent {
 public:
 	static Player* player;
 	int shapeID;
-	PlayerBindingEvent(int shapeID, LevelEventType type, float initTime);
+	PlayerBindingEvent(int shapeID, float initTime);
 
 	void start() override;
 };
