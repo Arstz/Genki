@@ -159,8 +159,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AnimationHandler.cpp" />
     <ClCompile Include="AnimationTask.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EventController.cpp" />
@@ -171,7 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="AnimationHandler.h" />
     <ClInclude Include="AnimationTask.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EventController.h" />
