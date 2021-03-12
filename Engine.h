@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "EventController.h"
 #include "RenderHandler.h"
+#include "Player.h"
 
 #include <chrono>
 #include <fstream>
@@ -19,25 +20,20 @@ private:
 	void initWindow();
 	void pollEvents();
 	void setMoveDirection();
-	void movePlayer();
-	void stopPlayer();
 
-	float playerPosX;
-	float playerPosY;
-
-	int lastDirX;
-	int lastDirY;
-
-	int moveDirectionX;
-	int moveDirectionY;
+	sf::Vector2i lastDir;
+	LevelEvent* level;
 
 	float currentTime;
 
 	sf::RenderWindow* mainWindow;
 	sf::Event eventHandler;
 
-	sf::VertexArray* player;
-	std::list<sf::VertexArray>* shapes;
+	std::list<AnimationTask> animationTasks;
+	std::list<sf::VertexArray> shapes;
+	std::list<sf::VertexArray>::iterator* dynamicShapes;
+
+	Player player;
 	EventController eventController;
 	RenderHandler renderHandler;
 

@@ -14,13 +14,11 @@ private:
 
 public:
 
-	void startEvent(LevelEvent &levelEvent);
-
 	void updateEvents();
 	void updateActiveEventList();
 
 	EventController();
 
-	EventController(float& currentTime);
+	EventController(float* currentTime, LevelEvent* level);
 };
 

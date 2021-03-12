@@ -12,7 +12,7 @@ std::list<sf::VertexArray>::iterator* LevelEvent::dynamicShapes = nullptr;
 
 LevelEvent* LevelEvent::load()
 {
-
+	return nullptr;
 }
 
 void LevelEvent::start()
@@ -105,7 +105,9 @@ void ShapeAnimationEvent::start()
 
 //PlayerBindingEvent
 
+Player* PlayerBindingEvent::player = nullptr;
+
 void PlayerBindingEvent::start()
 {
-
+	player->shape = &(*(dynamicShapes[shapeID]));
 }

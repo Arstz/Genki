@@ -8,8 +8,13 @@ void Engine::initVars() {
 
 //Game Objects
 void Engine::initGameObjects() {
-	shapes = new std::list<sf::VertexArray>;
-
+	std::list<AnimationTask> animationTasks;
+	std::list<sf::VertexArray> shapes;
+	std::list<sf::VertexArray>::iterator* dynamicShapes = new std::list<sf::VertexArray>::iterator[3];    //;) MAXIM3 :)
+	LevelEvent::animationTasks = &animationTasks;
+	LevelEvent::shapes = &shapes;
+	LevelEvent::dynamicShapes = dynamicShapes; //kak krytoi)
+	PlayerBindingEvent::player = &player;
 }
 
 //Main Window
@@ -20,11 +25,12 @@ void Engine::initWindow(){
 
 //Construct
 Engine::Engine() {
-	this->eventController = EventController(currentTime);	
+	this->eventController = EventController(&currentTime, level);
 	initVars();
 	initWindow();
 	initGameObjects();
-	this->renderHandler = RenderHandler(shapes,mainWindow);
+	this->renderHandler = RenderHandler(&shapes,mainWindow);
+	this->player = Player();
 }
 
 //Destruct
@@ -47,60 +53,42 @@ void Engine::pollEvents(){
 
 void Engine::setMoveDirection(){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		if (lastDirX == 1) {
-			moveDirectionX = -1;
+		if (lastDir.x == 1) {
+			player.move(sf::Vector2f(-1.f, 0.f));
 		}
 		else {
-			moveDirectionX = 1;
+			player.move(sf::Vector2f(1.f, 0.f));
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		moveDirectionX = -1;
-		lastDirX = -1;
+		player.move(sf::Vector2f(-1.f, 0.f));
+		lastDir.x = -1;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		moveDirectionX = 1;
-		lastDirX = 1;
+		player.move(sf::Vector2f(1.f, 0.f));
+		lastDir.x = 1;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		if (lastDirY == 1) {
-			moveDirectionY = -1;
+		if (lastDir.y == 1) {
+			player.move(sf::Vector2f(0.f, -1.f));
 		}
 		else {
-			moveDirectionY = 1;
+			player.move(sf::Vector2f(0.f, 1.f));
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		moveDirectionY = -1;
-		lastDirY = -1;
+		player.move(sf::Vector2f(0.f, -1.f));
+		lastDir.y = -1;
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		moveDirectionY = 1;
-		lastDirY = 1;
-	}
-}
-
-void Engine::movePlayer() {
-	playerPosX += moveDirectionX;
-	playerPosY += moveDirectionY;
-}
-
-void Engine::stopPlayer()
-{
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		moveDirectionX = 0;
-	}
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		moveDirectionY = 0;
+		player.move(sf::Vector2f(0.f, 1.f));
+		lastDir.y = 1;
 	}
 }
 
 void Engine::update(){
 	pollEvents();
-	stopPlayer();
 	setMoveDirection();
-	movePlayer();
-
 }
 
 void Engine::render(){

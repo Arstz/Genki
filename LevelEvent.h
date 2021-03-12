@@ -3,6 +3,7 @@
 #include <list>
 #include "Animation.h"
 #include "AnimationTask.h"
+#include "Player.h"
 
 class LevelEvent
 {
@@ -29,11 +30,12 @@ protected:
 		COLOR_A,
 	};
 
-	float initTime;
+	float initTime;	
+public:
 	static std::list<AnimationTask>* animationTasks;
 	static std::list<sf::VertexArray>* shapes;
 	static std::list<sf::VertexArray>::iterator* dynamicShapes;
-public:
+
 	virtual void start();
 	virtual LevelEvent* load();
 	float getInitTime();
@@ -81,6 +83,7 @@ public:
 
 class PlayerBindingEvent : public LevelEvent {
 public:
+	static Player* player;
 	int shapeID;
 
 	void start() override;
