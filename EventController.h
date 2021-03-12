@@ -19,6 +19,6 @@ public:
 
 	EventController();
 
-	EventController(float* currentTime, LevelEvent* level);
+	EventController(float* currentTime, int eventCount, LevelEvent* level);
 };
 

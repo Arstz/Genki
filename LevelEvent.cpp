@@ -2,9 +2,7 @@
 #include <SFML/Graphics.hpp>
 #define FUCKING_VERTEX (*(dynamicShapes[shapeID]))[AnimatedValueID]
 
-
 //LevelEvent
-
 
 std::list<AnimationTask>* LevelEvent::animationTasks = nullptr;
 std::list<sf::VertexArray>* LevelEvent::shapes = nullptr;
@@ -28,7 +26,8 @@ LevelEvent::LevelEvent() {
 
 }
 
-LevelEvent::LevelEvent(float initTime) {
+LevelEvent::LevelEvent(LevelEventType type, float initTime) {
+	this->type = type;
 	this->initTime = initTime;
 }
 
@@ -68,9 +67,10 @@ void ShapeSpawnEvent::start()
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 
-ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, float initTime) : LevelEvent(initTime) {
-	shapes->push_back(shape);
-	dynamicShapes[shapeID] = shapes->begin();
+ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, int shapeID, LevelEventType type, float initTime) : LevelEvent(type, initTime) {
+
+	this->shapeID = shapeID;
+	this->shape = shape;
 }
 
 //ShapeDestructionEvent
@@ -113,6 +113,6 @@ void PlayerBindingEvent::start()
 	player->shape = &(*(dynamicShapes[shapeID]));
 }
 
-PlayerBindingEvent::PlayerBindingEvent(int shapeID, float initTime) : LevelEvent(initTime) {
+PlayerBindingEvent::PlayerBindingEvent(int shapeID, LevelEventType type, float initTime) : LevelEvent(type, initTime) {
 	this->shapeID = shapeID;
 }

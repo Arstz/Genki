@@ -9,6 +9,7 @@ void Engine::initVars() {
 
 //Game Objects
 void Engine::initGameObjects() {
+	this->player = Player();
 	std::list<AnimationTask> animationTasks;
 	std::list<sf::VertexArray> shapes;
 	std::list<sf::VertexArray>::iterator* dynamicShapes = new std::list<sf::VertexArray>::iterator[3];    //;) MAXIM3 :)
@@ -16,17 +17,7 @@ void Engine::initGameObjects() {
 	LevelEvent::shapes = &shapes;
 	LevelEvent::dynamicShapes = dynamicShapes; //kak krytoi)
 	PlayerBindingEvent::player = &player;
-}
 
-//Main Window
-void Engine::initWindow(){	
-	mainWindow = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Sample", sf::Style::Titlebar | sf::Style::Close);
-	mainWindow->setFramerateLimit(170);
-}
-
-//Construct
-Engine::Engine() {
-	
 	LevelEvent* level = new LevelEvent[2];
 
 	sf::VertexArray shape(sf::Triangles, 3);
@@ -39,14 +30,24 @@ Engine::Engine() {
 	shape[1].color = sf::Color(255, 255, 255, 255);
 	shape[2].color = sf::Color(255, 255, 255, 255);
 
-	level[0] = ShapeSpawnEvent(shape, 0);
+	level[0] = ShapeSpawnEvent(shape, 0, LevelEventType::SHAPE_SPAWN, 0);
+	level[1] = PlayerBindingEvent(0, LevelEventType::PLAYER_BINDING, 0);
 
+	this->renderHandler = RenderHandler(&shapes, mainWindow);
+	this->eventController = EventController(&currentTime, 2, level);
+}
+
+//Main Window
+void Engine::initWindow(){	
+	mainWindow = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Sample", sf::Style::Titlebar | sf::Style::Close);
+	mainWindow->setFramerateLimit(170);
+}
+
+//Construct
+Engine::Engine() {
 	initVars();
 	initWindow();
 	initGameObjects();
-	this->renderHandler = RenderHandler(&shapes,mainWindow);
-	this->player = Player();
-	this->eventController = EventController(&currentTime, level);
 }
 
 //Destruct
@@ -108,6 +109,7 @@ void Engine::update(){
 	currentTime = (float)(end - start).count();
 	std::cout << currentTime;
 	setMoveDirection();
+	eventController.updateActiveEventList();
 }
 
 void Engine::render(){
