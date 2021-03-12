@@ -4,42 +4,47 @@
 #include "Animation.h"
 #include "AnimationTask.h"
 
-enum LevelEventType {
-	CAMERA_ANIMATION,
-	SHAPE_SPAWN,
-	SHAPE_DESTRUCTION,
-	SHAPE_ANIMATION,
-	PLAYER_BINDING,
-};
-
-enum AnimatedValueType {
-	CAMERA_SCALE,
-	CAMERA_OFFSET_X,
-	CAMERA_OFFSET_Y,
-
-	SHAPE_VERTEX_X,
-	SHAPE_VERTEX_Y,
-	SHAPE_COLOR_R,
-	SHAPE_COLOR_G,
-	SHAPE_COLOR_B,
-	SHAPE_COLOR_A,
-};
-
 class LevelEvent
 {
-public:
-	float initTime;
+protected:
+	enum LevelEventType {
+		BACKGROUND_COLOR_ANIMATION, //cherez 200 let sdelaem
+		CAMERA_ANIMATION,
+		SHAPE_SPAWN,
+		SHAPE_DESTRUCTION,
+		SHAPE_ANIMATION,
+		PLAYER_BINDING,
+	};
 
+	enum AnimatedValueType {
+		CAMERA_SCALE,
+		CAMERA_OFFSET_X,
+		CAMERA_OFFSET_Y,
+
+		SHAPE_VERTEX_X,
+		SHAPE_VERTEX_Y,
+		COLOR_R,
+		COLOR_G,
+		COLOR_B,
+		COLOR_A,
+	};
+
+	float initTime;
+	static std::list<AnimationTask>* animationTasks;
+	static std::list<sf::VertexArray>* shapes;
+	static std::list<sf::VertexArray>::iterator* dynamicShapes;
+public:
 	virtual void start();
 	virtual LevelEvent* load();
+	float getInitTime();
 
 	LevelEvent();
 	LevelEvent(float initTime);
 
 };
+
 class CameraAnimationEvent : public LevelEvent {
 public:
-	static std::list<AnimationTask>* animationTasks;
 	Animation animation;
 	AnimatedValueType animatedValueType;
 
@@ -48,8 +53,7 @@ public:
 
 class ShapeSpawnEvent : public LevelEvent {
 public:
-	static std::list<sf::VertexArray>* shapes;
-	static std::list<sf::VertexArray>::iterator* dynamicShapes;
+
 	int shapeID;
 	sf::VertexArray shape;
 	ShapeSpawnEvent();
@@ -60,7 +64,6 @@ public:
 
 class ShapeDestructionEvent : public LevelEvent {
 public:
-	static std::list<sf::VertexArray>::iterator* dynamicShapes;
 	int shapeID;
 
 	void start() override;
@@ -68,17 +71,16 @@ public:
 
 class ShapeAnimationEvent : public LevelEvent {
 public:
-	static std::list<AnimationTask>* animationTasks;
-	static std::list<sf::VertexArray>::iterator* dynamicShapes;
 	Animation animation;
 	AnimatedValueType animatedValueType;
+	int AnimatedValueID;
+	int shapeID;
 
 	void start() override;
 };
 
 class PlayerBindingEvent : public LevelEvent {
 public:
-	static std::list<sf::VertexArray>::iterator* dynamicShapes;
 	int shapeID;
 
 	void start() override;

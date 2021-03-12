@@ -2,12 +2,25 @@
 #include "Animation.h"
 #define M_PI 3.14159265358979323846f  /* pipiska */
 
-float AnimationTask::calculatePosition(float startPosition, float endPosition, const float& startTime, const float& endTime, const float& currentTime)
+float AnimationTask::calculatePosition(
+	float startPosition, 
+	float endPosition, 
+	const float& startTime, 
+	const float& endTime, 
+	const float& currentTime
+)
 {
 	return startPosition + (endPosition - startPosition) * ((currentTime - startTime) / (endTime - startTime));
 }
 
-float AnimationTask::calculatePosition(float startPosition, float endPosition, const float& startTime, const float& endTime, const float& currentTime, const float& limit)
+float AnimationTask::calculatePosition(
+	float startPosition, 
+	float endPosition, 
+	const float& startTime, 
+	const float& endTime, 
+	const float& currentTime, 
+	const float& limit
+)
 {
 	if (float(endPosition - startPosition) < float(-limit / 2)) {	
 		startPosition -= limit;

@@ -10,8 +10,22 @@ private:
 	float timer;
 	float* target;
 
-	float calculatePosition(float startPosition, float endPosition, const float& startTime, const float& endTime, const float& currentTime);
-	float calculatePosition(float startPosition, float endPosition, const float& startTime, const float& endTime, const float& currentTime, const float& limit);
+	float calculatePosition(
+		float startPosition, 
+		float endPosition, 
+		const float& startTime, 
+		const float& endTime, 
+		const float& currentTime
+	);
+
+	float calculatePosition(
+		float startPosition, 
+		float endPosition, 
+		const float& startTime, 
+		const float& endTime, 
+		const float& currentTime, 
+		const float& limit
+	);
 
 public:
 	AnimationTask(void)	{}

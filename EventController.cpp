@@ -9,7 +9,7 @@ void EventController::updateEvents(){
 */
 
 void EventController::updateActiveEventList() {
-	while (currentEvent < eventCount && level[currentEvent].initTime < *currentTime) {
+	while (currentEvent < eventCount && level[currentEvent].getInitTime() < *currentTime) {
 		currentEvent++;
 	}
 }
