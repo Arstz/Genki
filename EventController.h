@@ -2,11 +2,12 @@
 #include "LevelEvent.h"
 #include <SFML/Graphics.hpp>
 #include <list>
+#include <vector>
 
 class EventController
 {
 private:
-	LevelEvent* level;
+	std::vector<LevelEvent*> level;
 	
 	int eventCount;
 	int currentEvent;
@@ -19,6 +20,5 @@ public:
 
 	EventController();
 
-	EventController(float* currentTime, int eventCount, LevelEvent* level);
+	EventController(float* currentTime, int eventCount, std::vector<LevelEvent*> level);
 };
-

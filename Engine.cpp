@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "LevelEvent.h"
+#include <vector>
 
 //Variables
 void Engine::initVars() {	
@@ -10,15 +11,15 @@ void Engine::initVars() {
 //Game Objects
 void Engine::initGameObjects() {
 	this->player = Player();
-	std::list<AnimationTask> animationTasks;
-	std::list<sf::VertexArray> shapes;
+	this->animationTasks = std::list<AnimationTask>();
+	this->shapes = std::list<sf::VertexArray>();
 	std::list<sf::VertexArray>::iterator* dynamicShapes = new std::list<sf::VertexArray>::iterator[3];    //;) MAXIM3 :)
 	LevelEvent::animationTasks = &animationTasks;
 	LevelEvent::shapes = &shapes;
 	LevelEvent::dynamicShapes = dynamicShapes; //kak krytoi)
 	PlayerBindingEvent::player = &player;
 
-	LevelEvent* level = new LevelEvent[2];
+	std::vector<LevelEvent*> level (2);
 
 	sf::VertexArray shape(sf::Triangles, 3);
 
@@ -30,8 +31,10 @@ void Engine::initGameObjects() {
 	shape[1].color = sf::Color(255, 255, 255, 255);
 	shape[2].color = sf::Color(255, 255, 255, 255);
 
-	level[0] = ShapeSpawnEvent(shape, 0, LevelEventType::SHAPE_SPAWN, 0);
-	level[1] = PlayerBindingEvent(0, LevelEventType::PLAYER_BINDING, 0);
+	ShapeSpawnEvent* a = new ShapeSpawnEvent(shape, 0, LevelEventType::SHAPE_SPAWN, 0);
+	PlayerBindingEvent* b = new PlayerBindingEvent(0, LevelEventType::PLAYER_BINDING, 0);
+	level[0] = a;
+	level[1] = b;
 
 	this->renderHandler = RenderHandler(&shapes, mainWindow);
 	this->eventController = EventController(&currentTime, 2, level);
@@ -107,7 +110,6 @@ void Engine::update(){
 	pollEvents();
 	auto end = std::chrono::system_clock::now();
 	currentTime = (float)(end - start).count();
-	std::cout << currentTime;
 	setMoveDirection();
 	eventController.updateActiveEventList();
 }
