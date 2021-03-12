@@ -30,18 +30,18 @@ private:
 public:
 	AnimationTask(void)	{}
 
-	AnimationTask(Animation& animation, float& target)
+	AnimationTask(Animation& animation, float* target)
 	{
 		this->animation = &animation;
-		this->target = &target;
+		this->target = target;
 		this->counter = 0;
 		this->timer = 0;
 	}
 
-	AnimationTask(Animation& animation, float& target, short unsigned int counter, float timer)
+	AnimationTask(Animation& animation, float* target, short unsigned int counter, float timer)
 	{
 		this->animation = &animation;
-		this->target = &target;
+		this->target = target;
 		this->counter = counter;
 		this->timer = timer;
 	}

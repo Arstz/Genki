@@ -76,7 +76,7 @@ ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, float initTime) : LevelE
 
 void ShapeDestructionEvent::start()
 {
-	shapes->erase((dynamicShapes[shapeID]));
+	shapes->erase(dynamicShapes[shapeID]);
 }
 
 //ShapeAnimationEvent
@@ -100,7 +100,7 @@ void ShapeAnimationEvent::start()
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;
 	}
-	animationTasks->push_back(AnimationTask(animation, *target));
+	animationTasks->push_back(AnimationTask(animation, target));
 }
 
 //PlayerBindingEvent
