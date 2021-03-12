@@ -9,17 +9,7 @@ void Engine::initVars() {
 //Game Objects
 void Engine::initGameObjects() {
 	shapes = new std::list<sf::VertexArray>;
-	sf::VertexArray player (sf::Triangles, 3);
 
-	player[0].position = sf::Vector2f(0.f, 0.f);
-	player[1].position = sf::Vector2f(0.f, 15.f);
-	player[2].position = sf::Vector2f(15.f, 15.f);
-
-	player[0].color = sf::Color(255, 255, 255, 255);
-	player[1].color = sf::Color(255, 255, 255, 255);
-	player[2].color = sf::Color(255, 255, 255, 255);
-
-	shapes->push_back(player);
 }
 
 //Main Window
@@ -110,16 +100,7 @@ void Engine::update(){
 	stopPlayer();
 	setMoveDirection();
 	movePlayer();
-	/*
-	player[0].position.x = playerPosX + 0.f;
-	player[0].position.y = playerPosY + 0.f;
 
-	player[1].position.x = playerPosX + 0.f;
-	player[1].position.y = playerPosY + 15.f;
-
-	player[2].position.x = playerPosX + 15.f;
-	player[2].position.y = playerPosY + 15.f;
-	*/
 }
 
 void Engine::render(){

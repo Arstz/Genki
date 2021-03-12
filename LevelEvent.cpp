@@ -5,6 +5,7 @@
 
 //LevelEvent
 
+
 std::list<AnimationTask>* LevelEvent::animationTasks = nullptr;
 std::list<sf::VertexArray>* LevelEvent::shapes = nullptr;
 std::list<sf::VertexArray>::iterator* LevelEvent::dynamicShapes = nullptr;
@@ -33,12 +34,28 @@ LevelEvent::LevelEvent(float initTime) {
 
 //CameraAnimationEvent
 
-
-
-
 void CameraAnimationEvent::start()
 {
-
+	/*
+	float* target;
+	switch (animatedValueType)
+	{
+	case CAMERA_SCALE:
+		target = ;
+		break;
+	case CAMERA_OFFSET_X:
+		target = ;
+		break;
+	case CAMERA_OFFSET_Y:
+		target = ;
+		break;
+	default:
+		throw "WRONG ANIMATED VALUE TYPE";
+		break;
+	}
+	
+	animationTasks->push_back(AnimationTask(animation, *target));
+	*/
 }
 
 //ShapeSpawnEvent
@@ -46,12 +63,10 @@ void CameraAnimationEvent::start()
 void ShapeSpawnEvent::start()
 {
 	shapes->push_front(shape);
+	dynamicShapes[shapeID] = shapes->begin();
 }
 
-ShapeSpawnEvent::ShapeSpawnEvent()
-{
-
-}
+ShapeSpawnEvent::ShapeSpawnEvent() {}
 
 ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, float initTime) : LevelEvent(initTime) {
 	this->shape = shape;
@@ -78,7 +93,7 @@ void ShapeAnimationEvent::start()
 		break;
 	/* AHAHA tsvet budet tolko v openGL potomu chto tut color - eto int :D
 	case COLOR_R:
-		target = &FUCKING_SHAPE.color.r;
+		target = &FUCKING_VERTEX.color.r;
 		break;
 	*/
 	default:

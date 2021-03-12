@@ -36,7 +36,7 @@ private:
 	sf::RenderWindow* mainWindow;
 	sf::Event eventHandler;
 
-	sf::VertexArray player;
+	sf::VertexArray* player;
 	std::list<sf::VertexArray>* shapes;
 	EventController eventController;
 	RenderHandler renderHandler;
