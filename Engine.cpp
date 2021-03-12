@@ -25,12 +25,27 @@ void Engine::initWindow(){
 
 //Construct
 Engine::Engine() {
-	this->eventController = EventController(&currentTime, level);
+	
+	LevelEvent* level = new LevelEvent[2];
+
+	sf::VertexArray shape(sf::Triangles, 3);
+
+	shape[0].position = sf::Vector2f(0.f, 0.f);
+	shape[1].position = sf::Vector2f(0.f, 30.f);
+	shape[2].position = sf::Vector2f(30.f, 30.f);
+
+	shape[0].color = sf::Color(255, 255, 255, 255);
+	shape[1].color = sf::Color(255, 255, 255, 255);
+	shape[2].color = sf::Color(255, 255, 255, 255);
+
+	level[0] = ShapeSpawnEvent(shape, 0);
+
 	initVars();
 	initWindow();
 	initGameObjects();
 	this->renderHandler = RenderHandler(&shapes,mainWindow);
 	this->player = Player();
+	this->eventController = EventController(&currentTime, level);
 }
 
 //Destruct

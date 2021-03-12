@@ -85,6 +85,7 @@ class PlayerBindingEvent : public LevelEvent {
 public:
 	static Player* player;
 	int shapeID;
+	PlayerBindingEvent(int shapeID, float initTime);
 
 	void start() override;
 };

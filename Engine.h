@@ -22,7 +22,6 @@ private:
 	void setMoveDirection();
 
 	sf::Vector2i lastDir;
-	LevelEvent* level;
 
 	float currentTime;
 

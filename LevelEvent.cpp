@@ -69,7 +69,8 @@ void ShapeSpawnEvent::start()
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 
 ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, float initTime) : LevelEvent(initTime) {
-	this->shape = shape;
+	shapes->push_back(shape);
+	dynamicShapes[shapeID] = shapes->begin();
 }
 
 //ShapeDestructionEvent
@@ -110,4 +111,8 @@ Player* PlayerBindingEvent::player = nullptr;
 void PlayerBindingEvent::start()
 {
 	player->shape = &(*(dynamicShapes[shapeID]));
+}
+
+PlayerBindingEvent::PlayerBindingEvent(int shapeID, float initTime) : LevelEvent(initTime) {
+	this->shapeID = shapeID;
 }
