@@ -4,6 +4,7 @@
 //Variables
 void Engine::initVars() {	
 	this->eventHandler = sf::Event();
+	start = std::chrono::system_clock::now();
 }
 
 //Game Objects
@@ -103,6 +104,9 @@ void Engine::setMoveDirection(){
 
 void Engine::update(){
 	pollEvents();
+	auto end = std::chrono::system_clock::now();
+	currentTime = (float)(end - start).count();
+	std::cout << currentTime;
 	setMoveDirection();
 }
 

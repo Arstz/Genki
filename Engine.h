@@ -8,7 +8,7 @@
 #include <fstream>
 #include <tuple>
 #include <list>
-
+#include <iostream>
 
 class Engine
 {
@@ -31,6 +31,7 @@ private:
 	std::list<AnimationTask> animationTasks;
 	std::list<sf::VertexArray> shapes;
 	std::list<sf::VertexArray>::iterator* dynamicShapes;
+	std::chrono::system_clock::time_point start;
 
 	Player player;
 	EventController eventController;
