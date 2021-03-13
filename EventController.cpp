@@ -1,10 +1,12 @@
 #include "EventController.h"
 #include "LevelEvent.h"
 #include <vector>
+#include <iostream>
 
 void EventController::updateActiveEventList() 
 {
 	while (currentEvent < eventCount && level[currentEvent]->getInitTime() < *currentTime) {
+		std::cout << *currentTime<< "\n";
 		level[currentEvent]->start();
 		currentEvent++;
 	}
