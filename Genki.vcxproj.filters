@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,9 +25,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LevelEvent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventController.cpp">
@@ -54,9 +48,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EventController.h">
