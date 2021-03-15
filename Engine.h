@@ -1,12 +1,10 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "EventController.h"
-#include "RenderHandler.h"
 #include "Player.h"
+#include "Shape.h"
 
 #include <chrono>
 #include <fstream>
-#include <tuple>
 #include <list>
 #include <iostream>
 
@@ -17,25 +15,17 @@ private:
 
 	void initVars();
 	void initGameObjects();
-	void initWindow();
 	void pollEvents();
 	void setMoveDirection();
 
-	sf::Vector2i lastDir;
+//	sf::Vector2i lastDir;
 
 	float currentTime;
 
-	sf::RenderWindow* mainWindow;
-	sf::Event eventHandler;
-
-	std::list<AnimationTask> animationTasks;
-	std::list<sf::VertexArray> shapes;
-	std::list<sf::VertexArray>::iterator* dynamicShapes;
 	std::chrono::system_clock::time_point start;
 
 	Player player;
 	EventController eventController;
-	RenderHandler renderHandler;
 
 public:
 	Engine();
@@ -44,6 +34,6 @@ public:
 	void update();
 	void render();
 
-	const bool running() const;
+	bool running();
 };
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "LevelEvent.h"
-#include <SFML/Graphics.hpp>
 #include <list>
 #include <vector>
 

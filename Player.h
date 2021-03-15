@@ -1,10 +1,10 @@
 #pragma once
-#include "SFML/graphics.hpp"
+#include "Shape.h"
 
 class Player
 {
 public:
-	sf::VertexArray* shape;
-	void move(sf::Vector2f moveVector);
+	Shape* shape;
+	void move(/*sf::Vector2f moveVector*/);
 };
 

@@ -1,20 +1,16 @@
 #include "LevelEvent.h"
-#include <SFML/Graphics.hpp>
-#define FUCKING_VERTEX (*(dynamicShapes[shapeID]))[AnimatedValueID]
+#include "Graphics.h"
 
 //LevelEvent
 
 std::list<AnimationTask>* LevelEvent::animationTasks = nullptr;
-std::list<sf::VertexArray>* LevelEvent::shapes = nullptr;
-std::list<sf::VertexArray>::iterator* LevelEvent::dynamicShapes = nullptr;
+std::list<Shape>::iterator* LevelEvent::dynamicShapes = nullptr;
 
-LevelEvent* LevelEvent::load()
-{
+LevelEvent* LevelEvent::load() {
 	return nullptr;
 }
 
-void LevelEvent::start()
-{
+void LevelEvent::start() {
 
 }
 
@@ -32,51 +28,31 @@ LevelEvent::LevelEvent(float initTime) {
 
 //CameraAnimationEvent
 
-void CameraAnimationEvent::start()
-{
-	/*
-	float* target;
-	switch (animatedValueType)
-	{
-	case CAMERA_SCALE:
-		target = ;
-		break;
-	case CAMERA_OFFSET_X:
-		target = ;
-		break;
-	case CAMERA_OFFSET_Y:
-		target = ;
-		break;
-	default:
-		throw "WRONG ANIMATED VALUE TYPE";
-		break;
-	}
-	
-	animationTasks->push_back(AnimationTask(animation, *target));
-	*/
+void CameraAnimationEvent::start() {
+
 }
 
 //ShapeSpawnEvent
 
-void ShapeSpawnEvent::start()
-{
-	shapes->push_front(shape);
-	dynamicShapes[shapeID] = shapes->begin();
+void ShapeSpawnEvent::start() {
+	dynamicShapes[shapeID] = Graphics::addShape(shape);
 }
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 
-ShapeSpawnEvent::ShapeSpawnEvent(sf::VertexArray shape, int shapeID,float initTime) : LevelEvent(initTime) {
-
+ShapeSpawnEvent::ShapeSpawnEvent(
+	Shape shape, 
+	int shapeID,
+	float initTime
+) : LevelEvent(initTime) {
 	this->shapeID = shapeID;
 	this->shape = shape;
 }
 
 //ShapeDestructionEvent
 
-void ShapeDestructionEvent::start()
-{
-	shapes->erase(dynamicShapes[shapeID]);
+void ShapeDestructionEvent::start() {
+	Graphics::removeShape(dynamicShapes[shapeID]);
 }
 
 //ShapeAnimationEvent
@@ -86,16 +62,11 @@ void ShapeAnimationEvent::start()
 	switch(animatedValueType)
 	{
 	case SHAPE_VERTEX_X:
-		target = &FUCKING_VERTEX.position.x;
+		target = dynamicShapes[shapeID]->getPositionPointer(0, 0);
 		break;
 	case SHAPE_VERTEX_Y:
-		target = &FUCKING_VERTEX.position.y;
+		target = dynamicShapes[shapeID]->getColorPointer(0, 0);
 		break;
-	/* AHAHA tsvet budet tolko v openGL potomu chto tut color - eto int :D
-	case COLOR_R:
-		target = &FUCKING_VERTEX.color.r;
-		break;
-	*/
 	default:
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;

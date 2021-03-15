@@ -1,9 +1,9 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include <list>
 #include "Animation.h"
 #include "AnimationTask.h"
 #include "Player.h"
+#include "Shape.h"
 
 
 class LevelEvent
@@ -34,8 +34,7 @@ protected:
 	float initTime;	
 public:
 	static std::list<AnimationTask>* animationTasks;
-	static std::list<sf::VertexArray>* shapes;
-	static std::list<sf::VertexArray>::iterator* dynamicShapes;
+	static std::list<Shape>::iterator* dynamicShapes;
 
 	virtual void start();
 	virtual LevelEvent* load();
@@ -58,9 +57,9 @@ class ShapeSpawnEvent : public LevelEvent {
 public:
 
 	int shapeID;
-	sf::VertexArray shape;
+	Shape shape;
 	ShapeSpawnEvent();
-	ShapeSpawnEvent(sf::VertexArray shape, int shapeID, float initTime);
+	ShapeSpawnEvent(Shape shape, int shapeID, float initTime);
 
 	void start() override;
 };
