@@ -19,7 +19,7 @@ void Engine::initGameObjects() {
 	LevelEvent::dynamicShapes = dynamicShapes; //kak krytoi)
 	PlayerBindingEvent::player = &player;
 
-	std::vector<LevelEvent*> level (2);
+	std::vector<LevelEvent*> level;
 
 	sf::VertexArray shape(sf::Triangles, 3);
 
@@ -31,13 +31,12 @@ void Engine::initGameObjects() {
 	shape[1].color = sf::Color(255, 255, 255, 255);
 	shape[2].color = sf::Color(255, 255, 255, 255);
 
-	ShapeSpawnEvent* a = new ShapeSpawnEvent(shape, 0, 0);
-	PlayerBindingEvent* b = new PlayerBindingEvent(0, 0);
-	level[0] = a;
-	level[1] = b;
+	level.push_back(new ShapeSpawnEvent(shape, 0, 0));	
+	level.push_back(new PlayerBindingEvent(0, 0));
+	level.push_back(new ShapeSpawnEvent(shape, 1, 5000));
 
 	this->renderHandler = RenderHandler(&shapes, mainWindow);
-	this->eventController = EventController(&currentTime, 2, level);
+	this->eventController = EventController(&currentTime, level.size(), level);
 }
 
 //Main Window
@@ -109,7 +108,7 @@ void Engine::setMoveDirection(){
 void Engine::update(){
 	pollEvents();
 	auto end = std::chrono::system_clock::now();
-	currentTime = (float)(end - start).count();
+	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	setMoveDirection();
 	eventController.updateActiveEventList();
 }
