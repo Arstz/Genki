@@ -43,7 +43,7 @@ void Engine::initGameObjects() {
 //Main Window
 void Engine::initWindow(){	
 	mainWindow = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Sample", sf::Style::Titlebar | sf::Style::Close);
-	mainWindow->setFramerateLimit(170);
+//	mainWindow->setFramerateLimit(170);
 }
 
 //Construct
