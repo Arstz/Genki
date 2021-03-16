@@ -10,7 +10,7 @@ class LevelEvent
 {
 protected:
 	enum LevelEventType {
-		BACKGROUND_COLOR_ANIMATION, //cherez 200 let sdelaem
+		BACKGROUND_COLOR_ANIMATION, //cherez 100 let sdelaem
 		CAMERA_ANIMATION,
 		SHAPE_SPAWN,
 		SHAPE_DESTRUCTION,
@@ -19,16 +19,8 @@ protected:
 	};
 
 	enum AnimatedValueType {
-		CAMERA_SCALE,
-		CAMERA_OFFSET_X,
-		CAMERA_OFFSET_Y,
-
-		SHAPE_VERTEX_X,
-		SHAPE_VERTEX_Y,
-		COLOR_R,
-		COLOR_G,
-		COLOR_B,
-		COLOR_A,
+		VERTEX,
+		COLOR,
 	};
 
 	float initTime;	
@@ -37,7 +29,6 @@ public:
 	static std::list<Shape>::iterator* dynamicShapes;
 
 	virtual void start();
-	virtual LevelEvent* load();
 	float getInitTime();
 
 	LevelEvent();
@@ -67,6 +58,8 @@ public:
 class ShapeDestructionEvent : public LevelEvent {
 public:
 	int shapeID;
+	ShapeDestructionEvent();
+	ShapeDestructionEvent(int shapeID, float initTime);
 
 	void start() override;
 };
@@ -77,6 +70,18 @@ public:
 	AnimatedValueType animatedValueType;
 	int AnimatedValueID;
 	int shapeID;
+	int vertexNum;
+	int channelNum;
+
+	ShapeAnimationEvent();
+	ShapeAnimationEvent(
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		int AnimatedValueID,
+		int shapeID,
+		int vertexNum,
+		int channelNum
+	);
 
 	void start() override;
 };
@@ -85,6 +90,8 @@ class PlayerBindingEvent : public LevelEvent {
 public:
 	static Player* player;
 	int shapeID;
+
+	PlayerBindingEvent();
 	PlayerBindingEvent(int shapeID, float initTime);
 
 	void start() override;

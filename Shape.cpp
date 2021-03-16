@@ -17,9 +17,11 @@ Shape::Shape(
 }
 
 Shape::~Shape() {
+	/*
 	delete[] vertexCoords;
 	delete[] vertexColors;
 	delete[] vertexIDs;
+	*/
 }
 
 uint Shape::getVertexCount() {

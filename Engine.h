@@ -1,39 +1,25 @@
 #pragma once
-#include "EventController.h"
 #include "Player.h"
-#include "Shape.h"
-
 #include <chrono>
-#include <fstream>
-#include <list>
 #include <iostream>
 
 class Engine
 {
 
 private:
+	static void pollEvents();
 
-	void initVars();
-	void initGameObjects();
-	void pollEvents();
-	void setMoveDirection();
+	static float currentTime;
+	static std::chrono::system_clock::time_point start;
 
-//	sf::Vector2i lastDir;
-
-	float currentTime;
-
-	std::chrono::system_clock::time_point start;
-
-	Player player;
-	EventController eventController;
+	static Player player;
 
 public:
-	Engine();
-	virtual ~Engine();
+	static void init();
 	
-	void update();
-	void render();
+	static void update();
+	static void render();
 
-	bool running();
+	static bool running();
 };
 

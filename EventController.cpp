@@ -3,23 +3,15 @@
 #include <vector>
 #include <iostream>
 
+
+std::vector<LevelEvent*> EventController::level;
+int EventController::currentEvent = 0;
+float* EventController::currentTime = nullptr;
+
 void EventController::updateActiveEventList() 
 {
-	while (currentEvent < eventCount && level[currentEvent]->getInitTime() < *currentTime) {
-		std::cout << *currentTime<< "\n";
+	while (currentEvent < level.size() && level[currentEvent]->getInitTime() < *currentTime) {
 		level[currentEvent]->start();
 		currentEvent++;
 	}
 }
-
-EventController::EventController(){}
-//                              ( ^ )
-
-EventController::EventController(float* currentTime, int eventCount, std::vector<LevelEvent*> level)
-{
-	this->level = level;
-	this->currentTime = currentTime;
-	this->eventCount = eventCount;
-	this->currentEvent = 0;
-}
-

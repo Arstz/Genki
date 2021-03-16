@@ -1,17 +1,14 @@
 #pragma once
 #include "Graphics.h"
-#include "Shape.h"
 #include <iostream>
 
-//nahui piton
-
-std::list<Shape>* Graphics::shapes = nullptr;
+std::list<Shape> Graphics::shapes;
 
 uint Graphics::vertexCount = 0;
-float* Graphics::vertexDataBuffer = nullptr;
+float* Graphics::vertexDataBuffer = new float[0];
 
 uint Graphics::EBOsize = 0;
-uint* Graphics::EBObuffer = nullptr;
+uint* Graphics::EBObuffer = new uint[0];
 
 GLuint Graphics::VBO = 0;
 GLuint Graphics::VAO = 0;
@@ -43,7 +40,9 @@ void Graphics::initBuffers() {
 	glGenBuffers(1, &VBO);
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
@@ -53,9 +52,8 @@ void Graphics::initBuffers() {
 void Graphics::updateBuffers() {
 	uint colorOffsetCounter = vertexCount * 2;
 	uint positionOffsetCounter = 0;
-	uint EBOoffsetCounter = 0;
 
-	for (Shape &shape : *shapes) {
+	for (Shape &shape : shapes) {
 		for (int i = 0; i < shape.vertexCount * 2; i++)
 			vertexDataBuffer[positionOffsetCounter + i] = shape.vertexCoords[i];
 		positionOffsetCounter += shape.vertexCount * 2;
@@ -63,10 +61,6 @@ void Graphics::updateBuffers() {
 		for (int i = 0; i < shape.vertexCount * 4; i++)
 			vertexDataBuffer[colorOffsetCounter + i] = shape.vertexColors[i];
 		colorOffsetCounter += shape.vertexCount * 4;
-
-		for (int i = 0; i < shape.EBOsize; i++)
-			EBObuffer[EBOoffsetCounter + i] = shape.vertexIDs[i] + EBOoffsetCounter + i;
-		EBOoffsetCounter += shape.EBOsize;
 	}
 }
 
@@ -77,13 +71,17 @@ void Graphics::reallocateBuffers() {
 	delete[] EBObuffer;
 	EBObuffer = new uint[EBOsize];
 
-	glBindVertexArray(VAO);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * vertexCount * sizeof(float)));
-	glBindVertexArray(0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	uint EBOoffsetCounter = 0;
+	for (Shape& shape : shapes) {
+		for (int i = 0; i < shape.EBOsize; i++)
+			EBObuffer[EBOoffsetCounter + i] = shape.vertexIDs[i] + EBOoffsetCounter;
+		EBOoffsetCounter += shape.EBOsize;
+	}
+
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 }
 
 void Graphics::initWindow() {
@@ -149,13 +147,13 @@ void Graphics::init() {
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	initWindow();
 	compileShader();
+	initBuffers();
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 }
 
 void Graphics::draw() {
 	updateBuffers();
 
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(
 		GL_ARRAY_BUFFER, 
 		sizeof(float) * vertexCount * VERTEX_SIZE,
@@ -163,23 +161,24 @@ void Graphics::draw() {
 		GL_STATIC_DRAW
 	);
 
+	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glfwSwapBuffers(window);
 }
 
 std::list<Shape>::iterator Graphics::addShape(Shape shape) {
-	shapes->push_front(shape);
+	shapes.push_front(shape);
 	vertexCount += shape.vertexCount;
 	EBOsize += shape.EBOsize;
 	reallocateBuffers();
-	return shapes->begin();
+	return shapes.begin();
 }
 
 void Graphics::removeShape(std::list<Shape>::iterator &shapeIterator) {
 	vertexCount += shapeIterator->vertexCount;
 	EBOsize += shapeIterator->EBOsize;
-	shapes->erase(shapeIterator);
+	shapes.erase(shapeIterator);
 	reallocateBuffers();
 }
 

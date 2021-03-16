@@ -8,8 +8,7 @@ float AnimationTask::calculatePosition(
 	const float& startTime, 
 	const float& endTime, 
 	const float& currentTime
-)
-{
+) {
 	return startPosition + (endPosition - startPosition) * ((currentTime - startTime) / (endTime - startTime));
 }
 
@@ -20,8 +19,7 @@ float AnimationTask::calculatePosition(
 	const float& endTime, 
 	const float& currentTime, 
 	const float& limit
-)
-{
+) {
 	if (float(endPosition - startPosition) < float(-limit / 2)) {	
 		startPosition -= limit;
 	}
@@ -31,14 +29,11 @@ float AnimationTask::calculatePosition(
 	return startPosition + (endPosition - startPosition) * ((currentTime - startTime) / (endTime - startTime));
 }
 
-void AnimationTask::animate(float& frameTime)
-{
+void AnimationTask::animate(float& frameTime) {
 	timer += frameTime;
-	while (timer > (*animation).timeKeys[counter])
-	{
+	while (timer > (*animation).timeKeys[counter]) {
 		counter += 1;
-		if (counter == (*animation).keyCount)
-		{
+		if (counter == (*animation).keyCount) {
 			timer -= (*animation).timeKeys[counter - 1];
 			counter = 0;
 		}

@@ -4,27 +4,18 @@
 //LevelEvent
 
 std::list<AnimationTask>* LevelEvent::animationTasks = nullptr;
-std::list<Shape>::iterator* LevelEvent::dynamicShapes = nullptr;
-
-LevelEvent* LevelEvent::load() {
-	return nullptr;
-}
-
-void LevelEvent::start() {
-
-}
+std::list<Shape>::iterator* LevelEvent::dynamicShapes = new std::list<Shape>::iterator[1];
 
 float LevelEvent::getInitTime() {
 	return initTime;
 }
 
-LevelEvent::LevelEvent() {
-
-}
-
+LevelEvent::LevelEvent() {}
 LevelEvent::LevelEvent(float initTime) {
 	this->initTime = initTime;
 }
+
+void LevelEvent::start() {}
 
 //CameraAnimationEvent
 
@@ -34,12 +25,7 @@ void CameraAnimationEvent::start() {
 
 //ShapeSpawnEvent
 
-void ShapeSpawnEvent::start() {
-	dynamicShapes[shapeID] = Graphics::addShape(shape);
-}
-
 ShapeSpawnEvent::ShapeSpawnEvent() {}
-
 ShapeSpawnEvent::ShapeSpawnEvent(
 	Shape shape, 
 	int shapeID,
@@ -49,23 +35,50 @@ ShapeSpawnEvent::ShapeSpawnEvent(
 	this->shape = shape;
 }
 
+void ShapeSpawnEvent::start() {
+	dynamicShapes[shapeID] = Graphics::addShape(shape);
+}
+
 //ShapeDestructionEvent
+
+ShapeDestructionEvent::ShapeDestructionEvent() {}
+ShapeDestructionEvent::ShapeDestructionEvent(int shapeID, float initTime) : LevelEvent(initTime) {
+	this->shapeID = shapeID;
+}
 
 void ShapeDestructionEvent::start() {
 	Graphics::removeShape(dynamicShapes[shapeID]);
 }
 
 //ShapeAnimationEvent
+
+ShapeAnimationEvent::ShapeAnimationEvent() {}
+ShapeAnimationEvent::ShapeAnimationEvent(
+	Animation animation, 
+	AnimatedValueType animatedValueType, 
+	int AnimatedValueID, 
+	int shapeID,
+	int vertexNum,
+	int channelNum
+) : LevelEvent(initTime) {
+	this->animation = animation;
+	this->animatedValueType = animatedValueType;
+	this->AnimatedValueID = AnimatedValueID;
+	this->shapeID = shapeID;
+	this->vertexNum = vertexNum;
+	this->channelNum = channelNum;
+}
+
 void ShapeAnimationEvent::start()
 {
 	float* target;
 	switch(animatedValueType)
 	{
-	case SHAPE_VERTEX_X:
-		target = dynamicShapes[shapeID]->getPositionPointer(0, 0);
+	case VERTEX:
+		target = dynamicShapes[shapeID]->getPositionPointer(vertexNum, channelNum);
 		break;
-	case SHAPE_VERTEX_Y:
-		target = dynamicShapes[shapeID]->getColorPointer(0, 0);
+	case COLOR:
+		target = dynamicShapes[shapeID]->getColorPointer(vertexNum, channelNum);
 		break;
 	default:
 		throw "WRONG ANIMATED VALUE TYPE";
@@ -78,11 +91,11 @@ void ShapeAnimationEvent::start()
 
 Player* PlayerBindingEvent::player = nullptr;
 
-void PlayerBindingEvent::start()
-{
-	player->shape = &(*(dynamicShapes[shapeID]));
-}
-
+PlayerBindingEvent::PlayerBindingEvent() {}
 PlayerBindingEvent::PlayerBindingEvent(int shapeID, float initTime) : LevelEvent(initTime) {
 	this->shapeID = shapeID;
+}
+
+void PlayerBindingEvent::start() {
+	player->shape = &(*(dynamicShapes[shapeID]));
 }

@@ -9,7 +9,7 @@
 typedef unsigned int uint;
 
 class Graphics {
-	static std::list<Shape>* shapes;
+	static std::list<Shape> shapes;
 
 	static uint vertexCount;
 	static float* vertexDataBuffer;

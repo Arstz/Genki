@@ -9,12 +9,10 @@ void sex()
 
 int main()
 {
-	Engine game;
-	while (game.running()) {
-
-		game.update();
-
-		game.render();
+	Engine::init();
+	while (Engine::running()) {
+		Engine::update();
+		Engine::render();
 	}
 
 	return 0;

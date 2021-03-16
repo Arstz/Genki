@@ -5,19 +5,11 @@
 
 class EventController
 {
-private:
-	std::vector<LevelEvent*> level;
-	
-	int eventCount;
-	int currentEvent;
-	float* currentTime;
-
 public:
+	static std::vector<LevelEvent*> level;
+	static int currentEvent;
+	static float* currentTime;
 
-	void updateEvents();
-	void updateActiveEventList();
-
-	EventController();
-
-	EventController(float* currentTime, int eventCount, std::vector<LevelEvent*> level);
+	static void updateEvents();
+	static void updateActiveEventList();
 };
