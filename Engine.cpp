@@ -13,7 +13,7 @@ void Engine::initGameObjects() {
 	this->player = Player();
 	this->animationTasks = std::list<AnimationTask>();
 	this->shapes = std::list<sf::VertexArray>();
-	std::list<sf::VertexArray>::iterator* dynamicShapes = new std::list<sf::VertexArray>::iterator[3];    //;) MAXIM3 :)
+	std::list<sf::VertexArray>::iterator* dynamicShapes = new std::list<sf::VertexArray>::iterator[2003];    //;) MAXIM3 :)
 	LevelEvent::animationTasks = &animationTasks;
 	LevelEvent::shapes = &shapes;
 	LevelEvent::dynamicShapes = dynamicShapes; //kak krytoi)
@@ -31,6 +31,15 @@ void Engine::initGameObjects() {
 	shape[1].color = sf::Color(255, 255, 255, 255);
 	shape[2].color = sf::Color(255, 255, 255, 255);
 
+	for (int i = 0; i < 2000; i++) {
+		int seed = rand() % 1000; 
+		int seed2 = rand() % 1000;
+		shape[0].position = sf::Vector2f(seed, seed2);
+		shape[1].position = sf::Vector2f(seed, seed2+30.f);
+		shape[2].position = sf::Vector2f(seed + 30.f, seed2 + 30.f);
+		level.push_back(new ShapeSpawnEvent(shape, i, 0));
+	}	
+
 	level.push_back(new ShapeSpawnEvent(shape, 0, 0));	
 	level.push_back(new PlayerBindingEvent(0, 0));
 	level.push_back(new ShapeSpawnEvent(shape, 1, 5000));
@@ -39,10 +48,37 @@ void Engine::initGameObjects() {
 	this->eventController = EventController(&currentTime, level.size(), level);
 }
 
+void Engine::move() 
+{
+	std::vector<LevelEvent*> level;
+
+	sf::VertexArray shape(sf::Triangles, 3);
+
+	shape[0].position = sf::Vector2f(0.f, 0.f);
+	shape[1].position = sf::Vector2f(0.f, 30.f);
+	shape[2].position = sf::Vector2f(30.f, 30.f);
+
+	shape[0].color = sf::Color(255, 255, 255, 255);
+	shape[1].color = sf::Color(255, 255, 255, 255);
+	shape[2].color = sf::Color(255, 255, 255, 255);
+
+	for (int i = 0; i < 2000; i++) {
+		int seed = rand() % 1000;
+		int seed2 = rand() % 1000;
+		shape[0].position = sf::Vector2f(seed, seed2);
+		shape[1].position = sf::Vector2f(seed, seed2 + 30.f);
+		shape[2].position = sf::Vector2f(seed + 30.f, seed2 + 30.f);
+		level.push_back(new ShapeSpawnEvent(shape, i, 0));
+	}
+
+	this->renderHandler = RenderHandler(&shapes, mainWindow);
+	this->eventController = EventController(&currentTime, level.size(), level);
+}
+
 //Main Window
 void Engine::initWindow(){	
-	mainWindow = new sf::RenderWindow(sf::VideoMode(1000, 1000), "Sample", sf::Style::Titlebar | sf::Style::Close);
-//	mainWindow->setFramerateLimit(170);
+	mainWindow = new sf::RenderWindow(sf::VideoMode(2000, 1000), "Sample", sf::Style::Titlebar | sf::Style::Close);
+    //mainWindow->setFramerateLimit(170);
 }
 
 //Construct
@@ -111,6 +147,9 @@ void Engine::update(){
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	setMoveDirection();
 	eventController.updateActiveEventList();
+	if ((int)currentTime % 1000 == 0) {
+		move();
+	}
 }
 
 void Engine::render(){

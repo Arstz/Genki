@@ -20,6 +20,7 @@ private:
 	void initWindow();
 	void pollEvents();
 	void setMoveDirection();
+	void move();
 
 	sf::Vector2i lastDir;
 
