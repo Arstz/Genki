@@ -3,6 +3,7 @@
 #include "Shape.h"
 #include "LevelEvent.h"
 #include "Graphics.h"
+#define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 
 float Engine::currentTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
@@ -14,11 +15,11 @@ void Engine::init() {
 
 	EventController::level = std::vector<LevelEvent*>();
 	EventController::currentTime = &currentTime;
-
-	uint vertexCount = 3;
-	float* vertexCoords = new float[] {-0.01f, 0.f, 0.f, 0.01f, 0.01f, 0.f};
-	float* vertexColors = new float[] { 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
-	uint* vertexIDs = new uint[] { 0, 1, 2 };
+	for (int i = 0; i < 3000; i++){
+		uint vertexCount = 3;
+	float* vertexCoords = new float[] {AAAA, AAAA, AAAA, AAAA, AAAA, AAAA};
+	float* vertexColors = new float[] {AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA, AAAA};
+	uint* vertexIDs = new uint[]{ 0, 1, 2 };
 	uint EBOsize = 3;
 
 	Shape shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs);
@@ -26,6 +27,7 @@ void Engine::init() {
 	ShapeSpawnEvent* ev = new ShapeSpawnEvent(shape, 0, 0);
 
 	EventController::level.push_back(ev);
+}
 }
 
 void Engine::pollEvents() {
