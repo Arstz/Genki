@@ -29,7 +29,7 @@ float AnimationTask::calculatePosition(
 	return startPosition + (endPosition - startPosition) * ((currentTime - startTime) / (endTime - startTime));
 }
 
-void AnimationTask::animate(float& frameTime) {
+void AnimationTask::animateLoop(float& frameTime) {
 	timer += frameTime;
 	while (timer > (*animation).timeKeys[counter]) {
 		counter += 1;
@@ -56,4 +56,33 @@ void AnimationTask::animate(float& frameTime) {
 			timer
 		);
 	}
+}
+
+bool AnimationTask::animate(float& frameTime) {
+	timer += frameTime;
+	while (timer > (*animation).timeKeys[counter]) {
+		counter += 1;
+		if (counter == (*animation).keyCount) {
+			return true; //finished
+		}
+	}
+	if (counter) {
+		*target = calculatePosition(
+			(*animation).stateKeys[counter - 1],
+			(*animation).stateKeys[counter],
+			(*animation).timeKeys[counter - 1],
+			(*animation).timeKeys[counter],
+			timer
+		);
+	}
+	else {
+		*target = calculatePosition(
+			(*animation).stateKeys[(counter + (*animation).keyCount - 1) % (*animation).keyCount],
+			(*animation).stateKeys[counter],
+			0.f,
+			(*animation).timeKeys[counter],
+			timer
+		);
+	}
+	return false; //broken
 }

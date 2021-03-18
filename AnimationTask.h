@@ -45,5 +45,6 @@ public:
 		this->counter = counter;
 		this->timer = timer;
 	}
-	void animate(float& frameTime);
+	void animateLoop(float& frameTime);
+	bool animate(float& frameTime);
 };

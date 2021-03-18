@@ -59,7 +59,11 @@ public:
 	Shape* shape;
 public:
 	ShapeSpawnEvent();
-	ShapeSpawnEvent(Shape* shape, int shapeID, float initTime);
+	ShapeSpawnEvent(
+		Shape* shape, 
+		int shapeID, 
+		float initTime
+	);
 
 	void start() override;
 };
