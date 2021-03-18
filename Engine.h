@@ -11,6 +11,7 @@ private:
 	static void pollEvents();
 
 	static float currentTime;
+	static float frameTime;
 	static std::chrono::system_clock::time_point start;
 	static GLFWwindow* window;
 

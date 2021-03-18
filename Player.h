@@ -10,5 +10,6 @@ public:
 	int lastDirectionY;
 	Shape* shape;
 	void move(float dx, float dy);
+	void bind(Shape* shape);
 };
 

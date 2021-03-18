@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Shape.h"
 
+class EventController;
+
 enum LevelEventType {
 	EMPTY,
 	BACKGROUND_COLOR_ANIMATION, //cherez 100 let sdelaem
@@ -17,18 +19,18 @@ enum LevelEventType {
 
 class LevelEvent
 {
+	friend EventController;
 protected:
 	enum AnimatedValueType {
 		VERTEX,
 		COLOR,
 	};
-public:
+
 	float initTime;
 	LevelEventType type;
 
-	static std::list<AnimationTask>* animationTasks;
 	static std::list<Shape*>::iterator* dynamicShapes;
-
+public:
 	virtual void start();
 	float getInitTime();
 
@@ -39,10 +41,10 @@ public:
 };
 
 class CameraAnimationEvent : public LevelEvent {
-public:
+
 	Animation animation;
 	uint valueNum;
-
+public:
 	CameraAnimationEvent();
 	CameraAnimationEvent(
 		Animation animation, 
@@ -54,7 +56,6 @@ public:
 };
 
 class ShapeSpawnEvent : public LevelEvent {
-public:
 	int shapeID;
 	Shape* shape;
 public:
@@ -69,8 +70,8 @@ public:
 };
 
 class ShapeDestructionEvent : public LevelEvent {
-public:
 	int shapeID;
+public:
 	ShapeDestructionEvent();
 	ShapeDestructionEvent(int shapeID, float initTime);
 
@@ -78,14 +79,13 @@ public:
 };
 
 class ShapeAnimationEvent : public LevelEvent {
-public:
 	Animation animation;
 	AnimatedValueType animatedValueType;
 	int AnimatedValueID;
 	int shapeID;
 	int vertexNum;
 	int channelNum;
-
+public:
 	ShapeAnimationEvent();
 	ShapeAnimationEvent(
 		Animation animation,

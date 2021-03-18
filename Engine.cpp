@@ -1,16 +1,20 @@
 #include "Engine.h"
 #include "EventController.h"
+#include "AnimationController.h"
 #include "Shape.h"
 #include "LevelEvent.h"
 #include "Graphics.h"
+
 #define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
+
 #define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 #define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 #define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 
 float Engine::currentTime = 0;
+float Engine::frameTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
 Player Engine::player = Player();
 GLFWwindow* Engine::window = nullptr;
@@ -35,6 +39,8 @@ void Engine::init() {
 
 	EventController::level.push_back(ev);
 	EventController::level.push_back(a);
+
+	AnimationController::setTimePointer(&frameTime);
 	
 	window = Graphics::getWindow();
 
@@ -50,8 +56,10 @@ void Engine::update() {
 	pollEvents();
 	pollKeyEvents();
 	auto end = std::chrono::system_clock::now();
+	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	EventController::updateActiveEventList();
+	EventController::update();
+	AnimationController::update();
 }
 
 void Engine::render() {
