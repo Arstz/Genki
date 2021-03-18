@@ -37,6 +37,7 @@ class Graphics {
 	static void initBuffers();
 public:
 	static float* getCameraValuePointer(uint valueNum);
+	static GLFWwindow* getWindow();
 	static void init();
 	static void draw();
 	static ShapeList::iterator addShape(Shape* shape);

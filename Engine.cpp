@@ -5,10 +5,15 @@
 #include "Graphics.h"
 #define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
+#define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+#define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+#define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+#define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 
 float Engine::currentTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
 Player Engine::player = Player();
+GLFWwindow* Engine::window = nullptr;
 
 void Engine::init() {
 	Graphics::init();
@@ -31,6 +36,7 @@ void Engine::init() {
 	EventController::level.push_back(ev);
 	EventController::level.push_back(a);
 	
+	window = Graphics::getWindow();
 
 //	EventController::saveLevel("a", EventController::level);
 //	EventController::loadLevel("a");
@@ -42,6 +48,7 @@ void Engine::pollEvents() {
 
 void Engine::update() {
 	pollEvents();
+	pollKeyEvents();
 	auto end = std::chrono::system_clock::now();
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	EventController::updateActiveEventList();
@@ -53,4 +60,39 @@ void Engine::render() {
 
 bool Engine::running() {
 	return Graphics::running();
+}
+
+void Engine::pollKeyEvents() {
+	if (IS_RIGHT_KEY_PRESSED && IS_LEFT_KEY_PRESSED) {
+		if (player.lastDirectionX == 1) {
+			player.move(-1.f, 0.f);
+		}
+		else {
+			player.move(1.f, 0.f);
+		}
+	}
+	else if (IS_LEFT_KEY_PRESSED) {
+		player.move(-1.f, 0.f);
+		player.lastDirectionX = -1;
+	}
+	else if (IS_RIGHT_KEY_PRESSED) {
+		player.move(1.f, 0.f);
+		player.lastDirectionX = 1;
+	}
+	if (IS_DOWN_KEY_PRESSED && IS_UP_KEY_PRESSED) {
+		if (player.lastDirectionY == 1) {
+			player.move(0.f, -1.f);
+		}
+		else {
+			player.move(0.f, 1.f);
+		}
+	}
+	else if (IS_DOWN_KEY_PRESSED) {
+		player.move(0.f, -1.f);
+		player.lastDirectionY = -1;
+	}
+	else if (IS_UP_KEY_PRESSED) {
+		player.move(0.f, 1.f);
+		player.lastDirectionY = 1;
+	}
 }
