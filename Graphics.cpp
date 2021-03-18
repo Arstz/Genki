@@ -2,49 +2,74 @@
 #include "Graphics.h"
 #include <iostream>
 
-std::list<Shape> Graphics::shapes;
+ShapeList Graphics::shapes;
 
 uint Graphics::vertexCount = 0;
 float* Graphics::vertexDataBuffer = new float[0];
 
 uint Graphics::EBOsize = 0;
 uint* Graphics::EBObuffer = new uint[0];
+float* Graphics::cameraDataBuffer = new float[] {0.f, 0.f, 0.1f/16.f*9.f, 0.1f};
 
 GLuint Graphics::VBO = 0;
 GLuint Graphics::VAO = 0;
 GLuint Graphics::EBO = 0;
+GLuint Graphics::CDB = 0;
 
 int Graphics::shader = 0;
 
 GLFWwindow* Graphics::window = nullptr;
 
 const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec2 aPos;\n"
-"layout (location = 1) in vec3 color;\n"
-"out vec3 vertexColor;\n"
+"layout (location = 0) in vec2 pos;\n"
+"layout (location = 1) in vec4 color;\n"
+
+"layout(std140) uniform Camera"
+"{"
+"	vec2 offset;"
+"	vec2 scale;"
+"};"
+"out vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, 0.f, 1.0f);\n"
+"   gl_Position = vec4((pos.x-offset.x)*scale.x, (pos.y-offset.y)*scale.y, 0.f, 1.0f);\n"
 "   vertexColor = color;\n"
 "}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
-"in vec3 vertexColor;\n"
+"in vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(vertexColor, 1.f);\n"
+"   FragColor = vertexColor;\n"
 "}\n\0";
 
 void Graphics::initBuffers() {
+	glGenBuffers(1, &CDB);
+	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
+
+	glUniformBlockBinding(
+		shader, 
+		glGetUniformBlockIndex(shader, "Camera"), 
+		1
+	);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);
+
 	glGenBuffers(1, &VBO);
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(
+		0, 
+		2, 
+		GL_FLOAT, 
+		GL_FALSE, 
+		2 * sizeof(GLfloat), 
+		(GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 }
@@ -53,14 +78,14 @@ void Graphics::updateBuffers() {
 	uint colorOffsetCounter = vertexCount * 2;
 	uint positionOffsetCounter = 0;
 
-	for (Shape &shape : shapes) {
-		for (int i = 0; i < shape.vertexCount * 2; i++)
-			vertexDataBuffer[positionOffsetCounter + i] = shape.vertexCoords[i];
-		positionOffsetCounter += shape.vertexCount * 2;
+	for (Shape* shape : shapes) {
+		for (int i = 0; i < shape->vertexCount * 2; i++)
+			vertexDataBuffer[positionOffsetCounter + i] = shape->vertexCoords[i];
+		positionOffsetCounter += shape->vertexCount * 2;
 
-		for (int i = 0; i < shape.vertexCount * 4; i++)
-			vertexDataBuffer[colorOffsetCounter + i] = shape.vertexColors[i];
-		colorOffsetCounter += shape.vertexCount * 4;
+		for (int i = 0; i < shape->vertexCount * 4; i++)
+			vertexDataBuffer[colorOffsetCounter + i] = shape->vertexColors[i];
+		colorOffsetCounter += shape->vertexCount * 4;
 	}
 }
 
@@ -71,21 +96,27 @@ void Graphics::reallocateBuffers() {
 	delete[] EBObuffer;
 	EBObuffer = new uint[EBOsize];
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * vertexCount * sizeof(float)));
+	glVertexAttribPointer(
+		1, 
+		4, 
+		GL_FLOAT, 
+		GL_FALSE, 
+		4 * sizeof(GLfloat), 
+		(GLvoid*)(2 * vertexCount * sizeof(float)));
 
 	uint EBOoffsetCounter = 0;
-	for (Shape& shape : shapes) {
-		for (int i = 0; i < shape.EBOsize; i++)
-			EBObuffer[EBOoffsetCounter + i] = shape.vertexIDs[i] + EBOoffsetCounter;
-		EBOoffsetCounter += shape.EBOsize;
+	for (Shape* shape : shapes) {
+		for (int i = 0; i < shape->EBOsize; i++)
+			EBObuffer[EBOoffsetCounter + i] = shape->vertexIDs[i] + EBOoffsetCounter;
+		EBOoffsetCounter += shape->EBOsize;
 	}
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
-
+		glClearColor(1.f, 1.f, 1.f, 1.f);
 }
 
 void Graphics::initWindow() {
-	window = glfwCreateWindow(800, 600, "Genki.psd", nullptr, nullptr);
+	window = glfwCreateWindow(1920, 1080, "Genki.psd", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
@@ -148,7 +179,11 @@ void Graphics::init() {
 	initWindow();
 	compileShader();
 	initBuffers();
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 }
 
 void Graphics::draw() {
@@ -158,32 +193,43 @@ void Graphics::draw() {
 		GL_ARRAY_BUFFER, 
 		sizeof(float) * vertexCount * VERTEX_SIZE,
 		vertexDataBuffer,
-		GL_STATIC_DRAW
+		GL_STREAM_DRAW
 	);
 
+	glBufferData(
+		GL_UNIFORM_BUFFER, 
+		sizeof(float) * 4, 
+		cameraDataBuffer, 
+		GL_STATIC_DRAW
+	);
+	
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glfwSwapBuffers(window);
 }
 
-std::list<Shape>::iterator Graphics::addShape(Shape shape) {
+ShapeList::iterator Graphics::addShape(Shape* shape) {
 	shapes.push_front(shape);
-	vertexCount += shape.vertexCount;
-	EBOsize += shape.EBOsize;
+	vertexCount += shape->vertexCount;
+	EBOsize += shape->EBOsize;
 	reallocateBuffers();
 	return shapes.begin();
 }
 
-void Graphics::removeShape(std::list<Shape>::iterator &shapeIterator) {
-	vertexCount += shapeIterator->vertexCount;
-	EBOsize += shapeIterator->EBOsize;
+void Graphics::removeShape(ShapeList::iterator &shapeIterator) {
+	vertexCount += (*shapeIterator)->vertexCount;
+	EBOsize += (*shapeIterator)->EBOsize;
 	shapes.erase(shapeIterator);
 	reallocateBuffers();
 }
 
 bool Graphics::running() {
 	return !glfwWindowShouldClose(window);
+}
+
+float* Graphics::getCameraValuePointer(uint valueNum) {
+	return &cameraDataBuffer[valueNum];
 }
 
 //	.E:[&]->* sam ahuel

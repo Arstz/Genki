@@ -2,9 +2,11 @@
 typedef unsigned int uint;
 
 class Graphics;
+class EventController;
 
 class Shape {
 	friend Graphics;
+	friend EventController;
 	uint vertexCount;
 	float* vertexCoords;
 	float* vertexColors;
@@ -21,6 +23,7 @@ public:
 		unsigned int EBOsize,
 		unsigned int* vertexIDs
 	);
+	Shape(const Shape& shape);
 	~Shape();
 
 	uint getVertexCount();

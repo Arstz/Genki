@@ -5,28 +5,29 @@
 #include "Player.h"
 #include "Shape.h"
 
+enum LevelEventType {
+	EMPTY,
+	BACKGROUND_COLOR_ANIMATION, //cherez 100 let sdelaem
+	CAMERA_ANIMATION,
+	SHAPE_SPAWN,
+	SHAPE_DESTRUCTION,
+	SHAPE_ANIMATION,
+	PLAYER_BINDING,
+};
 
 class LevelEvent
 {
 protected:
-	enum LevelEventType {
-		BACKGROUND_COLOR_ANIMATION, //cherez 100 let sdelaem
-		CAMERA_ANIMATION,
-		SHAPE_SPAWN,
-		SHAPE_DESTRUCTION,
-		SHAPE_ANIMATION,
-		PLAYER_BINDING,
-	};
-
 	enum AnimatedValueType {
 		VERTEX,
 		COLOR,
 	};
-
-	float initTime;	
 public:
+	float initTime;
+	LevelEventType type;
+
 	static std::list<AnimationTask>* animationTasks;
-	static std::list<Shape>::iterator* dynamicShapes;
+	static std::list<Shape*>::iterator* dynamicShapes;
 
 	virtual void start();
 	float getInitTime();
@@ -34,23 +35,31 @@ public:
 	LevelEvent();
 	LevelEvent(float initTime);
 
+	LevelEventType getType();
 };
 
 class CameraAnimationEvent : public LevelEvent {
 public:
 	Animation animation;
-	AnimatedValueType animatedValueType;
+	uint valueNum;
+
+	CameraAnimationEvent();
+	CameraAnimationEvent(
+		Animation animation, 
+		uint valueNum,
+		float initTime
+	);
 
 	void start() override;
 };
 
 class ShapeSpawnEvent : public LevelEvent {
 public:
-
 	int shapeID;
-	Shape shape;
+	Shape* shape;
+public:
 	ShapeSpawnEvent();
-	ShapeSpawnEvent(Shape shape, int shapeID, float initTime);
+	ShapeSpawnEvent(Shape* shape, int shapeID, float initTime);
 
 	void start() override;
 };
