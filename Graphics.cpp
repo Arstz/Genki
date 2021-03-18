@@ -232,4 +232,8 @@ float* Graphics::getCameraValuePointer(uint valueNum) {
 	return &cameraDataBuffer[valueNum];
 }
 
+GLFWwindow* Graphics::getWindow() {
+	return window;
+}
+
 //	.E:[&]->* sam ahuel

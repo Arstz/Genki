@@ -1,19 +1,15 @@
 #pragma once
 typedef unsigned int uint;
 
-class Graphics;
-class EventController;
-
 class Shape {
-	friend Graphics;
-	friend EventController;
+public:
 	uint vertexCount;
 	float* vertexCoords;
 	float* vertexColors;
 
 	uint EBOsize;
 	uint* vertexIDs;
-public:
+
 
 	Shape();
 	Shape(
