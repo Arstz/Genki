@@ -24,6 +24,10 @@ void EventController::loadLevel(std::string path) {
 	{
 		size_t type = level[i]->getType();
 		fin.read((char*)(&type), sizeof(LevelEventType));
+
+		float initTime;
+		fin.read((char*)(&initTime), sizeof(float));
+
 		switch (type)
 		{
 		case LevelEventType::EMPTY:
@@ -33,6 +37,27 @@ void EventController::loadLevel(std::string path) {
 		case LevelEventType::CAMERA_ANIMATION:
 			break;
 		case LevelEventType::SHAPE_SPAWN:
+			
+			uint vertexCount;
+			uint EBOsize;
+			int shapeId;
+			
+			fin.read((char*)(&vertexCount), sizeof(uint));
+			float* vertexCoords = new float[vertexCount * 2];
+			float* vertexColors = new float[vertexCount * 4];
+
+			fin.read((char*)(&vertexCoords), sizeof(float) * vertexCount * 2);	
+			fin.read((char*)(&vertexCoords), sizeof(float) * vertexCount * 4);
+			fin.read((char*)(&EBOsize), sizeof(uint));
+
+			uint* vertexIDs = new uint[EBOsize];
+			fin.read((char*)(&vertexIDs), sizeof(uint) * EBOsize);
+
+			Shape shape =  Shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs);
+			fin.read((char*)(&shapeId), sizeof(int));
+
+			level.push_back(&ShapeSpawnEvent(&shape, shapeId, initTime));
+
 			break;
 		case LevelEventType::SHAPE_DESTRUCTION:
 			break;
@@ -41,14 +66,14 @@ void EventController::loadLevel(std::string path) {
 		case LevelEventType::PLAYER_BINDING:
 			break;
 		}
-
+		fin.close();
 	}
 	
 }
 
 void EventController::saveLevel(std::string path, std::vector<LevelEvent*> level) {
 	std::ofstream fout;
-	fout.open("raid_na_derevene.lvl", std::ifstream::binary);
+	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
 	size_t size = level.size();
 	fout.write((char*)(&size), sizeof(size_t));
 	for (int i = 0; i < size; i++)
