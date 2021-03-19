@@ -1,9 +1,9 @@
 #include "LevelEvent.h"
+#include "AnimationController.h"
 #include "Graphics.h"
 
 //LevelEvent
 
-std::list<AnimationTask>* LevelEvent::animationTasks = nullptr;
 std::list<Shape*>::iterator* LevelEvent::dynamicShapes = new std::list<Shape*>::iterator[1];
 
 float LevelEvent::getInitTime() {
@@ -36,7 +36,7 @@ CameraAnimationEvent::CameraAnimationEvent(
 }
 
 void CameraAnimationEvent::start() {
-
+	AnimationController::add(new AnimationTask(animation, Graphics::getCameraValuePointer(valueNum)));
 }
 
 //ShapeSpawnEvent
@@ -103,7 +103,7 @@ void ShapeAnimationEvent::start()
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;
 	}
-	animationTasks->push_back(AnimationTask(animation, target));
+	AnimationController::add(new AnimationTask(animation, target));
 }
 
 //PlayerBindingEvent
@@ -117,5 +117,5 @@ PlayerBindingEvent::PlayerBindingEvent(int shapeID, float initTime) : LevelEvent
 }
 
 void PlayerBindingEvent::start() {
-	player->shape = (*(dynamicShapes[shapeID]));
+	player->bind(*(dynamicShapes[shapeID]));
 }

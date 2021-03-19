@@ -7,7 +7,7 @@ std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
 float* EventController::currentTime = nullptr;
 
-void EventController::updateActiveEventList() 
+void EventController::update() 
 {
 	while (currentEvent < level.size() && level[currentEvent]->getInitTime() < *currentTime) {
 		level[currentEvent]->start();
@@ -98,7 +98,5 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*> level
 		case LevelEventType::PLAYER_BINDING:
 			break;
 		}
-
 	}
-	
 }

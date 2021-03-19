@@ -13,11 +13,11 @@ public:
 
 	Shape();
 	Shape(
-		unsigned int vertexCount,
+		uint vertexCount,
 		float* vertexCoords,
 		float* vertexColors,
-		unsigned int EBOsize,
-		unsigned int* vertexIDs
+		uint EBOsize,
+		uint* vertexIDs
 	);
 	Shape(const Shape& shape);
 	~Shape();

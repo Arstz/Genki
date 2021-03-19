@@ -1,5 +1,4 @@
 #include "AnimationTask.h"
-#include "Animation.h"
 #define M_PI 3.14159265358979323846f  /* pipiska */
 
 float AnimationTask::calculatePosition(
@@ -66,23 +65,13 @@ bool AnimationTask::animate(float& frameTime) {
 			return true; //finished
 		}
 	}
-	if (counter) {
-		*target = calculatePosition(
-			(*animation).stateKeys[counter - 1],
-			(*animation).stateKeys[counter],
-			(*animation).timeKeys[counter - 1],
-			(*animation).timeKeys[counter],
-			timer
-		);
-	}
-	else {
-		*target = calculatePosition(
-			(*animation).stateKeys[(counter + (*animation).keyCount - 1) % (*animation).keyCount],
-			(*animation).stateKeys[counter],
-			0.f,
-			(*animation).timeKeys[counter],
-			timer
-		);
-	}
+	*target = calculatePosition(
+		(*animation).stateKeys[counter],
+		(*animation).stateKeys[counter + 1],
+		(*animation).timeKeys[counter],
+		(*animation).timeKeys[counter + 1],
+		timer
+	);
+
 	return false; //broken
 }
