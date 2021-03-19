@@ -15,6 +15,21 @@ void EventController::update()
 	}
 }
 
+void EventController::generateObject(
+	uint vertexCount,
+	float* vertexCoords,
+	float* vertexColors,
+	uint EBOsize,
+	uint* vertexIDs,
+	int shapeId,
+	float initTime
+)
+{
+	Shape shape = Shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs);
+
+	level.push_back(&ShapeSpawnEvent(&shape, shapeId, initTime));
+}
+
 void EventController::loadLevel(std::string path) {
 	std::ifstream fin;
 	fin.open("raid_na_derevene.lvl", std::ifstream::binary);
@@ -37,26 +52,31 @@ void EventController::loadLevel(std::string path) {
 		case LevelEventType::CAMERA_ANIMATION:
 			break;
 		case LevelEventType::SHAPE_SPAWN:
-			
+
 			uint vertexCount;
 			uint EBOsize;
 			int shapeId;
-			
+
 			fin.read((char*)(&vertexCount), sizeof(uint));
 			float* vertexCoords = new float[vertexCount * 2];
 			float* vertexColors = new float[vertexCount * 4];
 
-			fin.read((char*)(&vertexCoords), sizeof(float) * vertexCount * 2);	
+			fin.read((char*)(&vertexCoords), sizeof(float) * vertexCount * 2);
 			fin.read((char*)(&vertexCoords), sizeof(float) * vertexCount * 4);
 			fin.read((char*)(&EBOsize), sizeof(uint));
 
 			uint* vertexIDs = new uint[EBOsize];
 			fin.read((char*)(&vertexIDs), sizeof(uint) * EBOsize);
-
-			Shape shape =  Shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs);
 			fin.read((char*)(&shapeId), sizeof(int));
 
-			level.push_back(&ShapeSpawnEvent(&shape, shapeId, initTime));
+			generateObject(vertexCount,
+				vertexCoords,
+				vertexColors,
+				EBOsize,
+				vertexIDs,
+				shapeId,
+				initTime
+			)
 
 			break;
 		case LevelEventType::SHAPE_DESTRUCTION:
