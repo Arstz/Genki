@@ -95,7 +95,8 @@ public:
 		int AnimatedValueID,
 		int shapeID,
 		int vertexNum,
-		int channelNum
+		int channelNum,
+		float initTime
 	);
 	void write(std::ofstream& fout) override;
 	void start() override;

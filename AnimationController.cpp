@@ -8,12 +8,14 @@ void AnimationController::setTimePointer(float* frameTime) {
 }
 
 void AnimationController::update() {
-	std::list<AnimationTask*>::iterator i = animationTasks.begin();
+	std::list<AnimationTask*>::iterator i = animationTasks.begin(); 
 	while (i != animationTasks.end()) {
 		if ((*i)->animate(*frameTime)) {
-			animationTasks.erase(i);
-		}
-		i++;
+			delete* i;
+			std::list<AnimationTask*>::iterator j = i;
+			i++;
+			animationTasks.erase(j);
+		} else i++;
 	}
 }
 

@@ -37,15 +37,17 @@ void Engine::init() {
 
 	Shape* shape = new Shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs);
 
-	ShapeSpawnEvent* ev = new ShapeSpawnEvent(shape, 0, 0);
+	uint keyCount = 2;
 
-	PlayerBindingEvent* a = new PlayerBindingEvent(0, 0);
+	float* stateKeys = new float[] { 1.f, 0.0f };
+	float* timeKeys = new float[] {0, 3e3f};
 
-	ShapeDestructionEvent* c = new ShapeDestructionEvent(0, 3e3f);
+	Animation* animation = new Animation(keyCount, timeKeys, stateKeys);
 
-	EventController::level.push_back(ev);
-	EventController::level.push_back(a);
-	EventController::level.push_back(c);
+	EventController::level.push_back(new ShapeSpawnEvent(shape, 0, 0));
+	EventController::level.push_back(new PlayerBindingEvent(0, 0));
+	EventController::level.push_back(new ShapeAnimationEvent(animation, AnimatedValueType::COLOR, 0, 0, 0, 3, 3e3f));
+	EventController::level.push_back(new ShapeDestructionEvent(0, 4e3f));
 	
 	LevelEvent::dynamicShapes = new std::list<Shape*>::iterator[5];
 
@@ -79,10 +81,7 @@ void Engine::pollKeyEvents() {
 	if (IS_RIGHT_KEY_PRESSED && IS_LEFT_KEY_PRESSED) {
 		if (player.lastDirectionX == 1) {
 			player.move(-1.f, 0.f);
-		}
-		else {
-			player.move(1.f, 0.f);
-		}
+		} else player.move(1.f, 0.f);
 	}
 	else if (IS_LEFT_KEY_PRESSED) {
 		player.move(-1.f, 0.f);
@@ -96,9 +95,7 @@ void Engine::pollKeyEvents() {
 		if (player.lastDirectionY == 1) {
 			player.move(0.f, -1.f);
 		}
-		else {
-			player.move(0.f, 1.f);
-		}
+		else player.move(0.f, 1.f);
 	}
 	else if (IS_DOWN_KEY_PRESSED) {
 		player.move(0.f, -1.f);

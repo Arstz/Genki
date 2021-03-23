@@ -3,7 +3,7 @@
 
 class AnimationTask
 {
-private: 
+private:
 
 	Animation* animation;
 	unsigned int counter;
@@ -11,40 +11,29 @@ private:
 	float* target;
 
 	float calculatePosition(
-		float startPosition, 
-		float endPosition, 
-		const float& startTime, 
-		const float& endTime, 
-		const float& currentTime
+		float startPosition,
+		float endPosition,
+		float startTime,
+		float endTime,
+		float currentTime
 	);
 
 	float calculatePosition(
-		float startPosition, 
-		float endPosition, 
-		const float& startTime, 
-		const float& endTime, 
-		const float& currentTime, 
-		const float& limit
+		float startPosition,
+		float endPosition,
+		float startTime,
+		float endTime,
+		float currentTime,
+		float limit
 	);
 
 public:
-	AnimationTask(void)	{}
+	AnimationTask();
+	~AnimationTask();
 
-	AnimationTask(Animation& animation, float* target)
-	{
-		this->animation = &animation;
-		this->target = target;
-		this->counter = 0;
-		this->timer = 0;
-	}
+	AnimationTask(Animation* animation, float* target);
+	AnimationTask(Animation* animation, float* target, unsigned int counter, float timer);
 
-	AnimationTask(Animation& animation, float* target, unsigned int counter, float timer)
-	{
-		this->animation = &animation;
-		this->target = target;
-		this->counter = counter;
-		this->timer = timer;
-	}
 	void animateLoop(float& frameTime);
 	bool animate(float& frameTime);
 };

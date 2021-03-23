@@ -47,7 +47,7 @@ void CameraAnimationEvent::write(std::ofstream& fout) {
 }
 
 void CameraAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(*animation, Graphics::getCameraValuePointer(valueNum)));
+	AnimationController::add(new AnimationTask(animation, Graphics::getCameraValuePointer(valueNum)));
 }
 
 //ShapeSpawnEvent
@@ -96,12 +96,13 @@ void ShapeDestructionEvent::start() {
 
 ShapeAnimationEvent::ShapeAnimationEvent() {}
 ShapeAnimationEvent::ShapeAnimationEvent(
-	Animation* animation, 
-	AnimatedValueType animatedValueType, 
-	int AnimatedValueID, 
+	Animation* animation,
+	AnimatedValueType animatedValueType,
+	int AnimatedValueID,
 	int shapeID,
 	int vertexNum,
-	int channelNum
+	int channelNum,
+	float initTime
 ) : LevelEvent(initTime) {
 	this->animation = animation;
 	this->animatedValueType = animatedValueType;
@@ -139,7 +140,7 @@ void ShapeAnimationEvent::start() {
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;
 	}
-	AnimationController::add(new AnimationTask(*animation, target));
+	AnimationController::add(new AnimationTask(animation, target));
 }
 
 //PlayerBindingEvent
@@ -173,5 +174,5 @@ void BackgroundColorAnimationEvent::write(std::ofstream& fout) {
 }
 
 void BackgroundColorAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(*animation, Graphics::getBackgroundColorValuePointer(animatedValueID)));
+	AnimationController::add(new AnimationTask(animation, Graphics::getBackgroundColorValuePointer(animatedValueID)));
 }

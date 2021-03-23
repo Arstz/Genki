@@ -126,7 +126,8 @@ void EventController::loadLevel(std::string path) {
 				AnimatedValueID,
 				shapeID,
 				vertexNum,
-				channelNum
+				channelNum,
+				initTime
 			);
 
 			break;
