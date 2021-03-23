@@ -221,6 +221,8 @@ ShapeList::iterator Graphics::addShape(Shape* shape) {
 void Graphics::removeShape(ShapeList::iterator &shapeIterator) {
 	vertexCount += (*shapeIterator)->vertexCount;
 	EBOsize += (*shapeIterator)->EBOsize;
+	//(*shapeIterator)->~Shape(); kracivo
+	delete *shapeIterator;
 	shapes.erase(shapeIterator);
 	reallocateBuffers();
 }

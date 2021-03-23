@@ -28,9 +28,12 @@ Shape::Shape(const Shape& shape) {
 }
 
 Shape::~Shape() {
-	delete[] vertexCoords;
-	delete[] vertexColors;
+	delete[] vertexCoords;	
+	delete[] vertexColors;	
 	delete[] vertexIDs;
+	vertexColors = nullptr;
+	vertexCoords = nullptr;
+	vertexIDs = nullptr;
 }
 
 uint Shape::getVertexCount() {
