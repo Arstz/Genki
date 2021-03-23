@@ -10,6 +10,7 @@ float* Graphics::vertexDataBuffer = new float[0];
 uint Graphics::EBOsize = 0;
 uint* Graphics::EBObuffer = new uint[0];
 float* Graphics::cameraDataBuffer = new float[] {0.f, 0.f, 0.1f/16.f*9.f, 0.1f};
+float* Graphics::backgroundColor = new float[] {1.f, 1.f, 1.f, 1.f};
 
 GLuint Graphics::VBO = 0;
 GLuint Graphics::VAO = 0;
@@ -112,7 +113,7 @@ void Graphics::reallocateBuffers() {
 	}
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
-		glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
 }
 
 void Graphics::initWindow() {
@@ -227,9 +228,12 @@ void Graphics::removeShape(ShapeList::iterator &shapeIterator) {
 bool Graphics::running() {
 	return !glfwWindowShouldClose(window);
 }
+float* Graphics::getBackgroundColorValuePointer(uint valueNum) {
+	return &cameraDataBuffer[valueNum];
+}
 
 float* Graphics::getCameraValuePointer(uint valueNum) {
-	return &cameraDataBuffer[valueNum];
+	return &backgroundColor[valueNum];
 }
 
 GLFWwindow* Graphics::getWindow() {

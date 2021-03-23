@@ -29,14 +29,18 @@ class Graphics {
 	static GLFWwindow* window;
 	static int shader;
 
+	static float* backgroundColor;
+
 	static void updateBuffers();
 	static void reallocateBuffers();
 
 	static void initWindow();
 	static void compileShader();
 	static void initBuffers();
+
 public:
 	static float* getCameraValuePointer(uint valueNum);
+	static float* getBackgroundColorValuePointer(uint valueNum);
 	static GLFWwindow* getWindow();
 	static void init();
 	static void draw();

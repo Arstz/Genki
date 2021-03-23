@@ -6,7 +6,7 @@ class AnimationTask
 private: 
 
 	Animation* animation;
-	short unsigned int counter;
+	unsigned int counter;
 	float timer;
 	float* target;
 
@@ -38,7 +38,7 @@ public:
 		this->timer = 0;
 	}
 
-	AnimationTask(Animation& animation, float* target, short unsigned int counter, float timer)
+	AnimationTask(Animation& animation, float* target, unsigned int counter, float timer)
 	{
 		this->animation = &animation;
 		this->target = target;

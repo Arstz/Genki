@@ -24,7 +24,11 @@ void Engine::init() {
 	PlayerBindingEvent::player = &player;
 
 	EventController::level = std::vector<LevelEvent*>();
+	AnimationController::setTimePointer(&frameTime);
+	window = Graphics::getWindow();
 	EventController::currentTime = &currentTime;
+
+	
 	uint vertexCount = 4;
 	float* vertexCoords = new float[] {0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f};
 	float* vertexColors = new float[] {0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
@@ -37,12 +41,13 @@ void Engine::init() {
 
 	PlayerBindingEvent* a = new PlayerBindingEvent(0, 0);
 
+	ShapeDestructionEvent* c = new ShapeDestructionEvent(0, 3e3f);
+
 	EventController::level.push_back(ev);
 	EventController::level.push_back(a);
-
-	AnimationController::setTimePointer(&frameTime);
+	EventController::level.push_back(c);
 	
-	window = Graphics::getWindow();
+	LevelEvent::dynamicShapes = new std::list<Shape*>::iterator[5];
 
 //	EventController::saveLevel("a", EventController::level);
 //	EventController::loadLevel("a");
