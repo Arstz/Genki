@@ -49,5 +49,5 @@ float* Shape::getColorPointer(uint vertexNum, uint channelNum) {
 }
 
 float* Shape::getPositionPointer(uint vertexNum, uint channelNum) {
-	return &vertexColors[vertexNum * 2 + channelNum];
+	return &vertexCoords[vertexNum * 2 + channelNum];
 }

@@ -33,7 +33,7 @@ const char* vertexShaderSource = "#version 330 core\n"
 "out vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4((pos-offset)*scale, 0.f, 1.0f);\n"
+"   gl_Position = vec4((pos-offset)*scale, 0.f, 1.f);\n"
 "   vertexColor = color;\n"
 "}\0";
 

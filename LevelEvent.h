@@ -71,7 +71,7 @@ public:
 	void start() override;
 };
 
-class ShapeDestructionEvent : public LevelEvent {
+class ShapeDestructionEvent : public LevelEvent { //opasniy pizdets
 	int shapeID;
 public:
 	ShapeDestructionEvent();
