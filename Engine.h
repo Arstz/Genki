@@ -13,7 +13,7 @@ private:
 	static float frameTime;
 	static std::chrono::system_clock::time_point start;
 	static GLFWwindow* window;
-
+	
 	static Player player;
 
 public:
@@ -22,6 +22,7 @@ public:
 	static void update();
 	static void render();
 
+	static void terminate();
 	static bool running();
 	static void pollKeyEvents();
 };

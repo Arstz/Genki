@@ -10,7 +10,6 @@ public:
 	uint EBOsize;
 	uint* vertexIDs;
 
-
 	Shape();
 	Shape(
 		uint vertexCount,

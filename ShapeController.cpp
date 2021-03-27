@@ -1,25 +1,27 @@
-#pragma once
-#include "Graphics.h"
+#include "ShapeController.h"
 #include <iostream>
 
-ShapeList Graphics::shapes;
+GLuint bufferID = 0;
 
-uint Graphics::vertexCount = 0;
-float* Graphics::vertexDataBuffer = new float[0];
+std::list<Shape*> ShapeController::shapes;
 
-uint Graphics::EBOsize = 0;
-uint* Graphics::EBObuffer = new uint[0];
-float* Graphics::cameraDataBuffer = new float[] {0.f, 0.f, 0.1f/16.f*9.f, 0.1f};
-float* Graphics::backgroundColor = new float[] {1.f, 1.f, 1.f, 1.f};
+uint ShapeController::vertexCount = 0;
+float* ShapeController::vertexDataBuffer = new float[0];
 
-GLuint Graphics::VBO = 0;
-GLuint Graphics::VAO = 0;
-GLuint Graphics::EBO = 0;
-GLuint Graphics::CDB = 0;
+GLuint ShapeController::bufferID = 0;
 
-int Graphics::shader = 0;
+uint ShapeController::EBOsize = 0;
+uint* ShapeController::EBObuffer = new uint[0];
+float ShapeController::cameraDataBuffer[4] = {0.f, 0.f, 0.1f / 16.f * 9.f, 0.1f};
 
-GLFWwindow* Graphics::window = nullptr;
+GLuint ShapeController::VBO = 0;
+GLuint ShapeController::VAO = 0;
+GLuint ShapeController::EBO = 0;
+GLuint ShapeController::CDB = 0;
+
+int ShapeController::shader = 0;
+
+GLFWwindow* ShapeController::window = nullptr;
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec2 pos;\n"
@@ -45,37 +47,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "   FragColor = vertexColor;\n"
 "}\n\0";
 
-void Graphics::initBuffers() {
-	glGenBuffers(1, &CDB);
-	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
-
-	glUniformBlockBinding(
-		shader, 
-		glGetUniformBlockIndex(shader, "Camera"), 
-		1
-	);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glVertexAttribPointer(
-		0, 
-		2, 
-		GL_FLOAT, 
-		GL_FALSE, 
-		2 * sizeof(GLfloat), 
-		(GLvoid*)0);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-}
-
-void Graphics::updateBuffers() {
+void ShapeController::updateBuffers() {
 	uint colorOffsetCounter = vertexCount * 2;
 	uint positionOffsetCounter = 0;
 
@@ -90,7 +62,7 @@ void Graphics::updateBuffers() {
 	}
 }
 
-void Graphics::reallocateBuffers() {
+void ShapeController::reallocateBuffers() {
 	delete[] vertexDataBuffer;
 	vertexDataBuffer = new float[vertexCount * VERTEX_SIZE];
 
@@ -98,11 +70,11 @@ void Graphics::reallocateBuffers() {
 	EBObuffer = new uint[EBOsize];
 
 	glVertexAttribPointer(
-		1, 
-		4, 
-		GL_FLOAT, 
-		GL_FALSE, 
-		4 * sizeof(GLfloat), 
+		1,
+		4,
+		GL_FLOAT,
+		GL_FALSE,
+		4 * sizeof(GLfloat),
 		(GLvoid*)(2 * vertexCount * sizeof(float)));
 
 	uint EBOoffsetCounter = 0;
@@ -113,27 +85,46 @@ void Graphics::reallocateBuffers() {
 	}
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
-	glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
 }
 
-void Graphics::initWindow() {
-	window = glfwCreateWindow(1920, 1080, "Genki.psd", nullptr, nullptr);
-	if (window == nullptr) {
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-
-	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK) {
-		std::cout << "Failed to initialize GLEW" << std::endl;
-	}
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
+void ShapeController::setWindow(GLFWwindow* window) {
+	ShapeController::window = window;
 }
 
-void Graphics::compileShader() {
+void ShapeController::initBuffers() {
+	ShapeController::bufferID = Window::generateBufferID();
+	glGenBuffers(bufferID, &CDB);
+	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
+
+	glUniformBlockBinding(
+		shader,
+		glGetUniformBlockIndex(shader, "Camera"),
+		1
+	);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);
+
+	glGenBuffers(bufferID, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glGenVertexArrays(bufferID, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(bufferID, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glVertexAttribPointer(
+		0,
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		2 * sizeof(GLfloat),
+		(GLvoid*)0
+	);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+}
+
+void ShapeController::initShader() {
 	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
@@ -171,46 +162,45 @@ void Graphics::compileShader() {
 	glDeleteShader(fragmentShader);
 }
 
-void Graphics::init() {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	initWindow();
-	compileShader();
+void ShapeController::init() {
+	setWindow(Window::getWindow());
+	initShader();
 	initBuffers();
 	
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 }
 
-void Graphics::draw() {
+float* ShapeController::getCameraValuePointer(uint valueNum) {
+	return &cameraDataBuffer[valueNum];
+}
+
+void ShapeController::draw() {
 	updateBuffers();
 
 	glBufferData(
-		GL_ARRAY_BUFFER, 
+		GL_ARRAY_BUFFER,
 		sizeof(float) * vertexCount * VERTEX_SIZE,
 		vertexDataBuffer,
 		GL_STREAM_DRAW
 	);
 
 	glBufferData(
-		GL_UNIFORM_BUFFER, 
-		sizeof(float) * 4, 
-		cameraDataBuffer, 
+		GL_UNIFORM_BUFFER,
+		sizeof(float) * 4,
+		cameraDataBuffer,
 		GL_STATIC_DRAW
 	);
-	
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glfwSwapBuffers(window);
+	
 }
 
-ShapeList::iterator Graphics::addShape(Shape* shape) {
+std::list<Shape*>::iterator ShapeController::addShape(Shape* shape) {
 	shapes.push_front(shape);
 	vertexCount += shape->vertexCount;
 	EBOsize += shape->EBOsize;
@@ -218,29 +208,11 @@ ShapeList::iterator Graphics::addShape(Shape* shape) {
 	return shapes.begin();
 }
 
-void Graphics::removeShape(ShapeList::iterator &shapeIterator) {
+void ShapeController::removeShape(std::list<Shape*>::iterator& shapeIterator) {
 	vertexCount += (*shapeIterator)->vertexCount;
 	EBOsize += (*shapeIterator)->EBOsize;
 	//(*shapeIterator)->~Shape(); kracivo
-	delete *shapeIterator;
+	delete* shapeIterator;
 	shapes.erase(shapeIterator);
 	reallocateBuffers();
 }
-
-bool Graphics::running() {
-	return !glfwWindowShouldClose(window);
-}
-
-float* Graphics::getBackgroundColorValuePointer(uint valueNum) {
-	return &cameraDataBuffer[valueNum];
-}
-
-float* Graphics::getCameraValuePointer(uint valueNum) {
-	return &backgroundColor[valueNum];
-}
-
-GLFWwindow* Graphics::getWindow() {
-	return window;
-}
-
-//	.E:[&]->* sam ahuel

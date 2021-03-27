@@ -3,7 +3,8 @@
 #include "AnimationController.h"
 #include "Shape.h"
 #include "LevelEvent.h"
-#include "Graphics.h"
+#include "Window.h"
+#include "ShapeController.h"
 
 #define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
@@ -19,13 +20,19 @@ std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock:
 Player Engine::player = Player();
 GLFWwindow* Engine::window = nullptr;
 
+void Engine::terminate() {
+	glfwTerminate();
+}
+
 void Engine::init() {
-	Graphics::init();
+	Window::init();
+	ShapeController::init();
+
 	PlayerBindingEvent::player = &player;
 
 	EventController::level = std::vector<LevelEvent*>();
 	AnimationController::setTimePointer(&frameTime);
-	window = Graphics::getWindow();
+	window = Window::getWindow();
 	EventController::currentTime = &currentTime;
 	
 	uint vertexCount = 4;
@@ -69,11 +76,13 @@ void Engine::update() {
 }
 
 void Engine::render() {
-	Graphics::draw();
+	ShapeController::draw();
+	Window::clear();
+	
 }
 
 bool Engine::running() {
-	return Graphics::running();
+	return Window::running();
 }
 
 void Engine::pollKeyEvents() {

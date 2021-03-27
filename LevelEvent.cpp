@@ -1,6 +1,6 @@
 #include "LevelEvent.h"
 #include "AnimationController.h"
-#include "Graphics.h"
+#include "ShapeController.h"
 
 //LevelEvent
 
@@ -47,7 +47,7 @@ void CameraAnimationEvent::write(std::ofstream& fout) {
 }
 
 void CameraAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(animation, Graphics::getCameraValuePointer(valueNum)));
+	AnimationController::add(new AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
 }
 
 //ShapeSpawnEvent
@@ -73,7 +73,7 @@ void ShapeSpawnEvent::write(std::ofstream& fout) {
 }
 
 void ShapeSpawnEvent::start() {
-	dynamicShapes[shapeID] = Graphics::addShape(shape);
+	dynamicShapes[shapeID] = ShapeController::addShape(shape);
 }
 
 //ShapeDestructionEvent
@@ -89,7 +89,7 @@ void ShapeDestructionEvent::write(std::ofstream& fout) {
 }
 
 void ShapeDestructionEvent::start() {
-	Graphics::removeShape(dynamicShapes[shapeID]);
+	ShapeController::removeShape(dynamicShapes[shapeID]);
 }
 
 //ShapeAnimationEvent
@@ -174,5 +174,5 @@ void BackgroundColorAnimationEvent::write(std::ofstream& fout) {
 }
 
 void BackgroundColorAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(animation, Graphics::getBackgroundColorValuePointer(animatedValueID)));
+	AnimationController::add(new AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
 }
