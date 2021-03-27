@@ -7,8 +7,7 @@ std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
 float* EventController::currentTime = nullptr;
 
-void EventController::update() 
-{
+void EventController::update() {
 	while (currentEvent < level.size() && level[currentEvent]->getInitTime() < *currentTime) {
 		level[currentEvent]->start();
 		currentEvent++;
