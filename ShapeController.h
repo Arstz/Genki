@@ -1,16 +1,17 @@
 #pragma once
 #include "Window.h"
 #include "Shape.h"
+#include "ShapeGroup.h"
 #include <list>
 
 #define VERTEX_SIZE 6ul
 #define CAMERA_DATA_SIZE 4u
 
 class ShapeController {
-	static std::list<Shape*> shapes;
+	static std::list<ShapeGroup*> shapeGroups;
 
 	static uint vertexCount;
-	static float* vertexDataBuffer;
+	static float* vertexBuffer;
 
 	static GLuint bufferID;
 
@@ -38,7 +39,11 @@ public:
 	static void init();
 	static float* getCameraValuePointer(uint valueNum);
 	static void draw();
-	static std::list<Shape*>::iterator addShape(Shape* shape);
-	static void removeShape(std::list<Shape*>::iterator& shapeIterator);
+	static std::list<ShapeGroup*>::iterator addShape(Shape* shape);
+	static std::list<ShapeGroup*>::iterator addShapeGroup(ShapeGroup* shapeGroup);
+	static void removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator);
+
+	static void writeToVertexbuffer(ShapeGroup* shapeGroup, uint &colorOffsetCounter, uint &positionOffsetCounter);
+	static void writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter);
 };
 

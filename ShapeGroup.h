@@ -25,7 +25,11 @@ public: //peredelaem cheres 2 minuti bistraa bistraa
 		float positionY,
 		int layer
 	);
+	ShapeGroup(Shape* shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
 	~ShapeGroup();
+
+	uint getEBOsize();
+	uint getVertexCount();
 };
 
