@@ -7,6 +7,11 @@ public:
 	float* vertexCoords;
 	float* vertexColors;
 
+	float positionX; //peredelaem primerno nikogda
+	float positionY;
+
+	int layer;
+
 	uint EBOsize;
 	uint* vertexIDs;
 

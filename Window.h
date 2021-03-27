@@ -7,12 +7,10 @@
 typedef unsigned int uint;
 
 class Window {
-public:
-	
 	static GLFWwindow* window;
 	static float backgroundColor[4];
 	static GLuint currentBufferID;
-
+public:
 	static GLuint generateBufferID();
 	static void init();
 	static GLFWwindow* getWindow();

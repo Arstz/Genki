@@ -169,6 +169,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeController.cpp" />
+    <ClCompile Include="ShapeGroup.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeController.h" />
+    <ClInclude Include="ShapeGroup.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
