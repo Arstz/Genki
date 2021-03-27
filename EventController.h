@@ -4,8 +4,7 @@
 #include <vector>
 #include <string>
 
-class EventController
-{
+class EventController {
 public:
 	static std::vector<LevelEvent*> level;
 	static int currentEvent;

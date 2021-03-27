@@ -23,8 +23,7 @@ enum AnimatedValueType {
 	COLOR,
 };
 
-class LevelEvent
-{
+class LevelEvent {
 	friend EventController;
 protected:
 	float initTime;

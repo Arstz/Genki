@@ -4,8 +4,7 @@
 #include <iostream>
 #include "GLFW/glfw3.h"
 
-class Engine
-{
+class Engine {
 
 private:
 	static void pollEvents();

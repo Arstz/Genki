@@ -230,6 +230,7 @@ void Graphics::removeShape(ShapeList::iterator &shapeIterator) {
 bool Graphics::running() {
 	return !glfwWindowShouldClose(window);
 }
+
 float* Graphics::getBackgroundColorValuePointer(uint valueNum) {
 	return &cameraDataBuffer[valueNum];
 }

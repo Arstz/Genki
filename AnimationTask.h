@@ -1,8 +1,7 @@
 #pragma once
 #include "Animation.h"
 
-class AnimationTask
-{
+class AnimationTask {
 private:
 
 	Animation* animation;
