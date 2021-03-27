@@ -211,7 +211,7 @@ std::list<Shape*>::iterator ShapeController::addShape(Shape* shape) {
 void ShapeController::removeShape(std::list<Shape*>::iterator& shapeIterator) {
 	vertexCount += (*shapeIterator)->vertexCount;
 	EBOsize += (*shapeIterator)->EBOsize;
-	//(*shapeIterator)->~Shape(); kracivo
+//	(*shapeIterator)->~Shape(); kracivo EEEE
 	delete* shapeIterator;
 	shapes.erase(shapeIterator);
 	reallocateBuffers();

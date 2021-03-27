@@ -7,7 +7,6 @@
 #define CAMERA_DATA_SIZE 4u
 
 class ShapeController {
-public:
 	static std::list<Shape*> shapes;
 
 	static uint vertexCount;
@@ -29,14 +28,17 @@ public:
 
 	static void updateBuffers();
 	static void reallocateBuffers();
-	static void setWindow(GLFWwindow* window);
+
 	static void initBuffers();
 	static void initShader();
+public:
+
+	static void setWindow(GLFWwindow* window);
+
 	static void init();
 	static float* getCameraValuePointer(uint valueNum);
 	static void draw();
 	static std::list<Shape*>::iterator addShape(Shape* shape);
 	static void removeShape(std::list<Shape*>::iterator& shapeIterator);
-
 };
 
