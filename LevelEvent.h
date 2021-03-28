@@ -4,6 +4,7 @@
 #include "AnimationTask.h"
 #include "Player.h"
 #include "Shape.h"
+#include "ShapeGroup.h"
 #include <fstream>
 
 class EventController;
@@ -30,7 +31,7 @@ protected:
 	LevelEventType type;
 
 public:
-	static std::list<Shape*>::iterator* dynamicShapes;
+	static std::list<ShapeGroup*>::iterator* shapeGroups;
 	virtual void write(std::ofstream& fout);
 	virtual void start();
 	float getInitTime();
@@ -40,7 +41,7 @@ public:
 
 	LevelEventType getType();
 };
-
+/*
 class CameraAnimationEvent : public LevelEvent {
 
 	Animation* animation;
@@ -55,21 +56,21 @@ public:
 	void write(std::ofstream& fout) override;
 	void start() override;
 };
-
+*/
 class ShapeSpawnEvent : public LevelEvent {
-	int shapeID;
+	int shapeGroupID;
 	Shape* shape;
 public:
 	ShapeSpawnEvent();
 	ShapeSpawnEvent(
 		Shape* shape, 
-		int shapeID, 
+		int shapeshapeGroupID,
 		float initTime
 	);
-	void write(std::ofstream& fout) override;
+//	void write(std::ofstream& fout) override;
 	void start() override;
 };
-
+/*
 class ShapeDestructionEvent : public LevelEvent { //opasniy pizdets
 	int shapeID;
 public:
@@ -122,3 +123,4 @@ public:
 	void write(std::ofstream& fout) override;
 	void start() override;
 };
+*/

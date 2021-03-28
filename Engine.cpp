@@ -2,6 +2,7 @@
 #include "EventController.h"
 #include "AnimationController.h"
 #include "Shape.h"
+#include "ShapeGroup.h"
 #include "LevelEvent.h"
 #include "Window.h"
 #include "ShapeController.h"
@@ -28,7 +29,7 @@ void Engine::init() {
 	Window::init();
 	ShapeController::init();
 
-	PlayerBindingEvent::player = &player;
+//	PlayerBindingEvent::player = &player;
 
 	EventController::level = std::vector<LevelEvent*>();
 	AnimationController::setTimePointer(&frameTime);
@@ -51,11 +52,11 @@ void Engine::init() {
 	Animation* animation = new Animation(keyCount, timeKeys, stateKeys);
 
 	EventController::level.push_back(new ShapeSpawnEvent(shape, 0, 0));
-	EventController::level.push_back(new PlayerBindingEvent(0, 0));
-	EventController::level.push_back(new ShapeAnimationEvent(animation, AnimatedValueType::COLOR, 0, 0, 0, 3, 3e3f));
-	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
+//	EventController::level.push_back(new PlayerBindingEvent(0, 0));
+//	EventController::level.push_back(new ShapeAnimationEvent(animation, AnimatedValueType::COLOR, 0, 0, 0, 3, 3e3f));
+//	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
 	
-	LevelEvent::dynamicShapes = new std::list<Shape*>::iterator[0];
+	LevelEvent::shapeGroups = new std::list<ShapeGroup*>::iterator[1];
 
 //	EventController::saveLevel("a", EventController::level);
 //	EventController::loadLevel("a");

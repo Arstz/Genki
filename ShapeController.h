@@ -43,7 +43,14 @@ public:
 	static std::list<ShapeGroup*>::iterator addShapeGroup(ShapeGroup* shapeGroup);
 	static void removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator);
 
-	static void writeToVertexbuffer(ShapeGroup* shapeGroup, uint& EBOoffsetCounter);
+	static void writeToVertexbuffer(
+		ShapeGroup* shapeGroup, 
+		uint& positionOffsetCounter, 
+		uint& colorOffsetCounter,
+		float positionX,
+		float positionY
+	);
+
 	static void writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter);
 };
 

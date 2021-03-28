@@ -48,26 +48,37 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "}\n\0";
 
 void ShapeController::updateBuffers() {
-	uint colorOffsetCounter = vertexCount * 2;
 	uint positionOffsetCounter = 0;
+	uint colorOffsetCounter = vertexCount * 2;
 
-	for (Shape* shape : shapes) {
-		for (int i = 0; i < shape->vertexCount * 2; i++)
-			vertexBuffer[positionOffsetCounter + i] = shape->vertexCoords[i];
-		positionOffsetCounter += shape->vertexCount * 2;
-
-		for (int i = 0; i < shape->vertexCount * 4; i++)
-			vertexBuffer[colorOffsetCounter + i] = shape->vertexColors[i];
-		colorOffsetCounter += shape->vertexCount * 4;
+	for (ShapeGroup* shapeGroup : shapeGroups) {
+		writeToVertexbuffer(shapeGroup, positionOffsetCounter, colorOffsetCounter, 0, 0);
 	}
 }
 
-void ShapeController::writeToVertexbuffer(ShapeGroup* shapeGroup,uint &EBOoffsetCounter){
+void ShapeController::writeToVertexbuffer(
+	ShapeGroup* shapeGroup,
+	uint& positionOffsetCounter,
+	uint& colorOffsetCounter,
+	float positionX,
+	float positionY
+) {
+	positionX += shapeGroup->positionX;
+	positionY += shapeGroup->positionY;
 	for (int i = 0; i < shapeGroup->shapeCount; i++) {
-		for (int j = 0; j < shapeGroup->shapes[i].EBOsize; j++) {
-			EBObuffer[EBOoffsetCounter + j] = shapeGroup->shapes[i].vertexIDs[j] + EBOoffsetCounter;
+		for (int j = 0; j < shapeGroup->shapes[i].vertexCount * 2; j += 2) {
+			vertexBuffer[positionOffsetCounter + j] = shapeGroup->shapes[i].vertexCoords[j] + positionX;
+			vertexBuffer[positionOffsetCounter + j + 1] = shapeGroup->shapes[i].vertexCoords[j + 1] + positionY;
 		}
-		EBOoffsetCounter += shapeGroup->shapes[i].EBOsize;
+		positionOffsetCounter += shapeGroup->shapes[i].vertexCount * 2;
+
+		for (int j = 0; j < shapeGroup->shapes[i].vertexCount * 4; j++) {
+			vertexBuffer[colorOffsetCounter + j] = shapeGroup->shapes[i].vertexColors[j];
+		}
+		colorOffsetCounter += shapeGroup->shapes[i].vertexCount * 4;
+	}
+	for (int i = 0; i < shapeGroup->shapeGroupCount; i++) {
+		writeToVertexbuffer(&shapeGroup->shapeGroups[i], positionOffsetCounter, colorOffsetCounter, positionX, positionY);
 	}
 }
 
@@ -77,6 +88,9 @@ void ShapeController::writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCo
 			EBObuffer[EBOoffsetCounter + j] = shapeGroup->shapes[i].vertexIDs[j] + EBOoffsetCounter;
 		}
 		EBOoffsetCounter += shapeGroup->shapes[i].EBOsize;
+	}
+	for (int i = 0; i < shapeGroup->shapeGroupCount; i++) {
+		writeToEBObuffer(&shapeGroup->shapeGroups[i], EBOoffsetCounter);
 	}
 }
 
@@ -98,13 +112,9 @@ void ShapeController::reallocateBuffers() {
 
 	uint EBOoffsetCounter = 0;
 	for (ShapeGroup* group : shapeGroups) {
-		for (size_t i = 0; i < length; i++) {
-
-			for (int j = 0; i < shape->EBOsize; j++)
-				EBObuffer[EBOoffsetCounter + j] = shape->vertexIDs[j] + EBOoffsetCounter;
+		for (ShapeGroup* shapeGroup : shapeGroups) {
+			writeToEBObuffer(shapeGroup, EBOoffsetCounter);
 		}
-
-		EBOoffsetCounter += shape->EBOsize;
 	}
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
@@ -220,7 +230,6 @@ void ShapeController::draw() {
 	glUseProgram(shader);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glfwSwapBuffers(window);
-	
 }
 
 std::list<ShapeGroup*>::iterator ShapeController::addShape(Shape* shape) {
@@ -239,11 +248,11 @@ std::list<ShapeGroup*>::iterator ShapeController::addShapeGroup(ShapeGroup* shap
 	return shapeGroups.begin();
 }
 
-void ShapeController::removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator) {
-	vertexCount += (*shapeIterator)->getVertexCount();
-	EBOsize += (*shapeIterator)->getEBOsize();
+void ShapeController::removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeGroupIterator) {
+	vertexCount -= (*shapeGroupIterator)->getVertexCount();
+	EBOsize -= (*shapeGroupIterator)->getEBOsize();
 //	(*shapeIterator)->~Shape(); kracivo EEEE
-	delete *shapeIterator;
-	shapeGroups.erase(shapeIterator);
+	delete *shapeGroupIterator;
+	shapeGroups.erase(shapeGroupIterator);
 	reallocateBuffers();
 }

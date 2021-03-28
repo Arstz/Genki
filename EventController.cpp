@@ -15,6 +15,7 @@ void EventController::update()
 	}
 }
 
+/*
 void EventController::loadLevel(std::string path) {
 	level.clear();
 	std::ifstream fin;
@@ -160,3 +161,4 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 	}
 	fout.close();
 }
+*/

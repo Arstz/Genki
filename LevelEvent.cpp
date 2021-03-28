@@ -4,7 +4,7 @@
 
 //LevelEvent
 
-std::list<Shape*>::iterator* LevelEvent::dynamicShapes = nullptr;
+std::list<ShapeGroup*>::iterator* LevelEvent::shapeGroups = nullptr;
 
 float LevelEvent::getInitTime() {
 	return initTime;
@@ -25,7 +25,7 @@ void LevelEvent::write(std::ofstream& fout) {}
 void LevelEvent::start() {}
 
 //CameraAnimationEvent
-
+/*
 CameraAnimationEvent::CameraAnimationEvent() {}
 CameraAnimationEvent::CameraAnimationEvent(
 	Animation* animation, 
@@ -49,20 +49,20 @@ void CameraAnimationEvent::write(std::ofstream& fout) {
 void CameraAnimationEvent::start() {
 	AnimationController::add(new AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
 }
-
+*/
 //ShapeSpawnEvent
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 ShapeSpawnEvent::ShapeSpawnEvent(
 	Shape* shape, 
-	int shapeID,
+	int shapeGroupID,
 	float initTime
 ) : LevelEvent(initTime) {
-	this->shapeID = shapeID;
+	this->shapeGroupID = shapeGroupID;
 	this->shape = shape;
 	this->type = LevelEventType::SHAPE_SPAWN;
 }
-
+/*
 void ShapeSpawnEvent::write(std::ofstream& fout) {
 	fout.write((char*)(&shape->vertexCount), sizeof(uint));
 	fout.write((char*)(shape->vertexCoords), sizeof(float) * shape->vertexCount * 2);
@@ -71,13 +71,13 @@ void ShapeSpawnEvent::write(std::ofstream& fout) {
 	fout.write((char*)(shape->vertexIDs), sizeof(uint) * shape->EBOsize);
 	fout.write((char*)(&shapeID), sizeof(int));
 }
-
+*/
 void ShapeSpawnEvent::start() {
-	dynamicShapes[shapeID] = ShapeController::addShape(shape);
+	shapeGroups[shapeGroupID] = ShapeController::addShape(shape);
 }
 
 //ShapeDestructionEvent
-
+/*
 ShapeDestructionEvent::ShapeDestructionEvent() {}
 ShapeDestructionEvent::ShapeDestructionEvent(int shapeID, float initTime) : LevelEvent(initTime) {
 	this->shapeID = shapeID;
@@ -176,3 +176,4 @@ void BackgroundColorAnimationEvent::write(std::ofstream& fout) {
 void BackgroundColorAnimationEvent::start() {
 	AnimationController::add(new AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
 }
+*/
