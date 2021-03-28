@@ -62,7 +62,7 @@ void ShapeController::updateBuffers() {
 	}
 }
 
-void ShapeController::writeToVertexbuffer(ShapeGroup* shapeGroup, uint& EBOoffsetCounter) {
+void ShapeController::writeToVertexbuffer(ShapeGroup* shapeGroup,uint &EBOoffsetCounter){
 	for (int i = 0; i < shapeGroup->shapeCount; i++) {
 		for (int j = 0; j < shapeGroup->shapes[i].EBOsize; j++) {
 			EBObuffer[EBOoffsetCounter + j] = shapeGroup->shapes[i].vertexIDs[j] + EBOoffsetCounter;
