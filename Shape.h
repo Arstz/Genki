@@ -2,33 +2,45 @@
 typedef unsigned int uint;
 
 class Shape {
-public:
 	uint vertexCount;
 	float* vertexCoords;
 	float* vertexColors;
+
+	uint EBOsize;
+	uint* vertexIDs;
 
 	float positionX; //peredelaem primerno nikogda
 	float positionY;
 
 	int layer;
-
-	uint EBOsize;
-	uint* vertexIDs;
-
+public:
 	Shape();
 	Shape(
 		uint vertexCount,
 		float* vertexCoords,
 		float* vertexColors,
 		uint EBOsize,
-		uint* vertexIDs
+		uint* vertexIDs,
+		float positionX,
+		float positionY,
+		int layer
 	);
+
 	Shape(const Shape& shape);
 	~Shape();
 
-	uint getVertexCount();
-	uint getEBOsize();
+	Shape& operator=(const Shape& shape);
 
-	float* getColorPointer(uint vertexNum, uint channelNum);
-	float* getPositionPointer(uint vertexNum, uint channelNum);
+	uint getVertexCount() const;
+	uint getEBOsize() const;
+
+	float* getVertexCoordsPointer();
+	float* getVertexColorsPointer();
+
+	uint* getVertexIDsPointer();
+
+	float* getPositionXpointer();
+	float* getPositionYpointer();
+
+	int getLayer() const;
 };

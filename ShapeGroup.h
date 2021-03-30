@@ -2,19 +2,17 @@
 #include "Shape.h"
 
 class ShapeGroup {
-public: //peredelaem cheres 2 minuti bistraa bistraa
-
 	uint shapeCount;
 	uint shapeGroupCount;
-
-	Shape* shapes;
-	ShapeGroup* shapeGroups;
 
 	float positionX;
 	float positionY;
 
+	Shape* shapes;
+	ShapeGroup* shapeGroups;
+
 	int layer;
-	
+public:
 	ShapeGroup();
 	ShapeGroup(
 		uint shapeCount,
@@ -25,11 +23,21 @@ public: //peredelaem cheres 2 minuti bistraa bistraa
 		float positionY,
 		int layer
 	);
-	ShapeGroup(Shape* shape);
+	ShapeGroup(const Shape& shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
 	~ShapeGroup();
 
-	uint getEBOsize();
-	uint getVertexCount();
-};
+	float* getPositionXpointer();
+	float* getPositionYpointer();
 
+	int getLayer() const;
+
+	uint getEBOsize() const;
+	uint getVertexCount() const;
+
+	uint getShapeCount() const;
+	uint getShapeGroupCount() const;
+
+	Shape* getShapesPointer();
+	ShapeGroup* getShapeGroupsPointer();
+};

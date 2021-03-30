@@ -19,12 +19,12 @@ ShapeGroup::ShapeGroup(
 	this->layer = layer;
 }
 
-ShapeGroup::ShapeGroup(Shape* shape) {
+ShapeGroup::ShapeGroup(const Shape &shape) {
 	this->shapeCount = 1;
 	this->shapeGroupCount = 0;
 
-	this->layer = shape->layer;
-	this->shapes = shape;
+	this->layer = shape.getLayer();
+	this->shapes = new Shape(shape);
 	this->shapeGroups = nullptr;
 
 	this->positionX = 0.f;
@@ -50,7 +50,7 @@ ShapeGroup::~ShapeGroup() {
 	shapeGroups = nullptr;
 }
 
-uint ShapeGroup::getEBOsize() {
+uint ShapeGroup::getEBOsize() const {
 	uint size = 0;
 
 	for (int i = 0; i < shapeCount; i++) size += shapes[i].getEBOsize();
@@ -59,11 +59,39 @@ uint ShapeGroup::getEBOsize() {
 	return size;
 }
 
-uint ShapeGroup::getVertexCount() {
+uint ShapeGroup::getVertexCount() const {
 	uint size = 0;
 
 	for (int i = 0; i < shapeCount; i++) size += shapes[i].getVertexCount();
 	for (int i = 0; i < shapeGroupCount; i++) size += shapeGroups[i].getVertexCount();
 
 	return size;
+}
+
+uint ShapeGroup::getShapeCount() const {
+	return shapeCount;
+}
+
+uint ShapeGroup::getShapeGroupCount() const {
+	return shapeGroupCount;
+}
+
+Shape* ShapeGroup::getShapesPointer() {
+	return shapes;
+}
+
+ShapeGroup* ShapeGroup::getShapeGroupsPointer() {
+	return shapeGroups;
+}
+
+float* ShapeGroup::getPositionXpointer() {
+	return &positionX;
+}
+
+float* ShapeGroup::getPositionYpointer() {
+	return &positionY;
+}
+
+int ShapeGroup::getLayer() const {
+	return layer;
 }

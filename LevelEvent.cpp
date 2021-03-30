@@ -144,7 +144,7 @@ void ShapeAnimationEvent::start() {
 }
 
 //PlayerBindingEvent
-
+*/
 Player* PlayerBindingEvent::player = nullptr;
 
 PlayerBindingEvent::PlayerBindingEvent() {}
@@ -158,11 +158,11 @@ void PlayerBindingEvent::write(std::ofstream& fout) {
 }
 
 void PlayerBindingEvent::start() {
-	player->bind(*(dynamicShapes[shapeID]));
+	player->setTarget((*(shapeGroups[shapeID]))->getPositionXpointer(), (*(shapeGroups[shapeID]))->getPositionYpointer());
 }
 
 //BackgroundColorAnimationEvent
-
+/*
 BackgroundColorAnimationEvent::BackgroundColorAnimationEvent() {}
 BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(uint animatedValueID, Animation* animation, float initTime) : LevelEvent(initTime) {
 	this->type = LevelEventType::BACKGROUND_COLOR_ANIMATION;

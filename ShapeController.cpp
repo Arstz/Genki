@@ -63,34 +63,43 @@ void ShapeController::writeToVertexbuffer(
 	float positionX,
 	float positionY
 ) {
-	positionX += shapeGroup->positionX;
-	positionY += shapeGroup->positionY;
-	for (int i = 0; i < shapeGroup->shapeCount; i++) {
-		for (int j = 0; j < shapeGroup->shapes[i].vertexCount * 2; j += 2) {
-			vertexBuffer[positionOffsetCounter + j] = shapeGroup->shapes[i].vertexCoords[j] + positionX;
-			vertexBuffer[positionOffsetCounter + j + 1] = shapeGroup->shapes[i].vertexCoords[j + 1] + positionY;
-		}
-		positionOffsetCounter += shapeGroup->shapes[i].vertexCount * 2;
+	positionX += *shapeGroup->getPositionXpointer();
+	positionY += *shapeGroup->getPositionYpointer();
 
-		for (int j = 0; j < shapeGroup->shapes[i].vertexCount * 4; j++) {
-			vertexBuffer[colorOffsetCounter + j] = shapeGroup->shapes[i].vertexColors[j];
+	Shape* shapes = shapeGroup->getShapesPointer();
+	ShapeGroup* shapeGroups = shapeGroup->getShapeGroupsPointer();
+
+	for (int i = 0; i < shapeGroup->getShapeCount(); i++) {
+		float* shapeVertexCoords = shapes[i].getVertexCoordsPointer();
+		float* shapeVertexColors = shapes[i].getVertexColorsPointer();
+
+		uint shapeVertexCount = shapes[i].getVertexCount();
+		
+		for (int j = 0; j < shapeVertexCount * 2; j += 2) {
+			vertexBuffer[positionOffsetCounter + j] = shapeVertexCoords[j] + positionX;
+			vertexBuffer[positionOffsetCounter + j + 1] = shapeVertexCoords[j + 1] + positionY;
 		}
-		colorOffsetCounter += shapeGroup->shapes[i].vertexCount * 4;
+		positionOffsetCounter += shapeVertexCount * 2;
+
+		for (int j = 0; j < shapeVertexCount * 4; j++) {
+			vertexBuffer[colorOffsetCounter + j] = shapeVertexColors[j];
+		}
+		colorOffsetCounter += shapeVertexCount * 4;
 	}
-	for (int i = 0; i < shapeGroup->shapeGroupCount; i++) {
-		writeToVertexbuffer(&shapeGroup->shapeGroups[i], positionOffsetCounter, colorOffsetCounter, positionX, positionY);
+	for (int i = 0; i < shapeGroup->getShapeGroupCount(); i++) {
+		writeToVertexbuffer(&shapeGroups[i], positionOffsetCounter, colorOffsetCounter, positionX, positionY);
 	}
 }
 
 void ShapeController::writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter) {
-	for (int i = 0; i < shapeGroup->shapeCount; i++) {
-		for (int j = 0; j < shapeGroup->shapes[i].EBOsize; j++) {
-			EBObuffer[EBOoffsetCounter + j] = shapeGroup->shapes[i].vertexIDs[j] + EBOoffsetCounter;
+	for (int i = 0; i < shapeGroup->getShapeCount(); i++) {
+		for (int j = 0; j < shapeGroup->getShapesPointer()[i].getEBOsize(); j++) {
+			EBObuffer[EBOoffsetCounter + j] = shapeGroup->getShapesPointer()[i].getVertexIDsPointer()[j] + EBOoffsetCounter;
 		}
-		EBOoffsetCounter += shapeGroup->shapes[i].EBOsize;
+		EBOoffsetCounter += shapeGroup->getShapesPointer()[i].getEBOsize();
 	}
-	for (int i = 0; i < shapeGroup->shapeGroupCount; i++) {
-		writeToEBObuffer(&shapeGroup->shapeGroups[i], EBOoffsetCounter);
+	for (int i = 0; i < shapeGroup->getShapeGroupCount(); i++) {
+		writeToEBObuffer(&shapeGroup->getShapeGroupsPointer()[i], EBOoffsetCounter);
 	}
 }
 
@@ -233,9 +242,9 @@ void ShapeController::draw() {
 }
 
 std::list<ShapeGroup*>::iterator ShapeController::addShape(Shape* shape) {
-	shapeGroups.push_front(new ShapeGroup(shape));
-	vertexCount += shape->vertexCount;
-	EBOsize += shape->EBOsize;
+	shapeGroups.push_front(new ShapeGroup(*shape));
+	vertexCount += shape->getVertexCount();
+	EBOsize += shape->getEBOsize();
 	reallocateBuffers();
 	return shapeGroups.begin();
 }

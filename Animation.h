@@ -1,4 +1,5 @@
 #pragma once
+
 class Animation
 {
 public:
@@ -9,6 +10,5 @@ public:
 	Animation(unsigned int keyCount, float* timeKeys, float* stateKeys);
 	Animation();
 	~Animation();
-
 };
 

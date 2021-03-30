@@ -101,7 +101,7 @@ public:
 	void write(std::ofstream& fout) override;
 	void start() override;
 };
-
+*/
 class PlayerBindingEvent : public LevelEvent {
 public:
 	static Player* player;
@@ -112,7 +112,7 @@ public:
 	void write(std::ofstream& fout) override;
 	void start() override;
 };
-
+/*
 class BackgroundColorAnimationEvent : public LevelEvent {
 public:
 	uint animatedValueID;
