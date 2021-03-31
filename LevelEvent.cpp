@@ -76,6 +76,31 @@ void ShapeSpawnEvent::start() {
 	shapeGroups[shapeGroupID] = ShapeController::addShape(shape);
 }
 
+ShapeGroupSpawnEvent::ShapeGroupSpawnEvent() {}
+ShapeGroupSpawnEvent::ShapeGroupSpawnEvent(
+	ShapeGroup shapeGroup,
+	int shapeGroupID,
+	float initTime
+): LevelEvent(initTime) {
+	this->shapeGroupID = shapeGroupID;
+	this->shapeGroup = shapeGroup;
+	this->type = LevelEventType::SHAPE_SPAWN;
+}
+/*
+void ShapeSpawnEvent::write(std::ofstream& fout) {
+	fout.write((char*)(&shape->vertexCount), sizeof(uint));
+	fout.write((char*)(shape->vertexCoords), sizeof(float) * shape->vertexCount * 2);
+	fout.write((char*)(shape->vertexColors), sizeof(float) * shape->vertexCount * 4);
+	fout.write((char*)(&shape->EBOsize), sizeof(uint));
+	fout.write((char*)(shape->vertexIDs), sizeof(uint) * shape->EBOsize);
+	fout.write((char*)(&shapeID), sizeof(int));
+}
+*/
+
+void ShapeGroupSpawnEvent::start() {
+	shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(&shapeGroup);
+}
+
 //ShapeDestructionEvent
 /*
 ShapeDestructionEvent::ShapeDestructionEvent() {}

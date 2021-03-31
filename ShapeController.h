@@ -51,6 +51,7 @@ public:
 		ShapeGroup* shapeGroup, 
 		uint& positionOffsetCounter, 
 		uint& colorOffsetCounter,
+		float alphaChannel,
 		float positionX,
 		float positionY
 	);

@@ -52,7 +52,7 @@ void ShapeController::updateBuffers() {
 	uint colorOffsetCounter = vertexCount * 2;
 
 	for (ShapeGroup* shapeGroup : shapeGroups) {
-		writeToVertexbuffer(shapeGroup, positionOffsetCounter, colorOffsetCounter, 0, 0);
+		writeToVertexbuffer(shapeGroup, positionOffsetCounter, colorOffsetCounter, 0, 0, 0);
 	}
 }
 
@@ -60,11 +60,13 @@ void ShapeController::writeToVertexbuffer(
 	ShapeGroup* shapeGroup,
 	uint& positionOffsetCounter,
 	uint& colorOffsetCounter,
+	float alphaChannel,
 	float positionX,
 	float positionY
 ) {
 	positionX += *shapeGroup->getPositionXpointer();
 	positionY += *shapeGroup->getPositionYpointer();
+	alphaChannel *= shapeGroup->getAlphaChannel();
 
 	Shape* shapes = shapeGroup->getShapesPointer();
 	ShapeGroup* shapeGroups = shapeGroup->getShapeGroupsPointer();
@@ -81,13 +83,16 @@ void ShapeController::writeToVertexbuffer(
 		}
 		positionOffsetCounter += shapeVertexCount * 2;
 
-		for (int j = 0; j < shapeVertexCount * 4; j++) {
+		for (int j = 0; j < shapeVertexCount * 4; j += 4) {
 			vertexBuffer[colorOffsetCounter + j] = shapeVertexColors[j];
+			vertexBuffer[colorOffsetCounter + j + 1] = shapeVertexColors[j + 1];
+			vertexBuffer[colorOffsetCounter + j + 2] = shapeVertexColors[j + 2];
+			vertexBuffer[colorOffsetCounter + j + 3] = shapeVertexColors[j + 3] * shapes[i].getAlphaChannel();
 		}
 		colorOffsetCounter += shapeVertexCount * 4;
 	}
 	for (int i = 0; i < shapeGroup->getShapeGroupCount(); i++) {
-		writeToVertexbuffer(&shapeGroups[i], positionOffsetCounter, colorOffsetCounter, positionX, positionY);
+		writeToVertexbuffer(&shapeGroups[i], positionOffsetCounter, colorOffsetCounter, alphaChannel, positionX, positionY);
 	}
 }
 

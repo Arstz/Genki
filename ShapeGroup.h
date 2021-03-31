@@ -7,6 +7,7 @@ class ShapeGroup {
 
 	int layer;
 
+	float alphaChannel;
 	float positionX;
 	float positionY;
 
@@ -19,6 +20,7 @@ public:
 		uint shapeGroupCount,
 		Shape* shapes,
 		ShapeGroup* shapeGroups,
+		float alphaChannel,
 		float positionX,
 		float positionY,
 		int layer
@@ -26,7 +28,10 @@ public:
 	ShapeGroup(const Shape& shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
 	~ShapeGroup();
+	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 
+
+	float getAlphaChannel() const;
 	float* getPositionXpointer();
 	float* getPositionYpointer();
 

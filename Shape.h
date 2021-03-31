@@ -9,6 +9,8 @@ class Shape {
 
 	int layer;	
 
+	float alphaChannel;
+
 	float positionX; //peredelaem primerno nikogda
 	float positionY;
 
@@ -22,6 +24,7 @@ public:
 		float* vertexColors,
 		uint EBOsize,
 		uint* vertexIDs,
+		float alphaChannel,
 		float positionX,
 		float positionY,
 		int layer
@@ -40,6 +43,7 @@ public:
 
 	uint* getVertexIDsPointer();
 
+	float getAlphaChannel() const;
 	float* getPositionXpointer();
 	float* getPositionYpointer();
 

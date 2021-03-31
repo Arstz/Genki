@@ -70,6 +70,20 @@ public:
 //	void write(std::ofstream& fout) override;
 	void start() override;
 };
+
+class ShapeGroupSpawnEvent : public LevelEvent {
+	int shapeGroupID;
+	ShapeGroup shapeGroup;
+public:
+	ShapeGroupSpawnEvent();
+	ShapeGroupSpawnEvent(
+		ShapeGroup shapeGroup,
+		int shapeGroupID,
+		float initTime
+	);
+	//	void write(std::ofstream& fout) override;
+	void start() override;
+};
 /*
 class ShapeDestructionEvent : public LevelEvent { //opasniy pizdets
 	int shapeID;

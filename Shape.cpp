@@ -1,12 +1,17 @@
 #include "Shape.h"
 
-Shape::Shape() {}
+Shape::Shape() {
+	this->vertexCoords = nullptr;
+	this->vertexColors = nullptr;
+	this->vertexIDs = nullptr;
+}
 Shape::Shape(
 	uint vertexCount,
 	float* vertexCoords,
 	float* vertexColors,
 	uint EBOsize,
 	uint* vertexIDs,
+	float alphaChannel,
 	float positionX,
 	float positionY,
 	int layer
@@ -24,6 +29,7 @@ Shape::Shape(
 	this->vertexIDs = new uint[EBOsize];
 	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = vertexIDs[i];
 
+	this->alphaChannel = alphaChannel;
 	this->positionX = positionX;
 	this->positionY = positionY;
 
@@ -44,6 +50,7 @@ Shape::Shape(const Shape& shape) {
 	this->vertexIDs = new uint[shape.EBOsize];
 	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = shape.vertexIDs[i];
 
+	this->alphaChannel = shape.alphaChannel;
 	this->positionX = shape.positionX;
 	this->positionY = shape.positionY;
 
@@ -77,6 +84,7 @@ Shape& Shape::operator=(const Shape& shape) {
 	this->vertexIDs = new uint[shape.EBOsize];
 	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = shape.vertexIDs[i];
 
+	this->alphaChannel = shape.alphaChannel;
 	this->positionX = shape.positionX;
 	this->positionY = shape.positionY;
 
@@ -103,6 +111,10 @@ float* Shape::getVertexColorsPointer() {
 
 uint* Shape::getVertexIDsPointer() {
 	return vertexIDs;
+}
+
+float Shape::getAlphaChannel() const {
+	return alphaChannel;
 }
 
 float* Shape::getPositionXpointer() {
