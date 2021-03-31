@@ -42,6 +42,9 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 	this->positionX = shapeGroup.positionX;
 	this->positionY = shapeGroup.positionY;
 
+	this->shapeCount = shapeGroup.shapeCount;
+	this->shapeGroupCount = shapeGroup.shapeGroupCount;
+
 	this->shapes = new Shape[shapeGroup.shapeCount];
 	this->shapeGroups = new ShapeGroup[shapeGroup.shapeGroupCount];
 
@@ -57,6 +60,9 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	this->alphaChannel = shapeGroup.alphaChannel;
 	this->positionX = shapeGroup.positionX;
 	this->positionY = shapeGroup.positionY;
+
+	this->shapeCount = shapeGroup.shapeCount;
+	this->shapeGroupCount = shapeGroup.shapeGroupCount;
 
 	this->shapes = new Shape[shapeGroup.shapeCount];
 	this->shapeGroups = new ShapeGroup[shapeGroup.shapeGroupCount];
