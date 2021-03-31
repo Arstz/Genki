@@ -3,16 +3,17 @@ typedef unsigned int uint;
 
 class Shape {
 	uint vertexCount;
-	float* vertexCoords;
-	float* vertexColors;
-
 	uint EBOsize;
+
 	uint* vertexIDs;
+
+	int layer;	
 
 	float positionX; //peredelaem primerno nikogda
 	float positionY;
 
-	int layer;
+	float* vertexCoords;
+	float* vertexColors;	
 public:
 	Shape();
 	Shape(

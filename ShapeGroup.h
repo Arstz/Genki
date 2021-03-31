@@ -5,13 +5,13 @@ class ShapeGroup {
 	uint shapeCount;
 	uint shapeGroupCount;
 
+	int layer;
+
 	float positionX;
 	float positionY;
 
 	Shape* shapes;
 	ShapeGroup* shapeGroups;
-
-	int layer;
 public:
 	ShapeGroup();
 	ShapeGroup(

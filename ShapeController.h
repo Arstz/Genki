@@ -8,24 +8,26 @@
 #define CAMERA_DATA_SIZE 4u
 
 class ShapeController {
-	static std::list<ShapeGroup*> shapeGroups;
-
-	static uint vertexCount;
-	static float* vertexBuffer;
+	static int shader;
 
 	static GLuint bufferID;
-
-	static uint EBOsize;
-	static uint* EBObuffer;
-	static float cameraDataBuffer[4];
-
 	static GLuint VBO;
 	static GLuint VAO;
 	static GLuint EBO;
 	static GLuint CDB;
 
+	static uint EBOsize;
+	static uint vertexCount;
+
+	static uint* EBObuffer;
+
+	static float cameraDataBuffer[4];
+
+	static float* vertexBuffer;	
+
+	static std::list<ShapeGroup*> shapeGroups;
+
 	static GLFWwindow* window;
-	static int shader;
 
 	static void updateBuffers();
 	static void reallocateBuffers();
@@ -34,14 +36,16 @@ class ShapeController {
 	static void initShader();
 public:
 
-	static void setWindow(GLFWwindow* window);
-
 	static void init();
-	static float* getCameraValuePointer(uint valueNum);
 	static void draw();
+	static void setWindow(GLFWwindow* window);
+	static void removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator);
+
+	static float* getCameraValuePointer(uint valueNum);
+
 	static std::list<ShapeGroup*>::iterator addShape(Shape* shape);
 	static std::list<ShapeGroup*>::iterator addShapeGroup(ShapeGroup* shapeGroup);
-	static void removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator);
+	
 
 	static void writeToVertexbuffer(
 		ShapeGroup* shapeGroup, 

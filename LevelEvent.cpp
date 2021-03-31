@@ -158,7 +158,10 @@ void PlayerBindingEvent::write(std::ofstream& fout) {
 }
 
 void PlayerBindingEvent::start() {
-	player->setTarget((*(shapeGroups[shapeID]))->getPositionXpointer(), (*(shapeGroups[shapeID]))->getPositionYpointer());
+	player->setTarget(
+		(*(shapeGroups[shapeID]))->getPositionXpointer(),
+		(*(shapeGroups[shapeID]))->getPositionYpointer()
+	);
 }
 
 //BackgroundColorAnimationEvent

@@ -64,7 +64,7 @@ public:
 	ShapeSpawnEvent();
 	ShapeSpawnEvent(
 		Shape* shape, 
-		int shapeshapeGroupID,
+		int shapeGroupID,
 		float initTime
 	);
 //	void write(std::ofstream& fout) override;
