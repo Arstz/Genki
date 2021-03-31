@@ -59,11 +59,11 @@ public:
 */
 class ShapeSpawnEvent : public LevelEvent {
 	int shapeGroupID;
-	Shape* shape;
+	Shape shape;
 public:
 	ShapeSpawnEvent();
 	ShapeSpawnEvent(
-		Shape* shape, 
+		Shape shape, 
 		int shapeGroupID,
 		float initTime
 	);

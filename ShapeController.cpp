@@ -76,8 +76,8 @@ void ShapeController::writeToVertexbuffer(
 		uint shapeVertexCount = shapes[i].getVertexCount();
 		
 		for (int j = 0; j < shapeVertexCount * 2; j += 2) {
-			vertexBuffer[positionOffsetCounter + j] = shapeVertexCoords[j] + positionX;
-			vertexBuffer[positionOffsetCounter + j + 1] = shapeVertexCoords[j + 1] + positionY;
+			vertexBuffer[positionOffsetCounter + j] = shapeVertexCoords[j] + positionX + *shapes[i].getPositionXpointer();
+			vertexBuffer[positionOffsetCounter + j + 1] = shapeVertexCoords[j + 1] + positionY + *shapes[i].getPositionYpointer();
 		}
 		positionOffsetCounter += shapeVertexCount * 2;
 
@@ -91,18 +91,18 @@ void ShapeController::writeToVertexbuffer(
 	}
 }
 
-void ShapeController::writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter) {
+void ShapeController::writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter, uint& vertexCounter) {
 	for (int i = 0; i < shapeGroup->getShapeCount(); i++) {
 		for (int j = 0; j < shapeGroup->getShapesPointer()[i].getEBOsize(); j++) {
-			EBObuffer[EBOoffsetCounter + j] = shapeGroup->getShapesPointer()[i].getVertexIDsPointer()[j] + EBOoffsetCounter;
+			EBObuffer[EBOoffsetCounter + j] = shapeGroup->getShapesPointer()[i].getVertexIDsPointer()[j] + vertexCounter;
 		}
 		EBOoffsetCounter += shapeGroup->getShapesPointer()[i].getEBOsize();
+		vertexCounter += shapeGroup->getShapesPointer()[i].getVertexCount();
 	}
 	for (int i = 0; i < shapeGroup->getShapeGroupCount(); i++) {
-		writeToEBObuffer(&shapeGroup->getShapeGroupsPointer()[i], EBOoffsetCounter);
+		writeToEBObuffer(&shapeGroup->getShapeGroupsPointer()[i], EBOoffsetCounter, vertexCounter);
 	}
 }
-
 
 void ShapeController::reallocateBuffers() {
 	delete[] vertexBuffer;
@@ -120,13 +120,14 @@ void ShapeController::reallocateBuffers() {
 		(GLvoid*)(2 * vertexCount * sizeof(float)));
 
 	uint EBOoffsetCounter = 0;
-	for (ShapeGroup* group : shapeGroups) {
-		for (ShapeGroup* shapeGroup : shapeGroups) {
-			writeToEBObuffer(shapeGroup, EBOoffsetCounter);
-		}
-	}
+	uint vertexCounter = 0;
 
+	for (ShapeGroup* shapeGroup : shapeGroups) {
+		writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
+	}
+	
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
+	
 }
 
 void ShapeController::setWindow(GLFWwindow* window) {
@@ -241,10 +242,10 @@ void ShapeController::draw() {
 	glfwSwapBuffers(window);
 }
 
-std::list<ShapeGroup*>::iterator ShapeController::addShape(Shape* shape) {
-	shapeGroups.push_front(new ShapeGroup(*shape));
-	vertexCount += shape->getVertexCount();
-	EBOsize += shape->getEBOsize();
+std::list<ShapeGroup*>::iterator ShapeController::addShape(Shape shape) {
+	shapeGroups.push_front(new ShapeGroup(shape));
+	vertexCount += shape.getVertexCount();
+	EBOsize += shape.getEBOsize();
 	reallocateBuffers();
 	return shapeGroups.begin();
 }

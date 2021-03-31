@@ -54,7 +54,7 @@ void CameraAnimationEvent::start() {
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
 ShapeSpawnEvent::ShapeSpawnEvent(
-	Shape* shape, 
+	Shape shape, 
 	int shapeGroupID,
 	float initTime
 ) : LevelEvent(initTime) {

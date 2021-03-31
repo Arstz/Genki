@@ -43,7 +43,7 @@ public:
 
 	static float* getCameraValuePointer(uint valueNum);
 
-	static std::list<ShapeGroup*>::iterator addShape(Shape* shape);
+	static std::list<ShapeGroup*>::iterator addShape(Shape shape);
 	static std::list<ShapeGroup*>::iterator addShapeGroup(ShapeGroup* shapeGroup);
 	
 
@@ -55,6 +55,6 @@ public:
 		float positionY
 	);
 
-	static void writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter);
+	static void writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter, uint &vertexCounter);
 };
 
