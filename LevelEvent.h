@@ -11,7 +11,7 @@ class EventController;
 
 enum LevelEventType {
 	EMPTY,
-	BACKGROUND_COLOR_ANIMATION, //cherez 100 let sdelaem
+	BACKGROUND_COLOR_ANIMATION, //cherez 5 let sdelaem
 	CAMERA_ANIMATION,
 	SHAPE_SPAWN,
 	SHAPE_DESTRUCTION,
@@ -20,8 +20,11 @@ enum LevelEventType {
 };
 
 enum AnimatedValueType {
-	VERTEX,
-	COLOR,
+	VERTEX_POSITION,
+	VERTEX_COLOR,
+	ALPHA_CHANNEL,
+	POSITION_X,
+	POSITION_Y,
 };
 
 class LevelEvent {
@@ -30,53 +33,72 @@ protected:
 	float initTime;
 	LevelEventType type;
 
+
+	LevelEvent();
+	LevelEvent(float initTime);
+
 public:
 	static std::list<ShapeGroup*>::iterator* shapeGroups;
 	virtual void write(std::ofstream& fout);
 	virtual void start();
 	float getInitTime();
 
-	LevelEvent();
-	LevelEvent(float initTime);
-
 	LevelEventType getType();
 };
-/*
-class CameraAnimationEvent : public LevelEvent {
 
-	Animation* animation;
+class CameraAnimationEvent : public LevelEvent {
+	Animation animation;
 	uint valueNum;
-public:
+
 	CameraAnimationEvent();
 	CameraAnimationEvent(
-		Animation* animation, 
+		Animation animation,
 		uint valueNum,
 		float initTime
 	);
-	void write(std::ofstream& fout) override;
+
+public:
+	static CameraAnimationEvent* create(
+		Animation animation,
+		uint valueNum,
+		float initTime
+	);
+	
 	void start() override;
+//	void write(std::ofstream& fout) override;
 };
-*/
+
 class ShapeSpawnEvent : public LevelEvent {
 	int shapeGroupID;
 	Shape shape;
-public:
-	ShapeSpawnEvent();
 	ShapeSpawnEvent(
-		Shape shape, 
+		Shape shape,
 		int shapeGroupID,
 		float initTime
 	);
-//	void write(std::ofstream& fout) override;
+	ShapeSpawnEvent();
+public:
+	static ShapeSpawnEvent* create(
+		Shape shape,
+		int shapeGroupID,
+		float initTime
+	);
 	void start() override;
+
+//	void write(std::ofstream& fout) override;
 };
 
 class ShapeGroupSpawnEvent : public LevelEvent {
 	int shapeGroupID;
 	ShapeGroup shapeGroup;
-public:
 	ShapeGroupSpawnEvent();
 	ShapeGroupSpawnEvent(
+		ShapeGroup shapeGroup,
+		int shapeGroupID,
+		float initTime
+	);
+public:
+	static ShapeGroupSpawnEvent* create(
 		ShapeGroup shapeGroup,
 		int shapeGroupID,
 		float initTime
@@ -84,36 +106,54 @@ public:
 	//	void write(std::ofstream& fout) override;
 	void start() override;
 };
-/*
-class ShapeDestructionEvent : public LevelEvent { //opasniy pizdets
-	int shapeID;
-public:
-	ShapeDestructionEvent();
-	ShapeDestructionEvent(int shapeID, float initTime);
-	void write(std::ofstream& fout) override;
-	void start() override;
-};
 
-class ShapeAnimationEvent : public LevelEvent {
-	Animation* animation;
-	AnimatedValueType animatedValueType;
-	int shapeID;
-	int AnimatedValueID;
-	int vertexNum;
-	int channelNum;
+class ShapeGroupDestructionEvent : public LevelEvent { //opasniy pizdets
+	int shapeGroupID;
+	ShapeGroupDestructionEvent();
+	ShapeGroupDestructionEvent(int shapeGroupID, float initTime);
 public:
+
+	static ShapeGroupDestructionEvent* create(int shapeGroupID, float initTime);
+
+	void start() override;
+//	void write(std::ofstream& fout) override;
+};
+/*
+class ShapeAnimationEvent : public LevelEvent {
+	Animation animation;
+	AnimatedValueType animatedValueType;
+	uint* shapePath;
+	uint pathSize;
+	int animatedValueID;
+	int vertexNum;
+	int valueNum;
+
 	ShapeAnimationEvent();
 	ShapeAnimationEvent(
-		Animation* animation,
+		Animation animation,
 		AnimatedValueType animatedValueType,
-		int AnimatedValueID,
-		int shapeID,
+		uint* shapePath,
+		uint pathSize,
+		int animatedValueID,
 		int vertexNum,
-		int channelNum,
+		int valueNum,
 		float initTime
 	);
-	void write(std::ofstream& fout) override;
+public:
+
+	static ShapeAnimationEvent* create(
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		uint* shapePath,
+		uint pathSize,
+		int AnimatedValueID,
+		int vertexNum,
+		int valueNum,
+		float initTime
+	);
+
 	void start() override;
+//	void write(std::ofstream& fout) override;
 };
 */
 class PlayerBindingEvent : public LevelEvent {
@@ -126,15 +166,20 @@ public:
 	void write(std::ofstream& fout) override;
 	void start() override;
 };
-/*
+
 class BackgroundColorAnimationEvent : public LevelEvent {
-public:
+
 	uint animatedValueID;
-	Animation* animation;
+	Animation animation;
 
 	BackgroundColorAnimationEvent();
-	BackgroundColorAnimationEvent(uint animatedValueID, Animation* animation, float initTime);
-	void write(std::ofstream& fout) override;
+	BackgroundColorAnimationEvent(uint animatedValueID, Animation animation, float initTime);
+public:
+	static BackgroundColorAnimationEvent* create(
+		uint animatedValueID,
+		Animation animation,
+		float initTime
+	);
+//	void write(std::ofstream& fout) override;
 	void start() override;
 };
-*/

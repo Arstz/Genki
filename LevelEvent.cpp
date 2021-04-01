@@ -25,10 +25,10 @@ void LevelEvent::write(std::ofstream& fout) {}
 void LevelEvent::start() {}
 
 //CameraAnimationEvent
-/*
+
 CameraAnimationEvent::CameraAnimationEvent() {}
 CameraAnimationEvent::CameraAnimationEvent(
-	Animation* animation, 
+	Animation animation, 
 	uint valueNum, 
 	float initTime
 ) : LevelEvent::LevelEvent(initTime) {
@@ -36,7 +36,7 @@ CameraAnimationEvent::CameraAnimationEvent(
 	this->valueNum = valueNum;
 	this->type = LevelEventType::CAMERA_ANIMATION;
 }
-
+/*
 void CameraAnimationEvent::write(std::ofstream& fout) {
 	fout.write((char*)(&valueNum), sizeof(uint));
 
@@ -45,14 +45,23 @@ void CameraAnimationEvent::write(std::ofstream& fout) {
 	fout.write((char*)(animation->timeKeys), sizeof(int) * animation->keyCount);
 	fout.write((char*)(animation->stateKeys), sizeof(int) * animation->keyCount);
 }
+*/
+CameraAnimationEvent* CameraAnimationEvent::create(Animation animation, uint valueNum, float initTime) {
+	return new CameraAnimationEvent(animation, valueNum, initTime);
+}
 
 void CameraAnimationEvent::start() {
 	AnimationController::add(new AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
 }
-*/
+
 //ShapeSpawnEvent
 
 ShapeSpawnEvent::ShapeSpawnEvent() {}
+
+ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, float initTime) {
+	return new ShapeSpawnEvent(shape, shapeGroupID, initTime);
+}
+
 ShapeSpawnEvent::ShapeSpawnEvent(
 	Shape shape, 
 	int shapeGroupID,
@@ -86,6 +95,9 @@ ShapeGroupSpawnEvent::ShapeGroupSpawnEvent(
 	this->shapeGroup = shapeGroup;
 	this->type = LevelEventType::SHAPE_SPAWN;
 }
+ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(ShapeGroup shapeGroup, int shapeGroupID, float initTime) {
+	return new ShapeGroupSpawnEvent(shapeGroup, shapeGroupID, initTime);
+}
 /*
 void ShapeSpawnEvent::write(std::ofstream& fout) {
 	fout.write((char*)(&shape->vertexCount), sizeof(uint));
@@ -101,41 +113,71 @@ void ShapeGroupSpawnEvent::start() {
 	shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(&shapeGroup);
 }
 
-//ShapeDestructionEvent
-/*
-ShapeDestructionEvent::ShapeDestructionEvent() {}
-ShapeDestructionEvent::ShapeDestructionEvent(int shapeID, float initTime) : LevelEvent(initTime) {
-	this->shapeID = shapeID;
+//ShapeGroupDestructionEvent
+
+ShapeGroupDestructionEvent::ShapeGroupDestructionEvent() {}
+ShapeGroupDestructionEvent::ShapeGroupDestructionEvent(int shapeGroupID, float initTime) : LevelEvent(initTime) {
+	this->shapeGroupID = shapeGroupID;
 	this->type = LevelEventType::SHAPE_DESTRUCTION;
 }
-
+/*
 void ShapeDestructionEvent::write(std::ofstream& fout) {
 	fout.write((char*)(&shapeID), sizeof(int));
 }
+*/
+ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(int shapeGroupID, float initTime) {
+	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
+}
 
-void ShapeDestructionEvent::start() {
-	ShapeController::removeShape(dynamicShapes[shapeID]);
+void ShapeGroupDestructionEvent::start() {
+	ShapeController::removeShapeGroup(shapeGroups[shapeGroupID]);
 }
 
 //ShapeAnimationEvent
-
+/*
 ShapeAnimationEvent::ShapeAnimationEvent() {}
 ShapeAnimationEvent::ShapeAnimationEvent(
-	Animation* animation,
+	Animation animation,
 	AnimatedValueType animatedValueType,
-	int AnimatedValueID,
-	int shapeID,
+	uint* shapePath,
+	uint pathSize,
+	int animatedValueID,
 	int vertexNum,
-	int channelNum,
+	int valueNum,
 	float initTime
 ) : LevelEvent(initTime) {
 	this->animation = animation;
 	this->animatedValueType = animatedValueType;
-	this->AnimatedValueID = AnimatedValueID;
-	this->shapeID = shapeID;
+
+	this->shapePath = new uint[pathSize];
+	for (int i = 0; i < pathSize; i++) this->shapePath[i] = shapePath[i];
+
+	this->animatedValueID = animatedValueID;
 	this->vertexNum = vertexNum;
-	this->channelNum = channelNum;
+	this->valueNum = valueNum;
 	this->type = LevelEventType::SHAPE_ANIMATION;
+}
+
+ShapeAnimationEvent* ShapeAnimationEvent::create(
+	Animation animation,
+	AnimatedValueType animatedValueType,
+	uint* shapePath,
+	uint pathSize,
+	int animatedValueID, 
+	int vertexNum,
+	int valueNum,
+	float initTime
+) {
+	return new ShapeAnimationEvent(
+		animation,
+		animatedValueType,
+		shapePath,
+		pathSize,
+		animatedValueID,
+		vertexNum,
+		valueNum,
+		initTime
+	);
 }
 
 void ShapeAnimationEvent::write(std::ofstream& fout) {
@@ -155,11 +197,15 @@ void ShapeAnimationEvent::start() {
 	float* target;
 	switch(animatedValueType)
 	{
-	case VERTEX:
-		target = (*dynamicShapes[shapeID])->getPositionPointer(vertexNum, channelNum);
+	case AnimatedValueType::VERTEX_POSITION:
 		break;
-	case COLOR:
-		target = (*dynamicShapes[shapeID])->getColorPointer(vertexNum, channelNum);
+	case AnimatedValueType::VERTEX_COLOR:
+		break;
+	case AnimatedValueType::ALPHA_CHANNEL:
+		break;
+	case AnimatedValueType::POSITION_X:
+		break;
+	case AnimatedValueType::POSITION_Y:
 		break;
 	default:
 		throw "WRONG ANIMATED VALUE TYPE";
@@ -167,9 +213,9 @@ void ShapeAnimationEvent::start() {
 	}
 	AnimationController::add(new AnimationTask(animation, target));
 }
-
-//PlayerBindingEvent
 */
+//PlayerBindingEvent
+
 Player* PlayerBindingEvent::player = nullptr;
 
 PlayerBindingEvent::PlayerBindingEvent() {}
@@ -190,18 +236,24 @@ void PlayerBindingEvent::start() {
 }
 
 //BackgroundColorAnimationEvent
-/*
+
 BackgroundColorAnimationEvent::BackgroundColorAnimationEvent() {}
-BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(uint animatedValueID, Animation* animation, float initTime) : LevelEvent(initTime) {
+BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(uint animatedValueID, Animation animation, float initTime) : LevelEvent(initTime) {
 	this->type = LevelEventType::BACKGROUND_COLOR_ANIMATION;
 	this->animatedValueID = animatedValueID;
 }
 
+BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(uint animatedValueID, Animation animation, float initTime) {
+	return new BackgroundColorAnimationEvent(animatedValueID, animation, initTime);
+}
+
+/*
 void BackgroundColorAnimationEvent::write(std::ofstream& fout) {
 	fout.write((char*)(&animatedValueID), sizeof(uint));
 }
+*/
 
 void BackgroundColorAnimationEvent::start() {
 	AnimationController::add(new AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
 }
-*/
+

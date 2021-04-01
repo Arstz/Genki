@@ -54,7 +54,6 @@ void Engine::init() {
 		Shape(4, cds1, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 		Shape(4, cds2, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 	};
-	
 
 	ShapeGroup a(2, 0, shps, nullptr, 0.1, 0, 0, 0);
 
@@ -62,11 +61,11 @@ void Engine::init() {
 	Shape* shape2 = new Shape(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 1, 1, 0);
 
 
-	EventController::level.push_back(new ShapeSpawnEvent(*shape, 0, 0));
-	EventController::level.push_back(new ShapeSpawnEvent(*shape, 1, 0));
-	EventController::level.push_back(new ShapeSpawnEvent(*shape2, 2, 0));
-	EventController::level.push_back(new ShapeGroupSpawnEvent(a, 0, 0));
-	EventController::level.push_back(new PlayerBindingEvent(0, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(*shape, 0, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(*shape, 1, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(*shape2, 2, 0));
+	EventController::level.push_back(ShapeGroupSpawnEvent::create(a, 2, 0));
+	EventController::level.push_back(new PlayerBindingEvent(2, 0));
 
 //	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
 	
@@ -93,7 +92,6 @@ void Engine::update() {
 void Engine::render() {
 	ShapeController::draw();
 	Window::clear();
-	
 }
 
 bool Engine::running() {

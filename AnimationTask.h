@@ -2,9 +2,7 @@
 #include "Animation.h"
 
 class AnimationTask {
-private:
-
-	Animation* animation;
+	Animation animation;
 	unsigned int counter;
 	float timer;
 	float* target;
@@ -28,10 +26,9 @@ private:
 
 public:
 	AnimationTask();
-	~AnimationTask();
 
-	AnimationTask(Animation* animation, float* target);
-	AnimationTask(Animation* animation, float* target, unsigned int counter, float timer);
+	AnimationTask(Animation animation, float* target);
+	AnimationTask(Animation animation, float* target, unsigned int counter, float timer);
 
 	void animateLoop(float& frameTime);
 	bool animate(float& frameTime);
