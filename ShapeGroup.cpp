@@ -16,8 +16,13 @@ ShapeGroup::ShapeGroup(
 ) {
 	this->shapeCount = shapeCount;
 	this->shapeGroupCount = shapeGroupCount;
-	this->shapes = shapes;
-	this->shapeGroups = shapeGroups;
+
+	this->shapes = new Shape[shapeCount];
+	for (int i = 0; i < shapeCount; i++) this->shapes[i] = shapes[i];
+
+	this->shapeGroups = new ShapeGroup[shapeGroupCount];
+	for (int i = 0; i < shapeGroupCount; i++) this->shapeGroups[i] = shapeGroups[i];
+
 	this->alphaChannel = alphaChannel;
 	this->positionX = positionX;
 	this->positionY = positionY;

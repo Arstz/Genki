@@ -49,11 +49,12 @@ void Engine::init() {
 	float cls[] = {0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
 
 	float cds2[] = {-0.25f, 0.f, -0.25f, 1.f, 0.75f, 0.f, 0.75, 1.f};
-
-	Shape* shps = new Shape[]{
+	
+	Shape shps[] = {
 		Shape(4, cds1, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 		Shape(4, cds2, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 	};
+	
 
 	ShapeGroup a(2, 0, shps, nullptr, 0.1, 0, 0, 0);
 
