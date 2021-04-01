@@ -43,7 +43,7 @@ public:
 
 	uint* getVertexIDsPointer();
 
-	float getAlphaChannel() const;
+	float* getAlphaChannelPointer();
 	float* getPositionXpointer();
 	float* getPositionYpointer();
 

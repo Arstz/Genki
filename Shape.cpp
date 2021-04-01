@@ -113,8 +113,8 @@ uint* Shape::getVertexIDsPointer() {
 	return vertexIDs;
 }
 
-float Shape::getAlphaChannel() const {
-	return alphaChannel;
+float* Shape::getAlphaChannelPointer() {
+	return &alphaChannel;
 }
 
 float* Shape::getPositionXpointer() {

@@ -51,6 +51,7 @@ Animation& Animation::operator=(const Animation& animation) {
 		this->timeKeys[i] = animation.timeKeys[i];
 		this->stateKeys[i] = animation.stateKeys[i];
 	}
+	return *this;
 }
 
 float* Animation::getTimeKeysPointer() {

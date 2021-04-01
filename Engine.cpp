@@ -55,21 +55,37 @@ void Engine::init() {
 		Shape(4, cds2, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 	};
 
-	ShapeGroup a(2, 0, shps, nullptr, 0.1, 0, 0, 0);
+	ShapeGroup a(2, shps, 0.1, 0, 0, 0);
+	ShapeGroup b(2, shps, 0.9, 0, 3, 0);
+	ShapeGroup c(2, shps, 0.5, 7, 3, 0);
 
-	Shape* shape = new Shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs, 0.5, 10, 5, 0);
-	Shape* shape2 = new Shape(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 1, 1, 0);
+	Shape shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs, 0.5, 10, 5, 0);
+	Shape shape2(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 1, 1, 0);
+	Shape shape3(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 2, 1, 0);
 
+	EventController::level.push_back(ShapeGroupSpawnEvent::create(a, 0, 0, 0));
+	EventController::level.push_back(ShapeGroupSpawnEvent::create(b, 3, 0, 0));
+	EventController::level.push_back(ShapeGroupSpawnEvent::create(c, 1, 0, 0));
 
-	EventController::level.push_back(ShapeSpawnEvent::create(*shape, 0, 0));
-	EventController::level.push_back(ShapeSpawnEvent::create(*shape, 1, 0));
-	EventController::level.push_back(ShapeSpawnEvent::create(*shape2, 2, 0));
-	EventController::level.push_back(ShapeGroupSpawnEvent::create(a, 2, 0));
-	EventController::level.push_back(new PlayerBindingEvent(2, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(shape, 2, 0, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(shape2, 0, 0, 0));
+	EventController::level.push_back(ShapeSpawnEvent::create(shape3, 0, 0, 0));
+
+	float tk[] = {0, 3e3f};
+	float sk[] = {0, 1};
+
+	float sk2[] = {1, 0.8};
+
+	EventController::level.push_back(BackgroundColorAnimationEvent::create(0, Animation(2, tk, sk2), 2e3f));
+
+	EventController::level.push_back(ShapeGroupAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_X, 3, 1e3f));
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 0, 1, 0, 1e3f));
+
+	EventController::level.push_back(PlayerBindingEvent::create(1, 0));
 
 //	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
 	
-	LevelEvent::shapeGroups = new std::list<ShapeGroup*>::iterator[4];
+	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
 
 //	EventController::saveLevel("a", EventController::level);
 //	EventController::loadLevel("a");

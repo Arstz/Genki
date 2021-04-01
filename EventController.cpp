@@ -11,6 +11,7 @@ void EventController::update()
 {
 	while (currentEvent < level.size() && level[currentEvent]->getInitTime() < *currentTime) {
 		level[currentEvent]->start();
+//		delete level[currentEvent];
 		currentEvent++;
 	}
 }

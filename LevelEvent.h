@@ -38,7 +38,7 @@ protected:
 	LevelEvent(float initTime);
 
 public:
-	static std::list<ShapeGroup*>::iterator* shapeGroups;
+	static std::list<ShapeGroup>::iterator* shapeGroups;
 	virtual void write(std::ofstream& fout);
 	virtual void start();
 	float getInitTime();
@@ -70,10 +70,12 @@ public:
 
 class ShapeSpawnEvent : public LevelEvent {
 	int shapeGroupID;
+	int targetShapeGroupID;
 	Shape shape;
 	ShapeSpawnEvent(
 		Shape shape,
 		int shapeGroupID,
+		int targetShapeGroupID,
 		float initTime
 	);
 	ShapeSpawnEvent();
@@ -81,6 +83,7 @@ public:
 	static ShapeSpawnEvent* create(
 		Shape shape,
 		int shapeGroupID,
+		int targetShapeGroupID,
 		float initTime
 	);
 	void start() override;
@@ -90,17 +93,20 @@ public:
 
 class ShapeGroupSpawnEvent : public LevelEvent {
 	int shapeGroupID;
+	int targetShapeGroupID;
 	ShapeGroup shapeGroup;
 	ShapeGroupSpawnEvent();
 	ShapeGroupSpawnEvent(
 		ShapeGroup shapeGroup,
 		int shapeGroupID,
+		int targetShapeGroupID,
 		float initTime
 	);
 public:
 	static ShapeGroupSpawnEvent* create(
 		ShapeGroup shapeGroup,
 		int shapeGroupID,
+		int targetShapeGroupID,
 		float initTime
 	);
 	//	void write(std::ofstream& fout) override;
@@ -118,13 +124,13 @@ public:
 	void start() override;
 //	void write(std::ofstream& fout) override;
 };
-/*
+
 class ShapeAnimationEvent : public LevelEvent {
 	Animation animation;
 	AnimatedValueType animatedValueType;
-	uint* shapePath;
-	uint pathSize;
+	int shapeGroupID;
 	int animatedValueID;
+	int shapeNum;
 	int vertexNum;
 	int valueNum;
 
@@ -132,9 +138,9 @@ class ShapeAnimationEvent : public LevelEvent {
 	ShapeAnimationEvent(
 		Animation animation,
 		AnimatedValueType animatedValueType,
-		uint* shapePath,
-		uint pathSize,
+		int shapeGroupID,
 		int animatedValueID,
+		int shapeNum,
 		int vertexNum,
 		int valueNum,
 		float initTime
@@ -144,9 +150,9 @@ public:
 	static ShapeAnimationEvent* create(
 		Animation animation,
 		AnimatedValueType animatedValueType,
-		uint* shapePath,
-		uint pathSize,
-		int AnimatedValueID,
+		int shapeGroupID,
+		int animatedValueID,
+		int shapeNum,
 		int vertexNum,
 		int valueNum,
 		float initTime
@@ -155,20 +161,47 @@ public:
 	void start() override;
 //	void write(std::ofstream& fout) override;
 };
-*/
+
+class ShapeGroupAnimationEvent : public LevelEvent {
+	Animation animation;
+	AnimatedValueType animatedValueType;
+	int shapeGroupID;
+
+
+	ShapeGroupAnimationEvent();
+	ShapeGroupAnimationEvent(
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		int shapeGroupID,
+		float initTime
+	);
+public:
+
+	static ShapeGroupAnimationEvent* create(
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		int shapeGroupID,
+		float initTime
+	);
+
+	void start() override;
+	//	void write(std::ofstream& fout) override;
+};
+
 class PlayerBindingEvent : public LevelEvent {
+	PlayerBindingEvent();
+	PlayerBindingEvent(int shapeGroupID, float initTime);
+	int shapeGroupID;
 public:
 	static Player* player;
-	int shapeID;
 
-	PlayerBindingEvent();
-	PlayerBindingEvent(int shapeID, float initTime);
-	void write(std::ofstream& fout) override;
+	static PlayerBindingEvent* create(int shapeGroupID, float initTime);
+
+//	void write(std::ofstream& fout) override;
 	void start() override;
 };
 
 class BackgroundColorAnimationEvent : public LevelEvent {
-
 	uint animatedValueID;
 	Animation animation;
 

@@ -2,26 +2,21 @@
 
 ShapeGroup::ShapeGroup() {
 	this->shapes = nullptr;
-	this->shapeGroups = nullptr;
 }
 ShapeGroup::ShapeGroup(
 	uint shapeCount,
-	uint shapeGroupCount,
 	Shape* shapes,
-	ShapeGroup* shapeGroups,
 	float alphaChannel,
 	float positionX,
 	float positionY,
 	int layer
 ) {
 	this->shapeCount = shapeCount;
-	this->shapeGroupCount = shapeGroupCount;
 
 	this->shapes = new Shape[shapeCount];
 	for (int i = 0; i < shapeCount; i++) this->shapes[i] = shapes[i];
 
-	this->shapeGroups = new ShapeGroup[shapeGroupCount];
-	for (int i = 0; i < shapeGroupCount; i++) this->shapeGroups[i] = shapeGroups[i];
+	this->shapeGroups = shapeGroups;
 
 	this->alphaChannel = alphaChannel;
 	this->positionX = positionX;
@@ -29,13 +24,12 @@ ShapeGroup::ShapeGroup(
 	this->layer = layer;
 }
 
-ShapeGroup::ShapeGroup(const Shape &shape) {
+ShapeGroup::ShapeGroup(Shape shape) {
 	this->shapeCount = 1;
-	this->shapeGroupCount = 0;
 
 	this->layer = shape.getLayer();
-	this->shapes = new Shape(shape);
-	this->shapeGroups = nullptr;
+	this->shapes = new Shape[1] {shape};
+	this->shapeGroups = std::list<ShapeGroup>();
 	this->alphaChannel = 1.f;
 	this->positionX = 0.f;
 	this->positionY = 0.f;
@@ -48,18 +42,15 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 	this->positionY = shapeGroup.positionY;
 
 	this->shapeCount = shapeGroup.shapeCount;
-	this->shapeGroupCount = shapeGroup.shapeGroupCount;
 
 	this->shapes = new Shape[shapeGroup.shapeCount];
-	this->shapeGroups = new ShapeGroup[shapeGroup.shapeGroupCount];
+	this->shapeGroups = shapeGroups;
 
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
-	for (int i = 0; i < shapeGroup.shapeGroupCount; i++) this->shapeGroups[i] = shapeGroup.shapeGroups[i];
 }
 
 ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	delete[] shapes;
-	delete[] shapeGroups;
 
 	this->layer = shapeGroup.layer;
 	this->alphaChannel = shapeGroup.alphaChannel;
@@ -67,29 +58,34 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	this->positionY = shapeGroup.positionY;
 
 	this->shapeCount = shapeGroup.shapeCount;
-	this->shapeGroupCount = shapeGroup.shapeGroupCount;
 
 	this->shapes = new Shape[shapeGroup.shapeCount];
-	this->shapeGroups = new ShapeGroup[shapeGroup.shapeGroupCount];
+	this->shapeGroups = shapeGroups;
 
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
-	for (int i = 0; i < shapeGroup.shapeGroupCount; i++) this->shapeGroups[i] = shapeGroup.shapeGroups[i];
 
 	return *this;
 }
 
+std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(ShapeGroup shapeGroup) {
+	shapeGroups.push_front(shapeGroup);
+	return shapeGroups.begin();
+}
+
+void ShapeGroup::removeShapeGroup(std::list<ShapeGroup>::iterator shapeGroupIterator) {
+	shapeGroups.erase(shapeGroupIterator);
+}
+
 ShapeGroup::~ShapeGroup() {
 	delete[] shapes;
-	delete[] shapeGroups;
 	shapes = nullptr;
-	shapeGroups = nullptr;
 }
 
 uint ShapeGroup::getEBOsize() const {
 	uint size = 0;
 
 	for (int i = 0; i < shapeCount; i++) size += shapes[i].getEBOsize();
-	for (int i = 0; i < shapeGroupCount; i++) size += shapeGroups[i].getEBOsize();
+	for (auto &shapeGroup : shapeGroups) size += shapeGroup.getEBOsize();
 
 	return size;
 }
@@ -98,7 +94,7 @@ uint ShapeGroup::getVertexCount() const {
 	uint size = 0;
 
 	for (int i = 0; i < shapeCount; i++) size += shapes[i].getVertexCount();
-	for (int i = 0; i < shapeGroupCount; i++) size += shapeGroups[i].getVertexCount();
+	for (auto &shapeGroup : shapeGroups) size += shapeGroup.getVertexCount();
 
 	return size;
 }
@@ -107,20 +103,17 @@ uint ShapeGroup::getShapeCount() const {
 	return shapeCount;
 }
 
-uint ShapeGroup::getShapeGroupCount() const {
-	return shapeGroupCount;
-}
-
 Shape* ShapeGroup::getShapesPointer() {
 	return shapes;
 }
 
-ShapeGroup* ShapeGroup::getShapeGroupsPointer() {
+std::list<ShapeGroup> ShapeGroup::getShapeGroups() {
 	return shapeGroups;
 }
 
-float ShapeGroup::getAlphaChannel() const {
-	return alphaChannel;
+
+float* ShapeGroup::getAlphaChannelPointer() {
+	return &alphaChannel;
 }
 
 float* ShapeGroup::getPositionXpointer() {

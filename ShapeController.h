@@ -25,7 +25,7 @@ class ShapeController {
 
 	static float* vertexBuffer;	
 
-	static std::list<ShapeGroup*> shapeGroups;
+	static ShapeGroup shapeGroup;
 
 	static GLFWwindow* window;
 
@@ -39,16 +39,17 @@ public:
 	static void init();
 	static void draw();
 	static void setWindow(GLFWwindow* window);
-	static void removeShapeGroup(std::list<ShapeGroup*>::iterator& shapeIterator);
+	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
 
 	static float* getCameraValuePointer(uint valueNum);
 
-	static std::list<ShapeGroup*>::iterator addShape(Shape shape);
-	static std::list<ShapeGroup*>::iterator addShapeGroup(ShapeGroup* shapeGroup);
-	
+	static std::list<ShapeGroup>::iterator addShape(Shape shape);
+	static std::list<ShapeGroup>::iterator addShape(Shape shape, std::list<ShapeGroup>::iterator shapeGroupIterator);
+	static std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup);
+	static std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup, std::list<ShapeGroup>::iterator shapeGroupIterator);
 
 	static void writeToVertexbuffer(
-		ShapeGroup* shapeGroup, 
+		ShapeGroup &shapeGroup, 
 		uint& positionOffsetCounter, 
 		uint& colorOffsetCounter,
 		float alphaChannel,
@@ -56,6 +57,6 @@ public:
 		float positionY
 	);
 
-	static void writeToEBObuffer(ShapeGroup* shapeGroup, uint &EBOoffsetCounter, uint &vertexCounter);
+	static void writeToEBObuffer(ShapeGroup &shapeGroup, uint &EBOoffsetCounter, uint &vertexCounter);
 };
 

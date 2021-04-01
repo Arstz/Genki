@@ -1,9 +1,9 @@
 #pragma once
 #include "Shape.h"
+#include <list>
 
 class ShapeGroup {
 	uint shapeCount;
-	uint shapeGroupCount;
 
 	int layer;
 
@@ -12,26 +12,26 @@ class ShapeGroup {
 	float positionY;
 
 	Shape* shapes;
-	ShapeGroup* shapeGroups;
+	std::list<ShapeGroup> shapeGroups;
 public:
 	ShapeGroup();
 	ShapeGroup(
 		uint shapeCount,
-		uint shapeGroupCount,
 		Shape* shapes,
-		ShapeGroup* shapeGroups,
 		float alphaChannel,
 		float positionX,
 		float positionY,
 		int layer
 	);
-	ShapeGroup(const Shape& shape);
+	ShapeGroup(Shape shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
 	~ShapeGroup();
 	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 
+	std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup);
+	void removeShapeGroup(std::list<ShapeGroup>::iterator shapeGroupIterator);
 
-	float getAlphaChannel() const;
+	float* getAlphaChannelPointer();
 	float* getPositionXpointer();
 	float* getPositionYpointer();
 
@@ -41,8 +41,7 @@ public:
 	uint getVertexCount() const;
 
 	uint getShapeCount() const;
-	uint getShapeGroupCount() const;
 
 	Shape* getShapesPointer();
-	ShapeGroup* getShapeGroupsPointer();
+	std::list<ShapeGroup> getShapeGroups();
 };
