@@ -5,6 +5,8 @@
 #include <vector>
 #include "ByteArray.h"
 
+#define CREATE_EVENT create(byteLevel, offset, initTime)
+
 std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
 float* EventController::currentTime = nullptr;
@@ -25,17 +27,54 @@ void EventController::loadLevel(std::string path) {
 	fin.open("raid_na_derevene.lvl", std::ifstream::binary);
 	unsigned int byteLevelSize;
 	unsigned int size;
+	unsigned int checkSum;
 	float initTime;
 	LevelEventType type;
 
+	unsigned int offset = 0;
+
 	fin.read((char*)(&byteLevelSize), sizeof(byteLevelSize));
 	fin.read((char*)(&size), sizeof(size));
+	fin.read((char*)(&checkSum), sizeof(checkSum));
 
 	char* byteLevel = new char[byteLevelSize];
 
 	fin.read((char*)(byteLevel), sizeof(byteLevelSize));
 	fin.close();
 	for (int i = 0; i < size; i++) {
+		writeFromByteArray((char*)(&type), byteLevel, offset, sizeof(type));
+		writeFromByteArray((char*)(&initTime), byteLevel, offset, sizeof(initTime));
+
+		switch (type) {
+		case EMPTY:
+			break;
+		case BACKGROUND_COLOR_ANIMATION:
+			level.push_back(BackgroundColorAnimationEvent::CREATE_EVENT);
+			break;
+		case CAMERA_ANIMATION:
+			level.push_back(CameraAnimationEvent::CREATE_EVENT);
+			break;
+		case SHAPE_SPAWN:
+			level.push_back(ShapeSpawnEvent::CREATE_EVENT);
+			break;
+		case SHAPE_GROUP_SPAWN:
+			level.push_back(ShapeGroupSpawnEvent::CREATE_EVENT);
+			break;
+		case SHAPE_GROUP_DESTRUCTION:
+			level.push_back(ShapeGroupDestructionEvent::CREATE_EVENT);
+			break;
+		case SHAPE_ANIMATION:
+			level.push_back(ShapeAnimationEvent::CREATE_EVENT);
+			break;
+		case SHAPE_GROUP_ANIMATION:
+			level.push_back(ShapeGroupAnimationEvent::CREATE_EVENT);
+			break;
+		case PLAYER_BINDING:
+			level.push_back(PlayerBindingEvent::CREATE_EVENT);
+			break;
+		default:
+			break;
+		}
 
 	}
 
@@ -51,7 +90,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 
 	std::vector<std::vector<char>> byteLevel(size);
 
-	unsigned int byteLevelSize = sizeof(size) + sizeof(checkSum);
+	unsigned int byteLevelSize = sizeof(size);
 
 	for (int i = 0; i < size; i++) {
 		std::vector<char> tempArray = level[i]->getByteArray();
@@ -79,7 +118,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 
 	int valueCount = (byteLevelSize - offset) / 4;
 
-	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);
+//	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);
 
 	writeToByteArray(fileData, (char*)&checkSum, tempOffset, sizeof(checkSum));
 

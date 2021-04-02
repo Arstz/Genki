@@ -26,6 +26,7 @@ public:
 	);
 	ShapeGroup(const Shape &shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
+	ShapeGroup(char* byteArray, unsigned int &offset);
 	~ShapeGroup();
 	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 

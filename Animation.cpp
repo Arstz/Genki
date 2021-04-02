@@ -55,6 +55,14 @@ Animation& Animation::operator=(const Animation& animation) {
 	return *this;
 }
 
+Animation::Animation(char* byteArray, unsigned int& offset) {
+	writeFromByteArray((char*)&keyCount, byteArray, offset, sizeof(keyCount));
+	this->timeKeys = new float[keyCount];
+	this->stateKeys = new float[keyCount];
+	writeFromByteArray((char*)timeKeys, byteArray, offset, sizeof(timeKeys) * keyCount);
+	writeFromByteArray((char*)stateKeys, byteArray, offset, sizeof(stateKeys) * keyCount);
+}
+
 float* Animation::getTimeKeysPointer() {
 	return timeKeys;
 }

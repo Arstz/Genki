@@ -32,6 +32,7 @@ public:
 	);
 
 	Shape(const Shape& shape);
+	Shape(char* byteArray, unsigned int& offset);
 	~Shape();
 
 	Shape& operator=(const Shape& shape);

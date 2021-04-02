@@ -50,6 +50,22 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
 }
 
+ShapeGroup::ShapeGroup(char* byteArray, unsigned int& offset) {
+	unsigned int shapeGroupCount;
+	shapeGroups = std::list<ShapeGroup>();
+	writeFromByteArray((char*)&shapeCount, byteArray, offset, sizeof(shapeCount));
+	writeFromByteArray((char*)&shapeGroupCount, byteArray, offset, sizeof(shapeGroupCount));
+	writeFromByteArray((char*)&layer, byteArray, offset, sizeof(layer));
+	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
+	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
+	writeFromByteArray((char*)&positionY, byteArray, offset, sizeof(positionY));
+	shapes = new Shape[shapeCount];
+	for (int i = 0; i < shapeCount; i++)
+		shapes[i] = Shape(byteArray, offset);
+	for (int i = 0; i < shapeGroupCount; i++)
+		shapeGroups.push_back(ShapeGroup(byteArray, offset));
+}
+
 ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	delete[] shapes;
 

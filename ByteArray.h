@@ -21,6 +21,13 @@ void writeToByteArray(
 	unsigned int size
 );
 
+void writeFromByteArray(
+	char* byteVector,
+	char* byteArray,
+	unsigned int& offset,
+	unsigned int size
+);
+
 void writeToByteArray(
 	char* byteVector,
 	const std::vector<char>& byteArray,

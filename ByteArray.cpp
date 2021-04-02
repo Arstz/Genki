@@ -28,6 +28,16 @@ void writeToByteArray(
 	offset += size;
 }
 
+void writeFromByteArray(
+	char* byteVector,
+	char* byteArray,
+	unsigned int& offset, 
+	unsigned int size
+) {
+	for (int i = 0; i < size; i++) byteVector[i] = byteArray[i + offset];
+	offset += size;
+}
+
 void writeToByteArray(
 	char* byteVector, 
 	const std::vector<char>& byteArray, 

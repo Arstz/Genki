@@ -80,7 +80,7 @@ void Engine::init() {
 	EventController::level.push_back(PlayerBindingEvent::create(1, 0));
 //	EventController::level.push_back(BackgroundColorAnimationEvent::create(0, Animation(2, tk, sk2), 2e3f));
 	EventController::level.push_back(ShapeGroupAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_X, 3, 1e3f));
-	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 0, 1, 0, 1e3f));
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 1, 0, 1e3f));
 
 	
 //	EventController::level.push_back(ShapeGroupDestructionEvent::create(0, 2e3f));

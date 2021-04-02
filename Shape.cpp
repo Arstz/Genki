@@ -58,6 +58,22 @@ Shape::Shape(const Shape& shape) {
 	this->layer = shape.layer;
 }
 
+Shape::Shape(char* byteArray, unsigned int& offset) {
+	writeFromByteArray((char*)&vertexCount, byteArray, offset, sizeof(vertexCount));
+	writeFromByteArray((char*)&EBOsize, byteArray, offset, sizeof(EBOsize));
+	writeFromByteArray((char*)vertexIDs, byteArray, offset, sizeof(vertexIDs) * EBOsize);
+	writeFromByteArray((char*)&layer, byteArray, offset, sizeof(layer));
+	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
+	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
+	writeFromByteArray((char*)&positionY, byteArray, offset, sizeof(positionY));
+	vertexCoords = new float[vertexCount * 2];
+	vertexColors = new float[vertexCount * 4];
+	vertexIDs = new uint[EBOsize];
+	writeFromByteArray((char*)vertexCoords, byteArray, offset, sizeof(vertexCoords) * vertexCount * 2);
+	writeFromByteArray((char*)vertexColors, byteArray, offset, sizeof(vertexColors) * vertexCount * 4);
+	writeFromByteArray((char*)vertexIDs, byteArray, offset, sizeof(vertexIDs) * EBOsize);
+}
+
 Shape::~Shape() {
 	delete[] vertexCoords;	
 	delete[] vertexColors;
@@ -147,13 +163,13 @@ std::vector<char> Shape::getByteArray() {
 
 	writeToByteArray(byteArray, (char*)&vertexCount, offset, sizeof(vertexCount));
 	writeToByteArray(byteArray, (char*)&EBOsize, offset, sizeof(EBOsize));
-	writeToByteArray(byteArray, (char*)vertexIDs, offset, sizeof(vertexIDs) * EBOsize);
 	writeToByteArray(byteArray, (char*)&layer, offset, sizeof(layer));
 	writeToByteArray(byteArray, (char*)&alphaChannel, offset, sizeof(alphaChannel));
 	writeToByteArray(byteArray, (char*)&positionX, offset, sizeof(positionX));
 	writeToByteArray(byteArray, (char*)&positionY, offset, sizeof(positionY));
 	writeToByteArray(byteArray, (char*)vertexCoords, offset, sizeof(vertexCoords) * vertexCount * 2);
 	writeToByteArray(byteArray, (char*)vertexColors, offset, sizeof(vertexColors) * vertexCount * 4);
+	writeToByteArray(byteArray, (char*)vertexIDs, offset, sizeof(vertexIDs) * EBOsize);
 
 	return byteArray;
 }

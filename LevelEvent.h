@@ -15,8 +15,10 @@ enum LevelEventType {
 	BACKGROUND_COLOR_ANIMATION, //cherez 5 let sdelaem
 	CAMERA_ANIMATION,
 	SHAPE_SPAWN,
-	SHAPE_DESTRUCTION,
+	SHAPE_GROUP_SPAWN,
+	SHAPE_GROUP_DESTRUCTION,
 	SHAPE_ANIMATION,
+	SHAPE_GROUP_ANIMATION,
 	PLAYER_BINDING,
 };
 
@@ -105,9 +107,10 @@ public:
 };
 
 class ShapeGroupSpawnEvent : public LevelEvent {
+	ShapeGroup shapeGroup;
 	int shapeGroupID;
 	int targetShapeGroupID;
-	ShapeGroup shapeGroup;
+
 	ShapeGroupSpawnEvent();
 	ShapeGroupSpawnEvent(
 		ShapeGroup shapeGroup,
@@ -156,7 +159,6 @@ class ShapeAnimationEvent : public LevelEvent {
 	Animation animation;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
-	int animatedValueID;
 	int shapeNum;
 	int vertexNum;
 	int valueNum;
@@ -166,7 +168,6 @@ class ShapeAnimationEvent : public LevelEvent {
 		Animation animation,
 		AnimatedValueType animatedValueType,
 		int shapeGroupID,
-		int animatedValueID,
 		int shapeNum,
 		int vertexNum,
 		int valueNum,
@@ -178,7 +179,6 @@ public:
 		Animation animation,
 		AnimatedValueType animatedValueType,
 		int shapeGroupID,
-		int animatedValueID,
 		int shapeNum,
 		int vertexNum,
 		int valueNum,
@@ -244,15 +244,15 @@ public:
 };
 
 class BackgroundColorAnimationEvent : public LevelEvent {
-	uint valueNum;
 	Animation animation;
+	uint valueNum;
 
 	BackgroundColorAnimationEvent();
-	BackgroundColorAnimationEvent(uint valueNum, Animation animation, float initTime);
+	BackgroundColorAnimationEvent(Animation animation, uint valueNum, float initTime);
 public:
 	static BackgroundColorAnimationEvent* create(
-		uint valueNum,
 		Animation animation,
+		uint valueNum,
 		float initTime
 	);
 	static BackgroundColorAnimationEvent* create(
