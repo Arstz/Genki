@@ -46,8 +46,10 @@ CameraAnimationEvent* CameraAnimationEvent::create(Animation animation, uint val
 	return new CameraAnimationEvent(animation, valueNum, initTime);
 }
 
-CameraAnimationEvent* CameraAnimationEvent::create(char* byteArray, unsigned int& offset)
-{
+CameraAnimationEvent* CameraAnimationEvent::create(
+	char* byteArray, 
+	unsigned int& offset,
+	float initTime) {
 	return nullptr;
 }
 
@@ -77,8 +79,11 @@ ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, int targ
 	return new ShapeSpawnEvent(shape, shapeGroupID, targetShapeGroupID, initTime);
 }
 
-ShapeSpawnEvent* ShapeSpawnEvent::create(char* byteArray, unsigned int& offset)
-{
+ShapeSpawnEvent* ShapeSpawnEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -133,8 +138,11 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(ShapeGroup shapeGroup, int sh
 	return new ShapeGroupSpawnEvent(shapeGroup, shapeGroupID, targetShapeGroupID, initTime);
 }
 
-ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(char* byteArray, unsigned int& offset)
-{
+ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -173,8 +181,11 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(int shapeGroupID,
 	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
 }
 
-ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(char* byteArray, unsigned int& offset)
-{
+ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -238,8 +249,11 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 	);
 }
 
-ShapeAnimationEvent* ShapeAnimationEvent::create(char* byteArray, unsigned int& offset)
-{
+ShapeAnimationEvent* ShapeAnimationEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -326,8 +340,11 @@ ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 	);
 }
 
-ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(char* byteArray, unsigned int& offset)
-{
+ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -384,8 +401,11 @@ PlayerBindingEvent* PlayerBindingEvent::create(int shapeGroupID, float initTime)
 	return new PlayerBindingEvent(shapeGroupID, initTime);
 }
 
-PlayerBindingEvent* PlayerBindingEvent::create(char* byteArray, unsigned int& offset)
-{
+PlayerBindingEvent* PlayerBindingEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
@@ -420,8 +440,11 @@ BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(uint valueN
 	return new BackgroundColorAnimationEvent(valueNum, animation, initTime);
 }
 
-BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(char* byteArray, unsigned int& offset)
-{
+BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(
+	char* byteArray,
+	unsigned int& offset,
+	float initTime
+) {
 	return nullptr;
 }
 
