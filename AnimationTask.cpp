@@ -4,18 +4,11 @@
 
 AnimationTask::AnimationTask() {}
 
-AnimationTask::AnimationTask(Animation animation, float* target) {
+AnimationTask::AnimationTask(const Animation& animation, float* target) {
 	this->animation = animation;
 	this->target = target;
 	this->counter = 0;
 	this->timer = 0;
-}
-
-AnimationTask::AnimationTask(Animation animation, float* target, unsigned int counter, float timer) {
-	this->animation = animation;
-	this->target = target;
-	this->counter = counter;
-	this->timer = timer;
 }
 
 float AnimationTask::calculatePosition(

@@ -42,7 +42,7 @@ CameraAnimationEvent* CameraAnimationEvent::create(Animation animation, uint val
 }
 
 void CameraAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
+	AnimationController::add(AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
 }
 
 /*
@@ -77,8 +77,8 @@ ShapeSpawnEvent::ShapeSpawnEvent(
 }
 
 void ShapeSpawnEvent::start() {
-	if (targetShapeGroupID) shapeGroups[shapeGroupID] = ShapeController::addShape(shape, shapeGroups[targetShapeGroupID]);
-	else shapeGroups[shapeGroupID] = ShapeController::addShape(shape);
+	if (targetShapeGroupID) shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(ShapeGroup(shape), shapeGroups[targetShapeGroupID]);
+	else shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(ShapeGroup(shape));
 }
 
 /*
@@ -216,7 +216,7 @@ void ShapeAnimationEvent::start() {
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;
 	}
-	AnimationController::add(new AnimationTask(animation, target));
+	AnimationController::add(AnimationTask(animation, target));
 }
 
 /*
@@ -282,7 +282,7 @@ void ShapeGroupAnimationEvent::start() {
 		throw "WRONG ANIMATED VALUE TYPE";
 		break;
 	}
-	AnimationController::add(new AnimationTask(animation, target));
+	AnimationController::add(AnimationTask(animation, target));
 }
 
 /*
@@ -338,7 +338,7 @@ BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(uint animat
 }
 
 void BackgroundColorAnimationEvent::start() {
-	AnimationController::add(new AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
+	AnimationController::add(AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
 }
 
 /*

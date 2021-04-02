@@ -27,8 +27,7 @@ class AnimationTask {
 public:
 	AnimationTask();
 
-	AnimationTask(Animation animation, float* target);
-	AnimationTask(Animation animation, float* target, unsigned int counter, float timer);
+	AnimationTask(const Animation& animation, float* target);
 
 	void animateLoop(float& frameTime);
 	bool animate(float& frameTime);

@@ -59,12 +59,6 @@ public:
 
 	static float* getCameraValuePointer(uint valueNum);
 
-	static std::list<ShapeGroup>::iterator addShape(const Shape& shape);
-	static std::list<ShapeGroup>::iterator addShape(
-		const Shape& shape, 
-		const std::list<ShapeGroup>::iterator& shapeGroupIterator
-	);
-
 	static std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
 	static std::list<ShapeGroup>::iterator addShapeGroup(
 		const ShapeGroup& shapeGroup, 

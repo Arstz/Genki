@@ -70,7 +70,7 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(const ShapeGroup &shapeGroup) {
 	std::list<ShapeGroup>::iterator i = shapeGroups.begin();
 	while (i != shapeGroups.end() && (*i).layer < shapeGroup.layer) i++;
-	return shapeGroups.insert(i, shapeGroup);
+	return shapeGroups.insert(i, shapeGroup); 
 }
 
 void ShapeGroup::removeShapeGroup(const std::list<ShapeGroup>::iterator &shapeGroupIterator) {
