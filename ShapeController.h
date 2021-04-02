@@ -34,29 +34,42 @@ class ShapeController {
 
 	static void initBuffers();
 	static void initShader();
-public:
-
-	static void init();
-	static void draw();
-	static void setWindow(GLFWwindow* window);
-	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
-
-	static float* getCameraValuePointer(uint valueNum);
-
-	static std::list<ShapeGroup>::iterator addShape(Shape shape);
-	static std::list<ShapeGroup>::iterator addShape(Shape shape, std::list<ShapeGroup>::iterator shapeGroupIterator);
-	static std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup);
-	static std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup, std::list<ShapeGroup>::iterator shapeGroupIterator);
 
 	static void writeToVertexbuffer(
-		ShapeGroup &shapeGroup, 
-		uint& positionOffsetCounter, 
+		ShapeGroup& shapeGroup,
+		uint& positionOffsetCounter,
 		uint& colorOffsetCounter,
 		float alphaChannel,
 		float positionX,
 		float positionY
 	);
+	static void writeToEBObuffer(
+		ShapeGroup& shapeGroup,
+		uint& EBOoffsetCounter,
+		uint& vertexCounter
+	);
 
-	static void writeToEBObuffer(ShapeGroup &shapeGroup, uint &EBOoffsetCounter, uint &vertexCounter);
+public:
+
+	static void init();
+	static void draw();
+	
+	static void setWindow(GLFWwindow* window);
+	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
+
+	static float* getCameraValuePointer(uint valueNum);
+
+	static std::list<ShapeGroup>::iterator addShape(const Shape& shape);
+	static std::list<ShapeGroup>::iterator addShape(
+		const Shape& shape, 
+		const std::list<ShapeGroup>::iterator& shapeGroupIterator
+	);
+
+	static std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
+	static std::list<ShapeGroup>::iterator addShapeGroup(
+		const ShapeGroup& shapeGroup, 
+		const std::list<ShapeGroup>::iterator& shapeGroupIterator
+	);
+
 };
 

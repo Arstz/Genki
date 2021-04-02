@@ -47,17 +47,18 @@ void Engine::init() {
 
 	float cds1[] = {-0.75f, 0.f, -0.75f, 1.f, 0.25f, 0.f, 0.25, 1.f};
 	float cls[] = {0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
+	float cls2[] = {0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
 
 	float cds2[] = {-0.25f, 0.f, -0.25f, 1.f, 0.75f, 0.f, 0.75, 1.f};
 	
 	Shape shps[] = {
 		Shape(4, cds1, cls, 6, vertexIDs, 0.5, 0, 0, 0),
-		Shape(4, cds2, cls, 6, vertexIDs, 0.5, 0, 0, 0),
+		Shape(4, cds2, cls2, 6, vertexIDs, 0.5, 0, 0, 0),
 	};
 
-	ShapeGroup a(2, shps, 0.1, 0, 0, 0);
-	ShapeGroup b(2, shps, 0.9, 0, 3, 0);
-	ShapeGroup c(2, shps, 0.5, 7, 3, 0);
+	ShapeGroup a(2, shps, 0.1, 0, 0, 1);
+	ShapeGroup b(2, shps, 0.9, 0, 3, 1);
+	ShapeGroup c(2, shps, 0.5, 7, 3, -5);
 
 	Shape shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs, 0.5, 10, 5, 0);
 	Shape shape2(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 1, 1, 0);
@@ -76,12 +77,12 @@ void Engine::init() {
 
 	float sk2[] = {1, 0.8};
 
-	EventController::level.push_back(BackgroundColorAnimationEvent::create(0, Animation(2, tk, sk2), 2e3f));
-
+	EventController::level.push_back(PlayerBindingEvent::create(1, 0));
+//	EventController::level.push_back(BackgroundColorAnimationEvent::create(0, Animation(2, tk, sk2), 2e3f));
 	EventController::level.push_back(ShapeGroupAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_X, 3, 1e3f));
 	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 0, 1, 0, 1e3f));
 
-	EventController::level.push_back(PlayerBindingEvent::create(1, 0));
+	
 
 //	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
 	

@@ -94,7 +94,11 @@ void ShapeController::writeToVertexbuffer(
 	}
 }
 
-void ShapeController::writeToEBObuffer(ShapeGroup &shapeGroup, uint &EBOoffsetCounter, uint& vertexCounter) {
+void ShapeController::writeToEBObuffer(
+	ShapeGroup &shapeGroup, 
+	uint &EBOoffsetCounter, 
+	uint& vertexCounter
+) {
 	for (int i = 0; i < shapeGroup.getShapeCount(); i++) {
 		for (int j = 0; j < shapeGroup.getShapesPointer()[i].getEBOsize(); j++) {
 			EBObuffer[EBOoffsetCounter + j] = shapeGroup.getShapesPointer()[i].getVertexIDsPointer()[j] + vertexCounter;
@@ -242,7 +246,7 @@ void ShapeController::draw() {
 	glfwSwapBuffers(window);
 }
 
-std::list<ShapeGroup>::iterator ShapeController::addShape(Shape shape) {
+std::list<ShapeGroup>::iterator ShapeController::addShape(const Shape &shape) {
 	vertexCount += shape.getVertexCount();
 	EBOsize += shape.getEBOsize();
 	std::list<ShapeGroup>::iterator newShapeGroupIterator = ShapeController::shapeGroup.addShapeGroup(ShapeGroup(shape));
@@ -250,7 +254,7 @@ std::list<ShapeGroup>::iterator ShapeController::addShape(Shape shape) {
 	return newShapeGroupIterator;
 }
 
-std::list<ShapeGroup>::iterator ShapeController::addShape(Shape shape, std::list<ShapeGroup>::iterator shapeGroupIterator) {
+std::list<ShapeGroup>::iterator ShapeController::addShape(const Shape& shape, const std::list<ShapeGroup>::iterator& shapeGroupIterator) {
 	vertexCount += shape.getVertexCount();
 	EBOsize += shape.getEBOsize();
 	std::list<ShapeGroup>::iterator newShapeGroupIterator = (*shapeGroupIterator).addShapeGroup(ShapeGroup(shape));
@@ -258,7 +262,7 @@ std::list<ShapeGroup>::iterator ShapeController::addShape(Shape shape, std::list
 	return newShapeGroupIterator;
 }
 
-std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(ShapeGroup shapeGroup) {
+std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup) {
 	vertexCount += shapeGroup.getVertexCount();
 	EBOsize += shapeGroup.getEBOsize();
 	std::list<ShapeGroup>::iterator newShapeGroupIterator = ShapeController::shapeGroup.addShapeGroup(shapeGroup);
@@ -266,7 +270,7 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(ShapeGroup shapeG
 	return newShapeGroupIterator;
 }
 
-std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(ShapeGroup shapeGroup, std::list<ShapeGroup>::iterator shapeGroupIterator) {
+std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup, const std::list<ShapeGroup>::iterator& shapeGroupIterator) {
 	vertexCount += shapeGroup.getVertexCount();
 	EBOsize += shapeGroup.getEBOsize();
 	std::list<ShapeGroup>::iterator newShapeGroupIterator = (*shapeGroupIterator).addShapeGroup(shapeGroup);

@@ -23,13 +23,13 @@ public:
 		float positionY,
 		int layer
 	);
-	ShapeGroup(Shape shape);
+	ShapeGroup(const Shape &shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
 	~ShapeGroup();
 	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 
-	std::list<ShapeGroup>::iterator addShapeGroup(ShapeGroup shapeGroup);
-	void removeShapeGroup(std::list<ShapeGroup>::iterator shapeGroupIterator);
+	std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
+	void removeShapeGroup(const std::list<ShapeGroup>::iterator& shapeGroupIterator);
 
 	float* getAlphaChannelPointer();
 	float* getPositionXpointer();

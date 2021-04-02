@@ -24,7 +24,7 @@ ShapeGroup::ShapeGroup(
 	this->layer = layer;
 }
 
-ShapeGroup::ShapeGroup(Shape shape) {
+ShapeGroup::ShapeGroup(const Shape& shape) {
 	this->shapeCount = 1;
 
 	this->layer = shape.getLayer();
@@ -67,12 +67,13 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	return *this;
 }
 
-std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(ShapeGroup shapeGroup) {
-	shapeGroups.push_front(shapeGroup);
-	return shapeGroups.begin();
+std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(const ShapeGroup &shapeGroup) {
+	std::list<ShapeGroup>::iterator i = shapeGroups.begin();
+	while (i != shapeGroups.end() && (*i).layer < shapeGroup.layer) i++;
+	return shapeGroups.insert(i, shapeGroup);
 }
 
-void ShapeGroup::removeShapeGroup(std::list<ShapeGroup>::iterator shapeGroupIterator) {
+void ShapeGroup::removeShapeGroup(const std::list<ShapeGroup>::iterator &shapeGroupIterator) {
 	shapeGroups.erase(shapeGroupIterator);
 }
 
