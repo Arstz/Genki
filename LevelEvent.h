@@ -6,6 +6,7 @@
 #include "Shape.h"
 #include "ShapeGroup.h"
 #include <fstream>
+#include <vector>
 
 class EventController;
 
@@ -41,6 +42,7 @@ public:
 	static std::list<ShapeGroup>::iterator* shapeGroups;
 	virtual void write(std::ofstream& fout);
 	virtual void start();
+	virtual std::vector<char> getByteArray();
 	float getInitTime();
 
 	LevelEventType getType();
@@ -63,9 +65,14 @@ public:
 		uint valueNum,
 		float initTime
 	);
+
+	static CameraAnimationEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 	
 	void start() override;
-//	void write(std::ofstream& fout) override;
+	std::vector<char> getByteArray() override;
 };
 
 class ShapeSpawnEvent : public LevelEvent {
@@ -86,9 +93,13 @@ public:
 		int targetShapeGroupID,
 		float initTime
 	);
+	static ShapeSpawnEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 	void start() override;
 
-//	void write(std::ofstream& fout) override;
+	std::vector<char> getByteArray() override;
 };
 
 class ShapeGroupSpawnEvent : public LevelEvent {
@@ -109,7 +120,11 @@ public:
 		int targetShapeGroupID,
 		float initTime
 	);
-	//	void write(std::ofstream& fout) override;
+	static ShapeGroupSpawnEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
+	std::vector<char> getByteArray() override;
 	void start() override;
 };
 
@@ -119,10 +134,18 @@ class ShapeGroupDestructionEvent : public LevelEvent { //opasniy pizdets
 	ShapeGroupDestructionEvent(int shapeGroupID, float initTime);
 public:
 
-	static ShapeGroupDestructionEvent* create(int shapeGroupID, float initTime);
+	static ShapeGroupDestructionEvent* create(
+		int shapeGroupID, 
+		float initTime
+	);
+
+	static ShapeGroupDestructionEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 
 	void start() override;
-//	void write(std::ofstream& fout) override;
+	std::vector<char> getByteArray() override;
 };
 
 class ShapeAnimationEvent : public LevelEvent {
@@ -157,16 +180,19 @@ public:
 		int valueNum,
 		float initTime
 	);
+	static ShapeAnimationEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 
 	void start() override;
-//	void write(std::ofstream& fout) override;
+	std::vector<char> getByteArray() override;
 };
 
 class ShapeGroupAnimationEvent : public LevelEvent {
 	Animation animation;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
-
 
 	ShapeGroupAnimationEvent();
 	ShapeGroupAnimationEvent(
@@ -183,9 +209,13 @@ public:
 		int shapeGroupID,
 		float initTime
 	);
+	static ShapeGroupAnimationEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 
 	void start() override;
-	//	void write(std::ofstream& fout) override;
+	std::vector<char> getByteArray() override;
 };
 
 class PlayerBindingEvent : public LevelEvent {
@@ -194,25 +224,34 @@ class PlayerBindingEvent : public LevelEvent {
 	int shapeGroupID;
 public:
 	static Player* player;
-
-	static PlayerBindingEvent* create(int shapeGroupID, float initTime);
-
-//	void write(std::ofstream& fout) override;
+	static PlayerBindingEvent* create(
+		int shapeGroupID,
+		float initTime
+	);
+	static PlayerBindingEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 	void start() override;
+	std::vector<char> getByteArray() override;
 };
 
 class BackgroundColorAnimationEvent : public LevelEvent {
-	uint animatedValueID;
+	uint valueNum;
 	Animation animation;
 
 	BackgroundColorAnimationEvent();
-	BackgroundColorAnimationEvent(uint animatedValueID, Animation animation, float initTime);
+	BackgroundColorAnimationEvent(uint valueNum, Animation animation, float initTime);
 public:
 	static BackgroundColorAnimationEvent* create(
-		uint animatedValueID,
+		uint valueNum,
 		Animation animation,
 		float initTime
 	);
-//	void write(std::ofstream& fout) override;
+	static BackgroundColorAnimationEvent* create(
+		char* byteArray,
+		unsigned int& offset
+	);
 	void start() override;
+	std::vector<char> getByteArray() override;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "Animation.h"
+#include "ByteArray.h"
 
 Animation::Animation() {
 	keyCount = 0;
@@ -60,6 +61,18 @@ float* Animation::getTimeKeysPointer() {
 
 float* Animation::getStateKeysPointer() {
 	return stateKeys;
+}
+
+std::vector<char> Animation::getByteArray() {
+	unsigned int byteArraySize = sizeof(keyCount) + (sizeof(timeKeys) + sizeof(stateKeys)) * keyCount;
+	std::vector<char> byteArray(byteArraySize);
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&keyCount, offset, sizeof(keyCount));
+	writeToByteArray(byteArray, (char*)timeKeys, offset, sizeof(timeKeys) * keyCount);
+	writeToByteArray(byteArray, (char*)stateKeys, offset, sizeof(stateKeys) * keyCount);
+
+	return byteArray;
 }
 
 unsigned int Animation::getKeyCount() const {

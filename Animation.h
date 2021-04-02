@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 class Animation
 {
@@ -15,6 +16,8 @@ public:
 
 	float* getTimeKeysPointer();
 	float* getStateKeysPointer();
+
+	std::vector<char> getByteArray();
 
 	unsigned int getKeyCount() const;
 };

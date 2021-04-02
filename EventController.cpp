@@ -2,6 +2,8 @@
 #include "LevelEvent.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "ByteArray.h"
 
 std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
@@ -16,7 +18,7 @@ void EventController::update()
 	}
 }
 
-/*
+
 void EventController::loadLevel(std::string path) {
 	level.clear();
 	std::ifstream fin;
@@ -25,141 +27,48 @@ void EventController::loadLevel(std::string path) {
 	fin.read((char*)(&size), sizeof(size_t));
 	level.resize(size);
 
-	LevelEvent::dynamicShapes = new std::list<Shape*>::iterator[size];
-
-	uint vertexCount;
-	uint EBOsize;
-	int shapeID;
-
-	float* vertexCoords;
-	float* vertexColors;
-	uint* vertexIDs;
-
-	int AnimatedValueID;
-	int vertexNum;
-	int channelNum;
-
-	Animation* animation;
-	AnimatedValueType animatedValueType;
-	uint keyCount;
-	float* timeKeys;
-	float* stateKeys;
-
-	uint valueNum;
-
-	LevelEventType type;
-	float initTime;
-
-	for (int i = 0; i < size; i++) {
-		fin.read((char*)(&type), sizeof(LevelEventType));
-		fin.read((char*)(&initTime), sizeof(float));
-
-		switch (type) {
-		case LevelEventType::EMPTY:
-			break;
-		case LevelEventType::BACKGROUND_COLOR_ANIMATION:
-			break;
-		case LevelEventType::CAMERA_ANIMATION:
-			fin.read((char*)(&valueNum), sizeof(uint));
-
-			fin.read((char*)(&keyCount), sizeof(int));
-
-			timeKeys = new float[keyCount];
-			stateKeys = new float[keyCount];
-
-			fin.read((char*)(timeKeys), sizeof(int) * keyCount);
-			fin.read((char*)(stateKeys), sizeof(int) * keyCount);
-
-			level[i] = new CameraAnimationEvent(
-				new Animation(keyCount, timeKeys, stateKeys),
-				valueNum,
-				initTime
-			);
-
-			break;
-		case LevelEventType::SHAPE_SPAWN:
-			fin.read((char*)(&vertexCount), sizeof(uint));
-			vertexCoords = new float[vertexCount * 2];
-			vertexColors = new float[vertexCount * 4];
-
-			fin.read((char*)(vertexCoords), sizeof(float) * vertexCount * 2);
-			fin.read((char*)(vertexColors), sizeof(float) * vertexCount * 4);
-			fin.read((char*)(&EBOsize), sizeof(uint));
-
-			vertexIDs = new uint[EBOsize];
-			fin.read((char*)(vertexIDs), sizeof(uint) * EBOsize);
-			fin.read((char*)(&shapeID), sizeof(int));
-
-			level[i] = new ShapeSpawnEvent(
-				new Shape(
-					vertexCount,
-					vertexCoords,
-					vertexColors,
-					EBOsize,
-					vertexIDs
-				),
-				shapeID,
-				initTime
-			);
-
-			break;
-		case LevelEventType::SHAPE_DESTRUCTION:
-			fin.read((char*)(&shapeID), sizeof(int));
-			level[i] = new ShapeDestructionEvent(shapeID, initTime);
-			break;
-		case LevelEventType::SHAPE_ANIMATION:
-			fin.read((char*)(&shapeID), sizeof(int));
-			fin.read((char*)(&AnimatedValueID), sizeof(int));
-			fin.read((char*)(&vertexNum), sizeof(int));
-			fin.read((char*)(&channelNum), sizeof(int));
-			fin.read((char*)(&animatedValueType), sizeof(AnimatedValueType));
-
-			fin.read((char*)(&keyCount), sizeof(int));
-
-			timeKeys = new float[keyCount];
-			stateKeys = new float[keyCount];
-
-			fin.read((char*)(timeKeys), sizeof(int) * keyCount);
-			fin.read((char*)(stateKeys), sizeof(int) * keyCount);
-
-			level[i] = new ShapeAnimationEvent(
-				new Animation(keyCount, timeKeys, stateKeys),
-				animatedValueType,
-				AnimatedValueID,
-				shapeID,
-				vertexNum,
-				channelNum,
-				initTime
-			);
-
-			break;
-		case LevelEventType::PLAYER_BINDING:
-			fin.read((char*)(&shapeID), sizeof(int));
-			level[i] = new PlayerBindingEvent(shapeID, initTime);
-			break;
-		}
-	}
-	fin.close();
-	vertexCoords = nullptr;
-	vertexColors = nullptr;
-	vertexIDs = nullptr;
-	animation = nullptr;
-	timeKeys = nullptr;
-	stateKeys = nullptr;
 }
 
 void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& level) {
 	std::ofstream fout;
 	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
-	size_t size = level.size();
-	fout.write((char*)(&size), sizeof(size_t));
+	unsigned int size = level.size();
+	unsigned int checkSum = 0;
+
+	std::vector<std::vector<char>> byteLevel(size);
+
+	unsigned int byteLevelSize = sizeof(size) + sizeof(checkSum);
+
 	for (int i = 0; i < size; i++) {
+		std::vector<char> tempArray = level[i]->getByteArray();
+		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(LevelEventType) + sizeof(float));
 		LevelEventType type = level[i]->getType();
 		float initTime = level[i]->getInitTime();
-		fout.write((char*)(&type), sizeof(LevelEventType));
-		fout.write((char*)(&initTime), sizeof(float));
-		level[i]->write(fout);
+		unsigned int offset = 0;
+		writeToByteArray(byteLevel[i], (char*)&type, offset, sizeof(LevelEventType));
+		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(float));
+		byteLevelSize += byteLevel[i].size();
 	}
+
+	unsigned int offset = 0;
+
+	char* fileData = new char[byteLevelSize];
+	writeToByteArray(fileData, (char*)&size, offset, sizeof(size));
+	writeToByteArray(fileData, (char*)&checkSum, offset, sizeof(checkSum));
+
+	unsigned int tempOffset = offset;
+
+	for (int i = 0; i < size; i++) writeToByteArray(fileData, byteLevel[i], offset);
+
+	unsigned int* value = (unsigned int*)(fileData + offset);
+
+	int valueCount = (byteLevelSize - offset) / 4;
+
+	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);
+
+	writeToByteArray(fileData, (char*)&checkSum, tempOffset, sizeof(checkSum));
+
+	fout.write((char*)fileData, byteLevelSize);
 	fout.close();
+	//		
 }
-*/

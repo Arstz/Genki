@@ -1,4 +1,5 @@
 #include "Shape.h"
+#include "ByteArray.h"
 
 Shape::Shape() {
 	this->vertexCoords = nullptr;
@@ -127,4 +128,32 @@ float* Shape::getPositionYpointer() {
 
 int Shape::getLayer() const {
 	return layer;
+}
+
+std::vector<char> Shape::getByteArray() {
+	unsigned int byteArraySize =
+		sizeof(vertexCount) +
+		sizeof(EBOsize) +
+		sizeof(vertexIDs) * EBOsize +
+		sizeof(layer) +
+		sizeof(alphaChannel) +
+		sizeof(positionX) +
+		sizeof(positionY) +
+		sizeof(vertexCoords) * vertexCount * 2 +
+		sizeof(vertexColors) * vertexCount * 4;
+
+	std::vector<char> byteArray(byteArraySize);
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&vertexCount, offset, sizeof(vertexCount));
+	writeToByteArray(byteArray, (char*)&EBOsize, offset, sizeof(EBOsize));
+	writeToByteArray(byteArray, (char*)vertexIDs, offset, sizeof(vertexIDs) * EBOsize);
+	writeToByteArray(byteArray, (char*)&layer, offset, sizeof(layer));
+	writeToByteArray(byteArray, (char*)&alphaChannel, offset, sizeof(alphaChannel));
+	writeToByteArray(byteArray, (char*)&positionX, offset, sizeof(positionX));
+	writeToByteArray(byteArray, (char*)&positionY, offset, sizeof(positionY));
+	writeToByteArray(byteArray, (char*)vertexCoords, offset, sizeof(vertexCoords) * vertexCount * 2);
+	writeToByteArray(byteArray, (char*)vertexColors, offset, sizeof(vertexColors) * vertexCount * 4);
+
+	return byteArray;
 }

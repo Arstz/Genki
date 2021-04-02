@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 typedef unsigned int uint;
 
 class Shape {
@@ -48,4 +49,5 @@ public:
 	float* getPositionYpointer();
 
 	int getLayer() const;
+	std::vector<char> getByteArray();
 };

@@ -58,7 +58,7 @@ void Engine::init() {
 
 	ShapeGroup a(2, shps, 0.1, 0, 0, 1);
 	ShapeGroup b(2, shps, 0.9, 0, 3, 1);
-	ShapeGroup c(2, shps, 0.5, 7, 3, -5);
+	ShapeGroup c(2, shps, 0.5, 7, 3, 10);
 
 	Shape shape(vertexCount, vertexCoords, vertexColors, EBOsize, vertexIDs, 0.5, 10, 5, 0);
 	Shape shape2(vertexCount, vertexCoords, vertexColors2, EBOsize, vertexIDs, 1, 1, 1, 0);
@@ -83,8 +83,7 @@ void Engine::init() {
 	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 0, 1, 0, 1e3f));
 
 	
-
-//	EventController::level.push_back(new ShapeDestructionEvent(0, 10e3f));
+//	EventController::level.push_back(ShapeGroupDestructionEvent::create(0, 2e3f));
 	
 	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
 

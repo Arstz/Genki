@@ -1,6 +1,7 @@
 #pragma once
 #include "Shape.h"
 #include <list>
+#include <vector>
 
 class ShapeGroup {
 	uint shapeCount;
@@ -44,4 +45,5 @@ public:
 
 	Shape* getShapesPointer();
 	std::list<ShapeGroup> getShapeGroups();
+	std::vector<char> getByteArray();
 };

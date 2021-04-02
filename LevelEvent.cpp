@@ -1,6 +1,7 @@
 #include "LevelEvent.h"
 #include "AnimationController.h"
 #include "ShapeController.h"
+#include "ByteArray.h"
 
 //LevelEvent
 
@@ -22,6 +23,10 @@ LevelEventType LevelEvent::getType() {
 
 void LevelEvent::start() {}
 
+std::vector<char> LevelEvent::getByteArray() {
+	return std::vector<char>();
+}
+
 void LevelEvent::write(std::ofstream& fout) {}
 
 //CameraAnimationEvent
@@ -41,20 +46,28 @@ CameraAnimationEvent* CameraAnimationEvent::create(Animation animation, uint val
 	return new CameraAnimationEvent(animation, valueNum, initTime);
 }
 
+CameraAnimationEvent* CameraAnimationEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
+}
+
 void CameraAnimationEvent::start() {
 	AnimationController::add(AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
 }
 
-/*
-void CameraAnimationEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&valueNum), sizeof(uint));
+std::vector<char> CameraAnimationEvent::getByteArray() {
+	std::vector<char> animationArray = animation.getByteArray();
+	unsigned int byteArraySize = animationArray.size() + sizeof(valueNum);
 
-	fout.write((char*)(&animation->keyCount), sizeof(int));
+	std::vector<char> byteArray(byteArraySize);
 
-	fout.write((char*)(animation->timeKeys), sizeof(int) * animation->keyCount);
-	fout.write((char*)(animation->stateKeys), sizeof(int) * animation->keyCount);
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&valueNum, offset, sizeof(valueNum));
+	writeToByteArray(byteArray, animationArray, offset);
+
+	return byteArray;
 }
-*/
 
 //ShapeSpawnEvent
 
@@ -62,6 +75,11 @@ ShapeSpawnEvent::ShapeSpawnEvent() {}
 
 ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, int targetShapeGroupID, float initTime) {
 	return new ShapeSpawnEvent(shape, shapeGroupID, targetShapeGroupID, initTime);
+}
+
+ShapeSpawnEvent* ShapeSpawnEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
 }
 
 ShapeSpawnEvent::ShapeSpawnEvent(
@@ -81,16 +99,23 @@ void ShapeSpawnEvent::start() {
 	else shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(ShapeGroup(shape));
 }
 
-/*
-void ShapeSpawnEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shape->vertexCount), sizeof(uint));
-	fout.write((char*)(shape->vertexCoords), sizeof(float) * shape->vertexCount * 2);
-	fout.write((char*)(shape->vertexColors), sizeof(float) * shape->vertexCount * 4);
-	fout.write((char*)(&shape->EBOsize), sizeof(uint));
-	fout.write((char*)(shape->vertexIDs), sizeof(uint) * shape->EBOsize);
-	fout.write((char*)(&shapeID), sizeof(int));
+std::vector<char> ShapeSpawnEvent::getByteArray() {
+	std::vector<char> shapeArray = shape.getByteArray();
+	unsigned int byteArraySize = 
+		shapeArray.size() + 
+		sizeof(shapeGroupID) + 
+		sizeof(targetShapeGroupID);
+
+	std::vector<char> byteArray(byteArraySize);
+
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	writeToByteArray(byteArray, (char*)&targetShapeGroupID, offset, sizeof(targetShapeGroupID));
+	writeToByteArray(byteArray, shapeArray, offset);
+
+	return byteArray;
 }
-*/
 
 ShapeGroupSpawnEvent::ShapeGroupSpawnEvent() {}
 ShapeGroupSpawnEvent::ShapeGroupSpawnEvent(
@@ -108,21 +133,33 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(ShapeGroup shapeGroup, int sh
 	return new ShapeGroupSpawnEvent(shapeGroup, shapeGroupID, targetShapeGroupID, initTime);
 }
 
+ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
+}
+
+std::vector<char> ShapeGroupSpawnEvent::getByteArray() {
+	std::vector<char> shapeGroupArray = shapeGroup.getByteArray();
+	unsigned int byteArraySize =
+		shapeGroupArray.size() +
+		sizeof(shapeGroupID) +
+		sizeof(targetShapeGroupID);
+
+	std::vector<char> byteArray(byteArraySize);
+
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	writeToByteArray(byteArray, (char*)&targetShapeGroupID, offset, sizeof(targetShapeGroupID));
+	writeToByteArray(byteArray, shapeGroupArray, offset);
+
+	return byteArray;
+}
+
 void ShapeGroupSpawnEvent::start() {
 	if (targetShapeGroupID) shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(shapeGroup, shapeGroups[targetShapeGroupID]);
 	else shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(shapeGroup);
 }
-
-/*
-void ShapeSpawnEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shape->vertexCount), sizeof(uint));
-	fout.write((char*)(shape->vertexCoords), sizeof(float) * shape->vertexCount * 2);
-	fout.write((char*)(shape->vertexColors), sizeof(float) * shape->vertexCount * 4);
-	fout.write((char*)(&shape->EBOsize), sizeof(uint));
-	fout.write((char*)(shape->vertexIDs), sizeof(uint) * shape->EBOsize);
-	fout.write((char*)(&shapeID), sizeof(int));
-}
-*/
 
 //ShapeGroupDestructionEvent
 
@@ -136,15 +173,25 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(int shapeGroupID,
 	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
 }
 
+ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
+}
+
 void ShapeGroupDestructionEvent::start() {
 	ShapeController::removeShapeGroup(shapeGroups[shapeGroupID]);
 }
 
-/*
-void ShapeDestructionEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shapeID), sizeof(int));
+std::vector<char> ShapeGroupDestructionEvent::getByteArray() {
+	unsigned int byteArraySize = sizeof(shapeGroupID);
+	std::vector<char> byteArray(byteArraySize);
+
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+
+	return byteArray;
 }
-*/
 
 //ShapeAnimationEvent
 
@@ -191,6 +238,11 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 	);
 }
 
+ShapeAnimationEvent* ShapeAnimationEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
+}
+
 void ShapeAnimationEvent::start() {
 	float* target;
 
@@ -219,22 +271,33 @@ void ShapeAnimationEvent::start() {
 	AnimationController::add(AnimationTask(animation, target));
 }
 
-/*
-void ShapeAnimationEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shapeID), sizeof(int));
-	fout.write((char*)(&AnimatedValueID), sizeof(int));
-	fout.write((char*)(&vertexNum), sizeof(int));
-	fout.write((char*)(&channelNum), sizeof(int));
-	fout.write((char*)(&animatedValueType), sizeof(AnimatedValueType));
+std::vector<char> ShapeAnimationEvent::getByteArray() {
+	std::vector<char> animationArray = animation.getByteArray();
+	unsigned int byteArraySize =
+		animationArray.size() +
+		sizeof(animatedValueType) +
+		sizeof(shapeGroupID) +
+		sizeof(animatedValueID) +
+		sizeof(shapeNum) +
+		sizeof(vertexNum) +
+		sizeof(valueNum);
 
-	fout.write((char*)(&animation->keyCount), sizeof(int));
+	std::vector<char> byteArray(byteArraySize);
 
-	fout.write((char*)(animation->timeKeys), sizeof(int) * animation->keyCount);
-	fout.write((char*)(animation->stateKeys), sizeof(int) * animation->keyCount);
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&animatedValueType, offset, sizeof(animatedValueType));
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	writeToByteArray(byteArray, (char*)&animatedValueID, offset, sizeof(animatedValueID));
+	writeToByteArray(byteArray, (char*)&shapeNum, offset, sizeof(shapeNum));
+	writeToByteArray(byteArray, (char*)&vertexNum, offset, sizeof(vertexNum));
+	writeToByteArray(byteArray, (char*)&valueNum, offset, sizeof(valueNum));
+	writeToByteArray(byteArray, animationArray, offset);
+
+	return byteArray;
 }
-*/
 
-//ShapeAnimationEvent
+//ShapeGroupAnimationEvent
 
 ShapeGroupAnimationEvent::ShapeGroupAnimationEvent() {}
 ShapeGroupAnimationEvent::ShapeGroupAnimationEvent(
@@ -263,6 +326,11 @@ ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 	);
 }
 
+ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
+}
+
 void ShapeGroupAnimationEvent::start() {
 	float* target;
 
@@ -285,20 +353,23 @@ void ShapeGroupAnimationEvent::start() {
 	AnimationController::add(AnimationTask(animation, target));
 }
 
-/*
-void ShapeAnimationEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shapeID), sizeof(int));
-	fout.write((char*)(&AnimatedValueID), sizeof(int));
-	fout.write((char*)(&vertexNum), sizeof(int));
-	fout.write((char*)(&channelNum), sizeof(int));
-	fout.write((char*)(&animatedValueType), sizeof(AnimatedValueType));
+std::vector<char> ShapeGroupAnimationEvent::getByteArray() {
+	std::vector<char> animationArray = animation.getByteArray();
+	unsigned int byteArraySize =
+		animationArray.size() +
+		sizeof(animatedValueType) +
+		sizeof(shapeGroupID);
 
-	fout.write((char*)(&animation->keyCount), sizeof(int));
+	std::vector<char> byteArray(byteArraySize);
 
-	fout.write((char*)(animation->timeKeys), sizeof(int) * animation->keyCount);
-	fout.write((char*)(animation->stateKeys), sizeof(int) * animation->keyCount);
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&animatedValueType, offset, sizeof(animatedValueType));
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	writeToByteArray(byteArray, animationArray, offset);
+
+	return byteArray;
 }
-*/
 
 //PlayerBindingEvent
 
@@ -312,11 +383,12 @@ PlayerBindingEvent::PlayerBindingEvent(int shapeGroupID, float initTime) : Level
 PlayerBindingEvent* PlayerBindingEvent::create(int shapeGroupID, float initTime) {
 	return new PlayerBindingEvent(shapeGroupID, initTime);
 }
-/*
-void PlayerBindingEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&shapeGroupID), sizeof(int));
+
+PlayerBindingEvent* PlayerBindingEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
 }
-*/
+
 void PlayerBindingEvent::start() {
 	player->setTarget(
 		(*(shapeGroups[shapeGroupID])).getPositionXpointer(),
@@ -324,25 +396,49 @@ void PlayerBindingEvent::start() {
 	);
 }
 
+std::vector<char> PlayerBindingEvent::getByteArray() {
+	unsigned int byteArraySize = sizeof(shapeGroupID);
+	std::vector<char> byteArray(byteArraySize);
+
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+
+	return byteArray;
+}
+
 //BackgroundColorAnimationEvent
 
 BackgroundColorAnimationEvent::BackgroundColorAnimationEvent() {}
-BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(uint animatedValueID, Animation animation, float initTime) : LevelEvent(initTime) {
+BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(uint valueNum, Animation animation, float initTime) : LevelEvent(initTime) {
 	this->type = LevelEventType::BACKGROUND_COLOR_ANIMATION;
 	this->animation = animation;
-	this->animatedValueID = animatedValueID;
+	this->valueNum = valueNum;
 }
 
-BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(uint animatedValueID, Animation animation, float initTime) {
-	return new BackgroundColorAnimationEvent(animatedValueID, animation, initTime);
+BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(uint valueNum, Animation animation, float initTime) {
+	return new BackgroundColorAnimationEvent(valueNum, animation, initTime);
+}
+
+BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(char* byteArray, unsigned int& offset)
+{
+	return nullptr;
 }
 
 void BackgroundColorAnimationEvent::start() {
-	AnimationController::add(AnimationTask(animation, Window::getBackgroundColorValuePointer(animatedValueID)));
+	AnimationController::add(AnimationTask(animation, Window::getBackgroundColorValuePointer(valueNum)));
 }
 
-/*
-void BackgroundColorAnimationEvent::write(std::ofstream& fout) {
-	fout.write((char*)(&animatedValueID), sizeof(uint));
+std::vector<char> BackgroundColorAnimationEvent::getByteArray() {
+	std::vector<char> animationArray = animation.getByteArray();
+	unsigned int byteArraySize = animationArray.size() + sizeof(valueNum);
+
+	std::vector<char> byteArray(byteArraySize);
+
+	unsigned int offset = 0;
+
+	writeToByteArray(byteArray, (char*)&valueNum, offset, sizeof(valueNum));
+	writeToByteArray(byteArray, animationArray, offset);
+
+	return byteArray;
 }
-*/
