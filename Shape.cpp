@@ -61,7 +61,6 @@ Shape::Shape(const Shape& shape) {
 Shape::Shape(char* byteArray, unsigned int& offset) {
 	writeFromByteArray((char*)&vertexCount, byteArray, offset, sizeof(vertexCount));
 	writeFromByteArray((char*)&EBOsize, byteArray, offset, sizeof(EBOsize));
-	writeFromByteArray((char*)vertexIDs, byteArray, offset, sizeof(vertexIDs) * EBOsize);
 	writeFromByteArray((char*)&layer, byteArray, offset, sizeof(layer));
 	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
 	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
