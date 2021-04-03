@@ -34,7 +34,7 @@ void Engine::init() {
 	AnimationController::setTimePointer(&frameTime);
 	window = Window::getWindow();
 	EventController::currentTime = &currentTime;
-	
+	/*
 	uint vertexCount = 4;
 	uint EBOsize = 6;
 	uint keyCount = 2;
@@ -84,10 +84,10 @@ void Engine::init() {
 
 	
 //	EventController::level.push_back(ShapeGroupDestructionEvent::create(0, 2e3f));
-	
+	*/
 	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
-
-	EventController::saveLevel("a", EventController::level);
+	
+//	EventController::saveLevel("a", EventController::level);
 	EventController::loadLevel("a");
 }
 

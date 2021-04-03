@@ -32,9 +32,9 @@ void EventController::loadLevel(std::string path) {
 
 	unsigned int offset = 0;
 
-	fin.read((char*)(&byteLevelSize), sizeof(byteLevelSize));
-	fin.read((char*)(&size), sizeof(size));
-	fin.read((char*)(&checkSum), sizeof(checkSum));
+	fin.read((char*)(&byteLevelSize), sizeof(unsigned int));
+	fin.read((char*)(&size), sizeof(unsigned int));
+	fin.read((char*)(&checkSum), sizeof(unsigned int));
 
 	char* byteLevel = new char[byteLevelSize];
 
@@ -45,8 +45,8 @@ void EventController::loadLevel(std::string path) {
 		LevelEventType type;
 		float initTime;
 
-		writeFromByteArray((char*)&type, byteLevel, offset, sizeof(type));
-		writeFromByteArray((char*)&initTime, byteLevel, offset, sizeof(initTime));
+		writeFromByteArray((char*)&type, byteLevel, offset, sizeof(LevelEventType));
+		writeFromByteArray((char*)&initTime, byteLevel, offset, sizeof(float));
 
 		switch (type) {
 		case EMPTY:
@@ -99,11 +99,11 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 		LevelEventType type = level[i]->getType();
 		float initTime = level[i]->getInitTime();
 		std::vector<char> tempArray = level[i]->getByteArray();
-		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(type) + sizeof(initTime));
+		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(LevelEventType) + sizeof(float));
 
 		unsigned int offset = 0;
-		writeToByteArray(byteLevel[i], (char*)&type, offset, sizeof(type));
-		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(initTime));
+		writeToByteArray(byteLevel[i], (char*)&type, offset, sizeof(LevelEventType));
+		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(float));
 		writeToByteArray(byteLevel[i], tempArray, offset);
 
 		byteLevelSize += byteLevel[i].size();
@@ -113,8 +113,8 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 
 	char* fileData = new char[byteLevelSize];
 	writeToByteArray(fileData, (char*)&byteLevelSize, offset, sizeof(byteLevelSize));
-	writeToByteArray(fileData, (char*)&size, offset, sizeof(size));
-	writeToByteArray(fileData, (char*)&checkSum, offset, sizeof(checkSum));
+	writeToByteArray(fileData, (char*)&size, offset, sizeof(unsigned int));
+	writeToByteArray(fileData, (char*)&checkSum, offset, sizeof(unsigned int));
 
 //	unsigned int tempOffset = offset;
 //	unsigned int* value = (unsigned int*)(fileData + offset);
@@ -126,7 +126,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 //	writeToByteArray(fileData, (char*)&checkSum, tempOffset, sizeof(checkSum));
 	std::ofstream fout;
 	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
-	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
+	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(unsigned int) + sizeof(unsigned int));
 	fout.close();
 	//		
 }
