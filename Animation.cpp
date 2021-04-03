@@ -59,8 +59,8 @@ Animation::Animation(char* byteArray, unsigned int& offset) {
 	writeFromByteArray((char*)&keyCount, byteArray, offset, sizeof(keyCount));
 	this->timeKeys = new float[keyCount];
 	this->stateKeys = new float[keyCount];
-	writeFromByteArray((char*)timeKeys, byteArray, offset, sizeof(timeKeys) * keyCount);
-	writeFromByteArray((char*)stateKeys, byteArray, offset, sizeof(stateKeys) * keyCount);
+	writeFromByteArray((char*)timeKeys, byteArray, offset, sizeof(*timeKeys) * keyCount);
+	writeFromByteArray((char*)stateKeys, byteArray, offset, sizeof(*stateKeys) * keyCount);
 }
 
 float* Animation::getTimeKeysPointer() {
@@ -72,13 +72,13 @@ float* Animation::getStateKeysPointer() {
 }
 
 std::vector<char> Animation::getByteArray() {
-	unsigned int byteArraySize = sizeof(keyCount) + (sizeof(timeKeys) + sizeof(stateKeys)) * keyCount;
+	unsigned int byteArraySize = sizeof(keyCount) + (sizeof(*timeKeys) + sizeof(*stateKeys)) * keyCount;
 	std::vector<char> byteArray(byteArraySize);
 	unsigned int offset = 0;
 
 	writeToByteArray(byteArray, (char*)&keyCount, offset, sizeof(keyCount));
-	writeToByteArray(byteArray, (char*)timeKeys, offset, sizeof(timeKeys) * keyCount);
-	writeToByteArray(byteArray, (char*)stateKeys, offset, sizeof(stateKeys) * keyCount);
+	writeToByteArray(byteArray, (char*)timeKeys, offset, sizeof(*timeKeys) * keyCount);
+	writeToByteArray(byteArray, (char*)stateKeys, offset, sizeof(*stateKeys) * keyCount);
 
 	return byteArray;
 }
