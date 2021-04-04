@@ -1,5 +1,11 @@
 #include "AnimationController.h"
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 std::list<AnimationTask> AnimationController::animationTasks = std::list<AnimationTask>();
 float* AnimationController::frameTime = nullptr;
 

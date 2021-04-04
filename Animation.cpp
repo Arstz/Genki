@@ -2,6 +2,12 @@
 #include "Animation.h"
 #include "ByteArray.h"
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 Animation::Animation() {
 	keyCount = 0;
 	timeKeys = nullptr;

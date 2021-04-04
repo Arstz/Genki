@@ -7,6 +7,12 @@
 #include "Window.h"
 #include "ShapeController.h"
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 #define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
 
@@ -22,6 +28,9 @@ Player Engine::player = Player();
 GLFWwindow* Engine::window = nullptr;
 
 void Engine::terminate() {
+	ShapeController::clear();
+	delete[] LevelEvent::shapeGroups;
+
 	glfwTerminate();
 }
 

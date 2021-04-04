@@ -31,9 +31,8 @@ class ShapeController {
 
 	static void updateBuffers();
 	static void reallocateBuffers();
-
 	static void initBuffers();
-	static void initShader();
+	static void initShader();	
 
 	static void writeToVertexbuffer(
 		ShapeGroup& shapeGroup,
@@ -53,6 +52,7 @@ public:
 
 	static void init();
 	static void draw();
+	static void clear();
 	
 	static void setWindow(GLFWwindow* window);
 	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);

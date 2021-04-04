@@ -1,6 +1,12 @@
 #include "ShapeController.h"
 #include <iostream>
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 GLuint bufferID = 0;
 
 ShapeGroup ShapeController::shapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
@@ -268,7 +274,18 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGroupIterator) {
 	vertexCount -= (*shapeGroupIterator).getVertexCount();
 	EBOsize -= (*shapeGroupIterator).getEBOsize();
-//	(*shapeIterator)->~Shape(); kracivo EEEE
+
 	shapeGroup.removeShapeGroup(shapeGroupIterator);
 	reallocateBuffers();
 }
+
+void ShapeController::clear()
+{
+	delete[] EBObuffer;
+	delete[] vertexBuffer;
+	vertexBuffer = nullptr;
+	EBObuffer = nullptr;
+}
+
+
+//	(*shapeIterator)->~Shape(); kracivo EEEE
