@@ -22,13 +22,14 @@ void EventController::update()
 
 
 void EventController::loadLevel(std::string path) {
+	for (int i = 0; i < level.size(); i++) delete level[i];
 	level.clear();
+
 	std::ifstream fin;
 	fin.open("raid_na_derevene.lvl", std::ifstream::binary);
 	unsigned int byteLevelSize;
 	unsigned int size;
 	unsigned int checkSum;
-
 
 	unsigned int offset = 0;
 
@@ -41,6 +42,7 @@ void EventController::loadLevel(std::string path) {
 	fin.read((char*)byteLevel, byteLevelSize);
 
 	fin.close();
+	level.resize(size);
 	for (int i = 0; i < size; i++) {
 		LevelEventType type;
 		float initTime;
@@ -52,39 +54,39 @@ void EventController::loadLevel(std::string path) {
 		case EMPTY:
 			break;
 		case BACKGROUND_COLOR_ANIMATION:
-			level.push_back(BackgroundColorAnimationEvent::CREATE_EVENT);
+			level[i] = BackgroundColorAnimationEvent::CREATE_EVENT;
 			break;
 		case CAMERA_ANIMATION:
-			level.push_back(CameraAnimationEvent::CREATE_EVENT);
+			level[i] = CameraAnimationEvent::CREATE_EVENT;
 			break;
 		case SHAPE_SPAWN:
-			level.push_back(ShapeSpawnEvent::CREATE_EVENT);
+			level[i] = ShapeSpawnEvent::CREATE_EVENT;
 			break;
 		case SHAPE_GROUP_SPAWN:
-			level.push_back(ShapeGroupSpawnEvent::CREATE_EVENT);
+			level[i] = ShapeGroupSpawnEvent::CREATE_EVENT;
 			break;
 		case SHAPE_GROUP_DESTRUCTION:
-			level.push_back(ShapeGroupDestructionEvent::CREATE_EVENT);
+			level[i] = ShapeGroupDestructionEvent::CREATE_EVENT;
 			break;
 		case SHAPE_ANIMATION:
-			level.push_back(ShapeAnimationEvent::CREATE_EVENT);
+			level[i] = ShapeAnimationEvent::CREATE_EVENT;
 			break;
 		case SHAPE_GROUP_ANIMATION:
-			level.push_back(ShapeGroupAnimationEvent::CREATE_EVENT);
+			level[i] = ShapeGroupAnimationEvent::CREATE_EVENT;
 			break;
 		case PLAYER_BINDING:
-			level.push_back(PlayerBindingEvent::CREATE_EVENT);
+			level[i] = PlayerBindingEvent::CREATE_EVENT;
 			break;
 		default:
 			break;
 		}
 	}
-	level.resize(size);
+
+	delete[] byteLevel;
+	byteLevel = nullptr;
 }
 
 void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& level) {
-
-
 	unsigned int size = level.size();
 	unsigned int checkSum = 0;
 
@@ -126,4 +128,5 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
 	fout.close();
 	delete[] fileData;
+	fileData = nullptr;
 }
