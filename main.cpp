@@ -3,6 +3,12 @@
 #include "Engine.h"
 #define GRAPHICS_INCLUDE
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 void sex()
 {
 	std::cout << "$3cks" << "\n";
@@ -17,6 +23,6 @@ int main()
 	}
 
 	Engine::terminate();
-
+	_CrtMemDumpAllObjectsSince(NULL);
 	return 0;
 }

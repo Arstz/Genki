@@ -496,5 +496,5 @@ std::vector<char> BackgroundColorAnimationEvent::getByteArray() {
 	writeToByteArray(byteArray, (char*)&valueNum, offset, sizeof(valueNum));
 	writeToByteArray(byteArray, animationArray, offset);
 
-	return byteArray;
+	return byteArray;	
 }

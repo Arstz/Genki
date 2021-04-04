@@ -1,6 +1,12 @@
 #include "Shape.h"
 #include "ByteArray.h"
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 Shape::Shape() {
 	this->vertexCoords = nullptr;
 	this->vertexColors = nullptr;

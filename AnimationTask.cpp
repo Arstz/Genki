@@ -1,5 +1,12 @@
 #include "AnimationTask.h"
 #include <iostream>
+
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 #define M_PI 3.14159265358979323846f  /* pipiska */
 
 AnimationTask::AnimationTask() {}

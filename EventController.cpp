@@ -5,6 +5,12 @@
 #include <vector>
 #include "ByteArray.h"
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 #define CREATE_EVENT create(byteLevel, offset, initTime)
 
 std::vector<LevelEvent*> EventController::level;
@@ -79,6 +85,10 @@ void EventController::loadLevel(std::string path) {
 			break;
 		}
 	}
+
+	delete[] byteLevel;
+	byteLevel = nullptr;
+
 	level.resize(size);
 }
 
@@ -125,5 +135,8 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
 	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
 	fout.close();
+
+	byteLevel.clear();
+
 	delete[] fileData;
 }

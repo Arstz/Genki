@@ -1,4 +1,11 @@
 #include "ByteArray.h"
+
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 void writeToByteArray(
 	std::vector<char>& byteVector,
 	char* byteArray, 

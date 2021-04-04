@@ -1,6 +1,12 @@
 #include "Window.h"
 #include <iostream>
 
+#include "crtdbg.h"
+#include "mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
+
 float Window::backgroundColor[4] = { 1.f, 1.f, 1.f, 1.f };
 GLuint Window::currentBufferID = 1;
 GLFWwindow* Window::window = nullptr;

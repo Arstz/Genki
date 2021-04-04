@@ -36,7 +36,6 @@ protected:
 	float initTime;
 	LevelEventType type;
 
-
 	LevelEvent();
 	LevelEvent(float initTime);
 
