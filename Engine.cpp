@@ -28,7 +28,7 @@ Player Engine::player = Player();
 GLFWwindow* Engine::window = nullptr;
 
 void Engine::terminate() {
-	ShapeController::clear();
+	ShapeController::terminate();
 	delete[] LevelEvent::shapeGroups;
 
 	glfwTerminate();

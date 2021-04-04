@@ -279,13 +279,9 @@ void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGro
 	reallocateBuffers();
 }
 
-void ShapeController::clear()
-{
+void ShapeController::terminate() {
 	delete[] EBObuffer;
 	delete[] vertexBuffer;
 	vertexBuffer = nullptr;
 	EBObuffer = nullptr;
 }
-
-
-//	(*shapeIterator)->~Shape(); kracivo EEEE

@@ -52,7 +52,6 @@ public:
 
 	static void init();
 	static void draw();
-	static void clear();
 	
 	static void setWindow(GLFWwindow* window);
 	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
@@ -64,6 +63,7 @@ public:
 		const ShapeGroup& shapeGroup, 
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
+	static void terminate();
 
 };
 

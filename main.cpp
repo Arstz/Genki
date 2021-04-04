@@ -1,7 +1,6 @@
 #include <vector>
 #include <iostream>
 #include "Engine.h"
-#define GRAPHICS_INCLUDE
 
 #include "crtdbg.h"
 #include "mydbgnew.h"
