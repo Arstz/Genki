@@ -146,12 +146,6 @@ void ShapeGroup::removeShapeGroup(const std::list<ShapeGroup>::iterator &shapeGr
 ShapeGroup::~ShapeGroup() {
 	delete[] shapes;
 	shapes = nullptr;
-	/*
-	for (auto a : shapeGroups) {
-		a.~ShapeGroup();
-	}
-	*/
-	shapeGroups.clear();	
 }
 
 uint ShapeGroup::getEBOsize() const {
