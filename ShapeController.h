@@ -32,7 +32,7 @@ class ShapeController {
 	static void updateBuffers();
 	static void reallocateBuffers();
 	static void initBuffers();
-	static void initShader();	
+	static void initShader();		
 
 	static void writeToVertexbuffer(
 		ShapeGroup& shapeGroup,
@@ -49,7 +49,7 @@ class ShapeController {
 	);
 
 public:
-
+	static void destroy();
 	static void init();
 	static void draw();
 	
