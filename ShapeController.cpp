@@ -7,7 +7,7 @@
 #define new MYDEBUG_NEW
 #endif
 
-GLuint bufferID = 0;
+GLuint ShapeController::bufferID = 0;
 
 ShapeGroup ShapeController::shapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
 
@@ -255,9 +255,9 @@ void ShapeController::draw() {
 std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup) {
 	vertexCount += shapeGroup.getVertexCount();
 	EBOsize += shapeGroup.getEBOsize();
-	std::list<ShapeGroup>::iterator newShapeGroupIterator = ShapeController::shapeGroup.addShapeGroup(shapeGroup);
+	std::list<ShapeGroup>::iterator otherShapeGroupIterator = ShapeController::shapeGroup.addShapeGroup(shapeGroup);
 	reallocateBuffers();
-	return newShapeGroupIterator;
+	return otherShapeGroupIterator;
 }
 
 std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
@@ -266,9 +266,9 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 ) {
 	vertexCount += shapeGroup.getVertexCount();
 	EBOsize += shapeGroup.getEBOsize();
-	std::list<ShapeGroup>::iterator newShapeGroupIterator = (*shapeGroupIterator).addShapeGroup(shapeGroup);
+	std::list<ShapeGroup>::iterator otherShapeGroupIterator = (*shapeGroupIterator).addShapeGroup(shapeGroup);
 	reallocateBuffers();
-	return newShapeGroupIterator;
+	return otherShapeGroupIterator;
 }
 
 void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGroupIterator) {

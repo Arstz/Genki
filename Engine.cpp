@@ -30,18 +30,19 @@ GLFWwindow* Engine::window = nullptr;
 void Engine::terminate() {
 	ShapeController::terminate();
 	delete[] LevelEvent::shapeGroups;
-
+	
 	glfwTerminate();
 }
 
 void Engine::init() {
 	Window::init();
+	window = Window::getWindow();
 	ShapeController::init();
 
 	PlayerBindingEvent::player = &player;
 
 	AnimationController::setTimePointer(&frameTime);
-	window = Window::getWindow();
+	
 	EventController::currentTime = &currentTime;
 	
 	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];

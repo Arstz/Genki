@@ -129,6 +129,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 //	int valueCount = (byteLevelSize - offset) / 4;
 //	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);
 //	writeToByteArray(fileData, (char*)&checkSum, tempOffset, sizeof(checkSum));
+
 	std::ofstream fout;
 	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
 	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));

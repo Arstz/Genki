@@ -17,6 +17,7 @@ int main()
 {
 	Engine::init();
 	while (Engine::running()) {
+
 		Engine::update();
 		Engine::render();
 	}
