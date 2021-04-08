@@ -20,6 +20,9 @@
 [Rr]eleases/
 x64/
 x86/
+bin x64/
+bin x86/
+obj/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
