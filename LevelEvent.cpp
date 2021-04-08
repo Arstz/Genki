@@ -11,6 +11,9 @@ float LevelEvent::getInitTime() {
 	return initTime;
 }
 
+LevelEvent::~LevelEvent() {
+}
+
 LevelEvent::LevelEvent() {}
 LevelEvent::LevelEvent(float initTime) {
 	this->initTime = initTime;
@@ -29,7 +32,7 @@ std::vector<char> LevelEvent::getByteArray() {
 
 void LevelEvent::destroy()
 {
-	delete[] shapeGroups;
+//	delete[] shapeGroups;
 }
 
 void LevelEvent::write(std::ofstream& fout) {}

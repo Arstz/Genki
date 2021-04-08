@@ -28,7 +28,7 @@ void EventController::update()
 
 void EventController::destroy()
 {
-	for (auto &a : level) {
+	for (auto a : level) {
 		delete a;
 	}
 	level.~vector();

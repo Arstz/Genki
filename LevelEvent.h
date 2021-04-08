@@ -35,7 +35,7 @@ class LevelEvent {
 protected:
 	float initTime;
 	LevelEventType type;
-
+	virtual ~LevelEvent();
 	LevelEvent();
 	LevelEvent(float initTime);
 

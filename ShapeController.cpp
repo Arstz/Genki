@@ -7,8 +7,6 @@
 #define new MYDEBUG_NEW
 #endif
 
-GLuint ShapeController::bufferID = 0;
-
 ShapeGroup ShapeController::shapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
 
 uint ShapeController::vertexCount = 0;
