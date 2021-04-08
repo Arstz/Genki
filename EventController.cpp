@@ -11,7 +11,7 @@
 #define new MYDEBUG_NEW
 #endif
 
-#define CREATE_EVENT create(byteLevel, offset, initTime)
+#define CREATE_EVENT create(byteLevel + offset, initTime)
 
 std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
@@ -60,9 +60,11 @@ void EventController::loadLevel(std::string path) {
 	for (unsigned int i = 0; i < size; i++) {
 		LevelEventType type = LevelEventType::EMPTY;
 		float initTime;
+		unsigned int blockSize;
 
 		writeFromByteArray((char*)&type, byteLevel, offset, sizeof(type));
 		writeFromByteArray((char*)&initTime, byteLevel, offset, sizeof(initTime));
+		writeFromByteArray((char*)&blockSize, byteLevel, offset, sizeof(blockSize));
 
 		switch (type) {
 		case LevelEventType::EMPTY:
@@ -94,7 +96,9 @@ void EventController::loadLevel(std::string path) {
 		default:
 			break;
 		}
+		offset += blockSize;
 	}
+
 
 	delete[] byteLevel;
 	byteLevel = nullptr;
@@ -112,11 +116,13 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 		LevelEventType type = level[i]->getType();
 		float initTime = level[i]->getInitTime();
 		std::vector<char> tempArray = level[i]->getByteArray();
-		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(type) + sizeof(initTime));
+		unsigned int blockSize = tempArray.size();
+		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(type) + sizeof(initTime) + sizeof(blockSize));
 
 		unsigned int offset = 0;
 		writeToByteArray(byteLevel[i], (char*)&type, offset, sizeof(type));
 		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(initTime));
+		writeToByteArray(byteLevel[i], (char*)&blockSize, offset, sizeof(initTime));
 		writeToByteArray(byteLevel[i], tempArray, offset);
 
 		byteLevelSize += static_cast<unsigned int>(byteLevel[i].size());

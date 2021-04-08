@@ -58,9 +58,9 @@ CameraAnimationEvent* CameraAnimationEvent::create(Animation animation, uint val
 
 CameraAnimationEvent* CameraAnimationEvent::create(
 	char* byteArray, 
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	uint valueNum;
 	writeFromByteArray((char*)&valueNum, byteArray, offset, sizeof(valueNum));
 	return new CameraAnimationEvent(Animation(byteArray, offset), valueNum, initTime);
@@ -92,9 +92,9 @@ ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, int targ
 
 ShapeSpawnEvent* ShapeSpawnEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	int shapeGroupID, targetShapeGroupID;
 	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
 	writeFromByteArray((char*)&targetShapeGroupID, byteArray, offset, sizeof(targetShapeGroupID));
@@ -154,9 +154,9 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(ShapeGroup shapeGroup, int sh
 
 ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	int shapeGroupID, targetShapeGroupID;
 	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
 	writeFromByteArray((char*)&targetShapeGroupID, byteArray, offset, sizeof(targetShapeGroupID));
@@ -200,9 +200,9 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(int shapeGroupID,
 
 ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	int shapeGroupID;
 	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
 	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
@@ -265,9 +265,9 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 
 ShapeAnimationEvent* ShapeAnimationEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID, shapeNum, vertexNum, valueNum;
 	writeFromByteArray((char*)&animatedValueType, byteArray, offset, sizeof(animatedValueType));
@@ -369,9 +369,9 @@ ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 
 ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
 	writeFromByteArray((char*)&animatedValueType, byteArray, offset, sizeof(animatedValueType));
@@ -439,9 +439,9 @@ PlayerBindingEvent* PlayerBindingEvent::create(int shapeGroupID, float initTime)
 
 PlayerBindingEvent* PlayerBindingEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	int shapeGroupID;
 	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
 	return new PlayerBindingEvent(shapeGroupID, initTime);
@@ -478,9 +478,9 @@ BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(Animation a
 
 BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(
 	char* byteArray,
-	unsigned int& offset,
 	float initTime
 ) {
+	unsigned int offset = 0;
 	uint valueNum;
 	writeFromByteArray((char*)&valueNum, byteArray, offset, sizeof(valueNum));
 	return new BackgroundColorAnimationEvent(Animation(byteArray, offset), valueNum, initTime);

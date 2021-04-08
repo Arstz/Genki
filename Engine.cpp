@@ -55,6 +55,8 @@ void Engine::init() {
 	
 	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
 
+//	EventController::saveLevel("a", EventController::level);
+
 	EventController::loadLevel("a");
 
 }

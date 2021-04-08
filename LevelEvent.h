@@ -69,7 +69,6 @@ public:
 
 	static CameraAnimationEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 	
@@ -96,7 +95,6 @@ public:
 	);
 	static ShapeSpawnEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 	void start() override;
@@ -124,7 +122,6 @@ public:
 	);
 	static ShapeGroupSpawnEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 	std::vector<char> getByteArray() override;
@@ -143,7 +140,6 @@ public:
 
 	static ShapeGroupDestructionEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 
@@ -181,7 +177,6 @@ public:
 	);
 	static ShapeAnimationEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 
@@ -210,7 +205,6 @@ public:
 	);
 	static ShapeGroupAnimationEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 
@@ -229,7 +223,6 @@ public:
 	);
 	static PlayerBindingEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 	void start() override;
@@ -249,7 +242,6 @@ public:
 	);
 	static BackgroundColorAnimationEvent* create(
 		char* byteArray,
-		unsigned int& offset,
 		float initTime
 	);
 	void start() override;
