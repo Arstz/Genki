@@ -10,7 +10,7 @@
 
 class EventController;
 
-enum LevelEventType {
+enum class LevelEventType {
 	EMPTY,
 	BACKGROUND_COLOR_ANIMATION, //cherez 5 let sdelaem
 	CAMERA_ANIMATION,
@@ -22,7 +22,7 @@ enum LevelEventType {
 	PLAYER_BINDING,
 };
 
-enum AnimatedValueType {
+enum class AnimatedValueType {
 	VERTEX_POSITION,
 	VERTEX_COLOR,
 	ALPHA_CHANNEL,

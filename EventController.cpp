@@ -58,37 +58,37 @@ void EventController::loadLevel(std::string path) {
 	fin.close();
 	level.resize(size);
 	for (unsigned int i = 0; i < size; i++) {
-		LevelEventType type;
+		LevelEventType type = LevelEventType::EMPTY;
 		float initTime;
 
 		writeFromByteArray((char*)&type, byteLevel, offset, sizeof(type));
 		writeFromByteArray((char*)&initTime, byteLevel, offset, sizeof(initTime));
 
 		switch (type) {
-		case EMPTY:
+		case LevelEventType::EMPTY:
 			break;
-		case BACKGROUND_COLOR_ANIMATION:
+		case LevelEventType::BACKGROUND_COLOR_ANIMATION:
 			level[i] = BackgroundColorAnimationEvent::CREATE_EVENT;
 			break;
-		case CAMERA_ANIMATION:
+		case LevelEventType::CAMERA_ANIMATION:
 			level[i] = CameraAnimationEvent::CREATE_EVENT;
 			break;
-		case SHAPE_SPAWN:
+		case LevelEventType::SHAPE_SPAWN:
 			level[i] = ShapeSpawnEvent::CREATE_EVENT;
 			break;
-		case SHAPE_GROUP_SPAWN:
+		case LevelEventType::SHAPE_GROUP_SPAWN:
 			level[i] = ShapeGroupSpawnEvent::CREATE_EVENT;
 			break;
-		case SHAPE_GROUP_DESTRUCTION:
+		case LevelEventType::SHAPE_GROUP_DESTRUCTION:
 			level[i] = ShapeGroupDestructionEvent::CREATE_EVENT;
 			break;
-		case SHAPE_ANIMATION:
+		case LevelEventType::SHAPE_ANIMATION:
 			level[i] = ShapeAnimationEvent::CREATE_EVENT;
 			break;
-		case SHAPE_GROUP_ANIMATION:
+		case LevelEventType::SHAPE_GROUP_ANIMATION:
 			level[i] = ShapeGroupAnimationEvent::CREATE_EVENT;
 			break;
-		case PLAYER_BINDING:
+		case LevelEventType::PLAYER_BINDING:
 			level[i] = PlayerBindingEvent::CREATE_EVENT;
 			break;
 		default:
