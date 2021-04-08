@@ -27,10 +27,18 @@ std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock:
 Player Engine::player = Player();
 GLFWwindow* Engine::window = nullptr;
 
+void Engine::destroy()
+{
+	AnimationController::destroy();
+	ShapeController::destroy();
+	EventController::destroy();
+	LevelEvent::destroy();
+}
+
 void Engine::terminate() {
 	ShapeController::terminate();
 	delete[] LevelEvent::shapeGroups;
-	
+
 	glfwTerminate();
 }
 

@@ -23,6 +23,7 @@ int main()
 	}
 
 	Engine::terminate();
+	Engine::destroy();
 	_CrtMemDumpAllObjectsSince(NULL);
 	return 0;
 }

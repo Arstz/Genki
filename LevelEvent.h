@@ -44,6 +44,7 @@ public:
 	virtual void write(std::ofstream& fout);
 	virtual void start();
 	virtual std::vector<char> getByteArray();
+	static void destroy();
 	float getInitTime();
 
 	LevelEventType getType();

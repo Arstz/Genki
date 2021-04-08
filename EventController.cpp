@@ -26,6 +26,14 @@ void EventController::update()
 	}
 }
 
+void EventController::destroy()
+{
+	for (auto &a : level) {
+		delete a;
+	}
+	level.~vector();
+}
+
 
 void EventController::loadLevel(std::string path) {
 	for (int i = 0; i < level.size(); i++) delete level[i];

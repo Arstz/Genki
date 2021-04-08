@@ -45,6 +45,7 @@ float AnimationTask::calculatePosition(
 	return startPosition + (endPosition - startPosition) * ((currentTime - startTime) / (endTime - startTime));
 }
 
+
 void AnimationTask::animateLoop(float& frameTime) {
 	timer += frameTime;
 	while (timer > animation.getTimeKeysPointer()[counter]) {

@@ -22,6 +22,7 @@ public:
 	static void update();
 	static void render();
 
+	static void destroy();
 	static void terminate();
 	static bool running();
 	static void pollKeyEvents();

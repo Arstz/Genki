@@ -9,6 +9,10 @@
 std::list<AnimationTask> AnimationController::animationTasks = std::list<AnimationTask>();
 float* AnimationController::frameTime = nullptr;
 
+void AnimationController::destroy(){
+	animationTasks.~list();
+}
+
 void AnimationController::setTimePointer(float* frameTime) {
 	AnimationController::frameTime = frameTime;
 }

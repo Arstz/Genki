@@ -11,6 +11,7 @@ public:
 	static float* currentTime;
 
 	static void update();
+	static void destroy();
 	
 	static void loadLevel(std::string path);
 	static void saveLevel(std::string path, std::vector<LevelEvent*>& level);

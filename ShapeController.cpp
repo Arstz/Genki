@@ -215,6 +215,11 @@ void ShapeController::initShader() {
 	glDeleteShader(fragmentShader);
 }
 
+void ShapeController::destroy()
+{
+	shapeGroup.~ShapeGroup();
+}
+
 void ShapeController::init() {
 	setWindow(Window::getWindow());
 	initShader();
