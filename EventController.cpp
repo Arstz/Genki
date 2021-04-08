@@ -57,7 +57,7 @@ void EventController::loadLevel(std::string path) {
 
 	fin.close();
 	level.resize(size);
-	for (int i = 0; i < size; i++) {
+	for (unsigned int i = 0; i < size; i++) {
 		LevelEventType type;
 		float initTime;
 
@@ -108,7 +108,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 
 	unsigned int byteLevelSize = 0;
 
-	for (int i = 0; i < size; i++) {
+	for (unsigned int i = 0; i < size; i++) {
 		LevelEventType type = level[i]->getType();
 		float initTime = level[i]->getInitTime();
 		std::vector<char> tempArray = level[i]->getByteArray();
@@ -119,7 +119,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(initTime));
 		writeToByteArray(byteLevel[i], tempArray, offset);
 
-		byteLevelSize += byteLevel[i].size();
+		byteLevelSize += static_cast<unsigned int>(byteLevel[i].size());
 	}
 
 	unsigned int offset = 0;
@@ -132,7 +132,7 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 //	unsigned int tempOffset = offset;
 //	unsigned int* value = (unsigned int*)(fileData + offset);
 
-	for (int i = 0; i < size; i++) writeToByteArray(fileData, byteLevel[i], offset);
+	for (unsigned int i = 0; i < size; i++) writeToByteArray(fileData, byteLevel[i], offset);
 
 //	int valueCount = (byteLevelSize - offset) / 4;
 //	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);

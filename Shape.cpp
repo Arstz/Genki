@@ -8,6 +8,12 @@
 #endif
 
 Shape::Shape() {
+	this->EBOsize = 0;
+	this->alphaChannel = 0.f;
+	this->layer = 0;
+	this->positionX = 0.f;
+	this->positionY = 0.f;
+	this->vertexCount = 0;
 	this->vertexCoords = nullptr;
 	this->vertexColors = nullptr;
 	this->vertexIDs = nullptr;
@@ -25,8 +31,8 @@ Shape::Shape(
 ) {
 	this->vertexCount = vertexCount;
 
-	this->vertexCoords = new float[vertexCount * 2];
-	this->vertexColors = new float[vertexCount * 4];
+	this->vertexCoords = new float[static_cast<long long>(vertexCount) * 2];
+	this->vertexColors = new float[static_cast<long long>(vertexCount) * 4];
 
 	for (uint i = 0; i < vertexCount * 2; i++) this->vertexCoords[i] = vertexCoords[i];
 	for (uint i = 0; i < vertexCount * 4; i++) this->vertexColors[i] = vertexColors[i];
@@ -46,8 +52,8 @@ Shape::Shape(
 Shape::Shape(const Shape& shape) {
 	this->vertexCount = shape.vertexCount;
 
-	this->vertexCoords = new float[vertexCount * 2];
-	this->vertexColors = new float[vertexCount * 4];
+	this->vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
+	this->vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 
 	for (uint i = 0; i < shape.vertexCount * 2; i++) this->vertexCoords[i] = shape.vertexCoords[i];
 	for (uint i = 0; i < shape.vertexCount * 4; i++) this->vertexColors[i] = shape.vertexColors[i];
@@ -71,8 +77,8 @@ Shape::Shape(char* byteArray, unsigned int& offset) {
 	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
 	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
 	writeFromByteArray((char*)&positionY, byteArray, offset, sizeof(positionY));
-	vertexCoords = new float[vertexCount * 2];
-	vertexColors = new float[vertexCount * 4];
+	vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
+	vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 	vertexIDs = new uint[EBOsize];
 	writeFromByteArray((char*)vertexCoords, byteArray, offset, sizeof(*vertexCoords) * vertexCount * 2);
 	writeFromByteArray((char*)vertexColors, byteArray, offset, sizeof(*vertexColors) * vertexCount * 4);
@@ -123,8 +129,8 @@ Shape& Shape::operator=(const Shape& shape) {
 
 	this->vertexCount = shape.vertexCount;
 
-	this->vertexCoords = new float[vertexCount * 2];
-	this->vertexColors = new float[vertexCount * 4];
+	this->vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
+	this->vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 
 	for (uint i = 0; i < shape.vertexCount * 2; i++) this->vertexCoords[i] = shape.vertexCoords[i];
 	for (uint i = 0; i < shape.vertexCount * 4; i++) this->vertexColors[i] = shape.vertexColors[i];

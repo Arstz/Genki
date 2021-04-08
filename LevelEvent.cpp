@@ -11,10 +11,13 @@ float LevelEvent::getInitTime() {
 	return initTime;
 }
 
-LevelEvent::~LevelEvent() {
+LevelEvent::LevelEvent(){
+	this->initTime = 0;
+	this->type = LevelEventType::EMPTY;
 }
 
-LevelEvent::LevelEvent() {}
+LevelEvent::~LevelEvent() {}
+
 LevelEvent::LevelEvent(float initTime) {
 	this->initTime = initTime;
 	this->type = LevelEventType::EMPTY;
@@ -39,7 +42,6 @@ void LevelEvent::write(std::ofstream& fout) {}
 
 //CameraAnimationEvent
 
-CameraAnimationEvent::CameraAnimationEvent() {}
 CameraAnimationEvent::CameraAnimationEvent(
 	Animation animation, 
 	uint valueNum, 
@@ -70,7 +72,7 @@ void CameraAnimationEvent::start() {
 
 std::vector<char> CameraAnimationEvent::getByteArray() {
 	std::vector<char> animationArray = animation.getByteArray();
-	unsigned int byteArraySize = animationArray.size() + sizeof(valueNum);
+	unsigned int byteArraySize = static_cast<unsigned int>(animationArray.size()) + sizeof(valueNum);
 
 	std::vector<char> byteArray(byteArraySize);
 
@@ -83,8 +85,6 @@ std::vector<char> CameraAnimationEvent::getByteArray() {
 }
 
 //ShapeSpawnEvent
-
-ShapeSpawnEvent::ShapeSpawnEvent() {}
 
 ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, int targetShapeGroupID, float initTime) {
 	return new ShapeSpawnEvent(shape, shapeGroupID, targetShapeGroupID, initTime);
@@ -121,9 +121,10 @@ void ShapeSpawnEvent::start() {
 std::vector<char> ShapeSpawnEvent::getByteArray() {
 	std::vector<char> shapeArray = shape.getByteArray();
 	unsigned int byteArraySize = 
+		static_cast<unsigned int>(
 		shapeArray.size() + 
 		sizeof(shapeGroupID) + 
-		sizeof(targetShapeGroupID);
+		sizeof(targetShapeGroupID));
 
 	std::vector<char> byteArray(byteArraySize);
 
@@ -136,7 +137,6 @@ std::vector<char> ShapeSpawnEvent::getByteArray() {
 	return byteArray;
 }
 
-ShapeGroupSpawnEvent::ShapeGroupSpawnEvent() {}
 ShapeGroupSpawnEvent::ShapeGroupSpawnEvent(
 	ShapeGroup shapeGroup,
 	int shapeGroupID,
@@ -166,9 +166,10 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(
 std::vector<char> ShapeGroupSpawnEvent::getByteArray() {
 	std::vector<char> shapeGroupArray = shapeGroup.getByteArray();
 	unsigned int byteArraySize =
+		static_cast<unsigned int>(
 		shapeGroupArray.size() +
 		sizeof(shapeGroupID) +
-		sizeof(targetShapeGroupID);
+		sizeof(targetShapeGroupID));
 
 	std::vector<char> byteArray(byteArraySize);
 
@@ -188,7 +189,6 @@ void ShapeGroupSpawnEvent::start() {
 
 //ShapeGroupDestructionEvent
 
-ShapeGroupDestructionEvent::ShapeGroupDestructionEvent() {}
 ShapeGroupDestructionEvent::ShapeGroupDestructionEvent(int shapeGroupID, float initTime) : LevelEvent(initTime) {
 	this->shapeGroupID = shapeGroupID;
 	this->type = LevelEventType::SHAPE_GROUP_DESTRUCTION;
@@ -225,7 +225,6 @@ std::vector<char> ShapeGroupDestructionEvent::getByteArray() {
 
 //ShapeAnimationEvent
 
-ShapeAnimationEvent::ShapeAnimationEvent() {}
 ShapeAnimationEvent::ShapeAnimationEvent(
 	Animation animation,
 	AnimatedValueType animatedValueType,
@@ -318,12 +317,13 @@ void ShapeAnimationEvent::start() {
 std::vector<char> ShapeAnimationEvent::getByteArray() {
 	std::vector<char> animationArray = animation.getByteArray();
 	unsigned int byteArraySize =
+		static_cast<unsigned int>(
 		animationArray.size() +
 		sizeof(animatedValueType) +
 		sizeof(shapeGroupID) +
 		sizeof(shapeNum) +
 		sizeof(vertexNum) +
-		sizeof(valueNum);
+		sizeof(valueNum));
 
 	std::vector<char> byteArray(byteArraySize);
 
@@ -341,7 +341,6 @@ std::vector<char> ShapeAnimationEvent::getByteArray() {
 
 //ShapeGroupAnimationEvent
 
-ShapeGroupAnimationEvent::ShapeGroupAnimationEvent() {}
 ShapeGroupAnimationEvent::ShapeGroupAnimationEvent(
 	Animation animation,
 	AnimatedValueType animatedValueType,
@@ -410,9 +409,10 @@ void ShapeGroupAnimationEvent::start() {
 std::vector<char> ShapeGroupAnimationEvent::getByteArray() {
 	std::vector<char> animationArray = animation.getByteArray();
 	unsigned int byteArraySize =
+		static_cast<unsigned int>(
 		animationArray.size() +
 		sizeof(animatedValueType) +
-		sizeof(shapeGroupID);
+		sizeof(shapeGroupID));
 
 	std::vector<char> byteArray(byteArraySize);
 
@@ -429,7 +429,6 @@ std::vector<char> ShapeGroupAnimationEvent::getByteArray() {
 
 Player* PlayerBindingEvent::player = nullptr;
 
-PlayerBindingEvent::PlayerBindingEvent() {}
 PlayerBindingEvent::PlayerBindingEvent(int shapeGroupID, float initTime) : LevelEvent(initTime) {
 	this->shapeGroupID = shapeGroupID;
 	this->type = LevelEventType::PLAYER_BINDING;
@@ -467,8 +466,6 @@ std::vector<char> PlayerBindingEvent::getByteArray() {
 }
 
 //BackgroundColorAnimationEvent
-
-BackgroundColorAnimationEvent::BackgroundColorAnimationEvent() {}
 BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(Animation animation, uint valueNum, float initTime) : LevelEvent(initTime) {
 	this->type = LevelEventType::BACKGROUND_COLOR_ANIMATION;
 	this->animation = animation;
@@ -495,7 +492,7 @@ void BackgroundColorAnimationEvent::start() {
 
 std::vector<char> BackgroundColorAnimationEvent::getByteArray() {
 	std::vector<char> animationArray = animation.getByteArray();
-	unsigned int byteArraySize = animationArray.size() + sizeof(valueNum);
+	unsigned int byteArraySize = static_cast<unsigned int>(animationArray.size() + sizeof(valueNum));
 
 	std::vector<char> byteArray(byteArraySize);
 

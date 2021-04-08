@@ -8,7 +8,12 @@
 #endif
 
 ShapeGroup::ShapeGroup() {
+	this->shapeCount = 0;
 	this->shapes = nullptr;
+	this->alphaChannel = 1.f;
+	this->positionX = 0.f;
+	this->positionY = 0.f;
+	this->layer = 0;
 }
 ShapeGroup::ShapeGroup(
 	uint shapeCount,

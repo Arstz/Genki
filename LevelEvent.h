@@ -35,8 +35,8 @@ class LevelEvent {
 protected:
 	float initTime;
 	LevelEventType type;
-	virtual ~LevelEvent();
 	LevelEvent();
+	virtual ~LevelEvent();
 	LevelEvent(float initTime);
 
 public:
@@ -54,7 +54,6 @@ class CameraAnimationEvent : public LevelEvent {
 	Animation animation;
 	uint valueNum;
 
-	CameraAnimationEvent();
 	CameraAnimationEvent(
 		Animation animation,
 		uint valueNum,
@@ -88,7 +87,6 @@ class ShapeSpawnEvent : public LevelEvent {
 		int targetShapeGroupID,
 		float initTime
 	);
-	ShapeSpawnEvent();
 public:
 	static ShapeSpawnEvent* create(
 		Shape shape,
@@ -111,7 +109,6 @@ class ShapeGroupSpawnEvent : public LevelEvent {
 	int shapeGroupID;
 	int targetShapeGroupID;
 
-	ShapeGroupSpawnEvent();
 	ShapeGroupSpawnEvent(
 		ShapeGroup shapeGroup,
 		int shapeGroupID,
@@ -136,7 +133,6 @@ public:
 
 class ShapeGroupDestructionEvent : public LevelEvent { //opasniy pizdets
 	int shapeGroupID;
-	ShapeGroupDestructionEvent();
 	ShapeGroupDestructionEvent(int shapeGroupID, float initTime);
 public:
 
@@ -163,7 +159,6 @@ class ShapeAnimationEvent : public LevelEvent {
 	int vertexNum;
 	int valueNum;
 
-	ShapeAnimationEvent();
 	ShapeAnimationEvent(
 		Animation animation,
 		AnimatedValueType animatedValueType,
@@ -199,7 +194,6 @@ class ShapeGroupAnimationEvent : public LevelEvent {
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
 
-	ShapeGroupAnimationEvent();
 	ShapeGroupAnimationEvent(
 		Animation animation,
 		AnimatedValueType animatedValueType,
@@ -225,7 +219,6 @@ public:
 };
 
 class PlayerBindingEvent : public LevelEvent {
-	PlayerBindingEvent();
 	PlayerBindingEvent(int shapeGroupID, float initTime);
 	int shapeGroupID;
 public:
@@ -247,7 +240,6 @@ class BackgroundColorAnimationEvent : public LevelEvent {
 	Animation animation;
 	uint valueNum;
 
-	BackgroundColorAnimationEvent();
 	BackgroundColorAnimationEvent(Animation animation, uint valueNum, float initTime);
 public:
 	static BackgroundColorAnimationEvent* create(
