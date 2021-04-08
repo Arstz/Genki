@@ -12,7 +12,7 @@ class EventController;
 
 enum class LevelEventType {
 	EMPTY,
-	BACKGROUND_COLOR_ANIMATION, //cherez 5 let sdelaem
+	BACKGROUND_COLOR_ANIMATION,
 	CAMERA_ANIMATION,
 	SHAPE_SPAWN,
 	SHAPE_GROUP_SPAWN,
