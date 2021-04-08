@@ -16,6 +16,9 @@
     <Filter Include="Resource Files\MemoryDumps">
       <UniqueIdentifier>{98f40cfc-73fb-400a-9824-4511282a5bd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LevelEvent">
+      <UniqueIdentifier>{6adb6dbc-8f79-4390-bc8c-bbb0c5e59943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,9 +28,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventController.cpp">
@@ -57,6 +57,33 @@
     <ClCompile Include="ByteArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelEvent\LevelEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\BackgroundColorAnimationEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\CameraAnimationEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\PlayerBindingEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\ShapeAnimationEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\ShapeGroupAnimationEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\ShapeGroupDestructionEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\ShapeGroupSpawnEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEvent\ShapeSpawnEvent.cpp">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -66,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EventController.h">
@@ -94,6 +118,33 @@
     </ClInclude>
     <ClInclude Include="ByteArray.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\LevelEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\BackgroundColorAnimationEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\CameraAnimationEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\PlayerBindingEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\ShapeAnimationEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\ShapeGroupAnimationEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\ShapeGroupDestructionEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\ShapeGroupSpawnEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelEvent\ShapeSpawnEvent.h">
+      <Filter>Header Files\LevelEvent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

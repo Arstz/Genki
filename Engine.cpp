@@ -3,7 +3,8 @@
 #include "AnimationController.h"
 #include "Shape.h"
 #include "ShapeGroup.h"
-#include "LevelEvent.h"
+#include "LevelEvent\LevelEvent.h"
+#include "LevelEvent\PlayerBindingEvent.h"
 #include "Window.h"
 #include "ShapeController.h"
 

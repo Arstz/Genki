@@ -1,5 +1,12 @@
 #include "EventController.h"
-#include "LevelEvent.h"
+#include "LevelEvent\BackgroundColorAnimationEvent.h"
+#include "LevelEvent\CameraAnimationEvent.h"
+#include "LevelEvent\PlayerBindingEvent.h"
+#include "LevelEvent\ShapeAnimationEvent.h"
+#include "LevelEvent\ShapeGroupAnimationEvent.h"
+#include "LevelEvent\ShapeGroupDestructionEvent.h"
+#include "LevelEvent\ShapeGroupSpawnEvent.h"
+#include "LevelEvent\ShapeSpawnEvent.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
