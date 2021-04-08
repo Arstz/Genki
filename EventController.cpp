@@ -1,4 +1,6 @@
 #include "EventController.h"
+#include "LevelEvent\LevelEvent.h"
+
 #include "LevelEvent\BackgroundColorAnimationEvent.h"
 #include "LevelEvent\CameraAnimationEvent.h"
 #include "LevelEvent\PlayerBindingEvent.h"
@@ -7,6 +9,7 @@
 #include "LevelEvent\ShapeGroupDestructionEvent.h"
 #include "LevelEvent\ShapeGroupSpawnEvent.h"
 #include "LevelEvent\ShapeSpawnEvent.h"
+
 #include <iostream>
 #include <fstream>
 #include <vector>
