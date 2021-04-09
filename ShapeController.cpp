@@ -121,7 +121,7 @@ void ShapeController::reallocateBuffers() {
 
 	delete[] EBObuffer;
 	EBObuffer = new uint[EBOsize];
-
+	glBindVertexArray(VAO);
 	glVertexAttribPointer(
 		1,
 		4,
@@ -130,12 +130,15 @@ void ShapeController::reallocateBuffers() {
 		4 * sizeof(GLfloat),
 		(GLvoid*)(2 * vertexCount * sizeof(float)));
 
+
+
 	uint EBOoffsetCounter = 0;
 	uint vertexCounter = 0;
 
 	writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
-	
+
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
+	glBindVertexArray(0);
 }
 
 void ShapeController::setWindow(GLFWwindow* window) {
@@ -173,6 +176,7 @@ void ShapeController::initBuffers() {
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
 }
 
 void ShapeController::initShader() {
@@ -249,9 +253,12 @@ void ShapeController::draw() {
 		GL_STATIC_DRAW
 	);
 
-	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader);
+
+	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
 	glfwSwapBuffers(window);
 }
 
@@ -287,4 +294,7 @@ void ShapeController::terminate() {
 	delete[] vertexBuffer;
 	vertexBuffer = nullptr;
 	EBObuffer = nullptr;
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
