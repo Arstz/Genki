@@ -50,12 +50,3 @@ public:
 
 	LevelEventType getType();
 };
-
-
-
-
-
-
-
-
-

@@ -21,6 +21,22 @@ ShapeAnimationEvent::ShapeAnimationEvent(
 	this->type = LevelEventType::SHAPE_ANIMATION;
 }
 
+ShapeAnimationEvent::ShapeAnimationEvent(
+	Animation animation,
+	AnimatedValueType animatedValueType,
+	int shapeGroupID,
+	int shapeNum,
+	int valueNum,
+	float initTime
+) : LevelEvent(initTime) {
+	this->animation = animation;
+	this->animatedValueType = animatedValueType;
+	this->shapeGroupID = shapeGroupID;
+	this->shapeNum = shapeNum;
+	this->valueNum = valueNum;
+	this->type = LevelEventType::SHAPE_ANIMATION;
+}
+
 ShapeAnimationEvent* ShapeAnimationEvent::create(
 	Animation animation,
 	AnimatedValueType animatedValueType,
@@ -36,6 +52,24 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 		shapeGroupID,
 		shapeNum,
 		vertexNum,
+		valueNum,
+		initTime
+	);
+}
+
+ShapeAnimationEvent* ShapeAnimationEvent::create(
+	Animation animation,
+	AnimatedValueType animatedValueType,
+	int shapeGroupID,
+	int shapeNum,
+	int valueNum,
+	float initTime
+) {
+	return new ShapeAnimationEvent(
+		animation,
+		animatedValueType,
+		shapeGroupID,
+		shapeNum,
 		valueNum,
 		initTime
 	);

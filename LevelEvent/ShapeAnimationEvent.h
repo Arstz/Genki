@@ -18,6 +18,14 @@ class ShapeAnimationEvent : public LevelEvent {
 		int valueNum,
 		float initTime
 	);
+	ShapeAnimationEvent(
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		int shapeGroupID,
+		int shapeNum,
+		int valueNum,
+		float initTime
+	);
 public:
 
 	static ShapeAnimationEvent* create(
@@ -30,9 +38,17 @@ public:
 		float initTime
 	);
 	static ShapeAnimationEvent* create(
-		char* byteArray,
+		Animation animation,
+		AnimatedValueType animatedValueType,
+		int shapeGroupID,
+		int shapeNum,
+		int valueNum,
 		float initTime
 	);
+	static ShapeAnimationEvent* create(
+		char* byteArray,
+		float initTime
+	);	
 
 	void start() override;
 	std::vector<char> getByteArray() override;
