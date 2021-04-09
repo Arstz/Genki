@@ -1,19 +1,20 @@
+
 	uint vertexCount = 4;
 	uint EBOsize = 6;
 	uint keyCount = 2;
 
-	float vertexCoords[] = {0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f};
-	float vertexColors[] = {0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
-	float vertexColors2[] = {0.f, 0.f, 0.f, 0.0f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
+	float vertexCoords[] = { 0.f, 0.f, 0.f, 1.f, 1.f, 0.f, 1.f, 1.f };
+	float vertexColors[] = { 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
+	float vertexColors2[] = { 0.f, 0.f, 0.f, 0.0f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
 	uint* vertexIDs = new uint[]{ 0, 1, 2, 1, 2, 3 };
 
 
-	float cds1[] = {-0.75f, 0.f, -0.75f, 1.f, 0.25f, 0.f, 0.25, 1.f};
-	float cls[] = {0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
-	float cls2[] = {0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
+	float cds1[] = { -0.75f, 0.f, -0.75f, 1.f, 0.25f, 0.f, 0.25, 1.f };
+	float cls[] = { 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
+	float cls2[] = { 0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
 
-	float cds2[] = {-0.25f, 0.f, -0.25f, 1.f, 0.75f, 0.f, 0.75, 1.f};
-	
+	float cds2[] = { -0.25f, 0.f, -0.25f, 1.f, 0.75f, 0.f, 0.75, 1.f };
+
 	Shape shps[] = {
 		Shape(4, cds1, cls, 6, vertexIDs, 0.5, 0, 0, 0),
 		Shape(4, cds2, cls2, 6, vertexIDs, 0.5, 0, 0, 0),
@@ -35,22 +36,19 @@
 	EventController::level.push_back(ShapeSpawnEvent::create(shape2, 0, 0, 0));
 	EventController::level.push_back(ShapeSpawnEvent::create(shape3, 0, 0, 0));
 
-	float tk[] = {0, 3e3f};
-	float sk[] = {0, 1};
+	float tk[] = { 0, 3e3f };
+	float sk[] = { 0, 1 };
 
-	float sk2[] = {1, 0.8};
+	float sk2[] = { 1, 0.8 };
 
 	EventController::level.push_back(PlayerBindingEvent::create(1, 0));
-	EventController::level.push_back(BackgroundColorAnimationEvent::create(0, Animation(2, tk, sk2), 2e3f));
+	EventController::level.push_back(BackgroundColorAnimationEvent::create(Animation(2, tk, sk2),0, 2e3f));
 	EventController::level.push_back(ShapeGroupAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_X, 3, 1e3f));
 	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::POSITION_Y, 3, 0, 1, 0, 1e3f));
 
-	
-//	EventController::level.push_back(ShapeGroupDestructionEvent::create(0, 2e3f));
-	
-	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
-	for (int i = 0; i < 1000; i++) {
-		EventController::saveLevel("a", EventController::level);
+	//	EventController::level.push_back(ShapeGroupDestructionEvent::create(0, 2e3f));
 
-		EventController::loadLevel("a");
-	}
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::SHAPE_COLOR, 2, 0, 0, 0, 0));
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::SHAPE_COLOR, 2, 0, 0, 1, 0));
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::SHAPE_COLOR, 2, 0, 0, 2, 0));
+	EventController::level.push_back(ShapeAnimationEvent::create(Animation(2, tk, sk), AnimatedValueType::SHAPE_COLOR, 2, 0, 0, 3, 0));

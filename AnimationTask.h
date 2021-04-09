@@ -4,8 +4,9 @@
 class AnimationTask {
 	Animation animation;
 	unsigned int counter;
+	unsigned int targetCount;
 	float timer;
-	float* target;
+	float** targets;
 
 	float calculatePosition(
 		float startPosition,
@@ -26,9 +27,14 @@ class AnimationTask {
 
 public:
 	AnimationTask();
+	~AnimationTask();
+	AnimationTask(const AnimationTask& animationTask);
+	AnimationTask& operator=(const AnimationTask& animationTask);
 
 	AnimationTask(const Animation& animation, float* target);
 
-	void animateLoop(float& frameTime);
+	AnimationTask(const Animation& animation, float** targets, unsigned int targetCount);
+
+	//void animateLoop(float& frameTime);
 	bool animate(float& frameTime);
 };

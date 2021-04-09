@@ -24,10 +24,11 @@ enum class LevelEventType {
 
 enum class AnimatedValueType {
 	VERTEX_POSITION,
-	VERTEX_COLOR,
+	VERTEX_COLOR,	
 	ALPHA_CHANNEL,
 	POSITION_X,
 	POSITION_Y,
+	SHAPE_COLOR
 };
 
 class LevelEvent {

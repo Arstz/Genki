@@ -65,31 +65,40 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 }
 
 void ShapeAnimationEvent::start() {
-	float* target;
-
 	Shape* shape = &(*shapeGroups[shapeGroupID]).getShapesPointer()[shapeNum];
-
-	switch (animatedValueType) {
-	case AnimatedValueType::VERTEX_POSITION:
-		target = &shape->getVertexCoordsPointer()[vertexNum * 2 + valueNum];
-		break;
-	case AnimatedValueType::VERTEX_COLOR:
-		target = &shape->getVertexColorsPointer()[vertexNum * 4 + valueNum];
-		break;
-	case AnimatedValueType::ALPHA_CHANNEL:
-		target = shape->getAlphaChannelPointer();
-		break;
-	case AnimatedValueType::POSITION_X:
-		target = shape->getPositionXpointer();
-		break;
-	case AnimatedValueType::POSITION_Y:
-		target = shape->getPositionYpointer();
-		break;
-	default:
-		throw "WRONG ANIMATED VALUE TYPE";
-		break;
+	if (animatedValueType != AnimatedValueType::SHAPE_COLOR) { //UUUuuu kostyl
+		float* target;
+		switch (animatedValueType) {
+		case AnimatedValueType::VERTEX_POSITION:
+			target = &shape->getVertexCoordsPointer()[vertexNum * 2 + valueNum];
+			break;
+		case AnimatedValueType::VERTEX_COLOR:
+			target = &shape->getVertexColorsPointer()[vertexNum * 4 + valueNum];
+			break;
+		case AnimatedValueType::ALPHA_CHANNEL:
+			target = shape->getAlphaChannelPointer();
+			break;
+		case AnimatedValueType::POSITION_X:
+			target = shape->getPositionXpointer();
+			break;
+		case AnimatedValueType::POSITION_Y:
+			target = shape->getPositionYpointer();
+			break;
+		default:
+			throw "WRONG ANIMATED VALUE TYPE";
+			break;
+		}
+		AnimationController::add(AnimationTask(animation, target));
 	}
-	AnimationController::add(AnimationTask(animation, target));
+	else {
+		unsigned int shapeVertexCount = shape->getVertexCount();
+		float** targets = new float* [shapeVertexCount];
+		for (unsigned int i = 0; i < shapeVertexCount; i++) {
+			targets[i] = &shape->getVertexColorsPointer()[valueNum + i * 4];
+		}
+		AnimationController::add(AnimationTask(animation, targets, shapeVertexCount));
+	}
+
 }
 
 std::vector<char> ShapeAnimationEvent::getByteArray() {

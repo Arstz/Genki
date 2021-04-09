@@ -7,6 +7,11 @@
 #include "LevelEvent\PlayerBindingEvent.h"
 #include "Window.h"
 #include "ShapeController.h"
+#include "LevelEvent\ShapeAnimationEvent.h"
+#include "LevelEvent\ShapeGroupSpawnEvent.h"
+#include "LevelEvent\ShapeSpawnEvent.h"
+#include "LevelEvent\BackgroundColorAnimationEvent.h"
+#include "LevelEvent\ShapeGroupAnimationEvent.h"
 
 #include "crtdbg.h"
 #include "mydbgnew.h"
@@ -56,10 +61,9 @@ void Engine::init() {
 	
 	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
 
-//	EventController::saveLevel("a", EventController::level);
-
 	EventController::loadLevel("a");
 
+	//EventController::saveLevel("a", EventController::level);
 }
 
 void Engine::pollEvents() {
