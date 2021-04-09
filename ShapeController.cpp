@@ -249,7 +249,6 @@ void ShapeController::draw() {
 		GL_STATIC_DRAW
 	);
 
-	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glfwSwapBuffers(window);
@@ -287,4 +286,7 @@ void ShapeController::terminate() {
 	delete[] vertexBuffer;
 	vertexBuffer = nullptr;
 	EBObuffer = nullptr;
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
