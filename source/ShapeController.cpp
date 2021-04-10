@@ -10,12 +10,12 @@
 ShapeGroup ShapeController::shapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
 
 uint ShapeController::vertexCount = 0;
-float* ShapeController::vertexBuffer = new float[0];
+float* ShapeController::vertexBuffer = (float*)malloc(0);
 
 GLuint ShapeController::bufferID = 0;
 
 uint ShapeController::EBOsize = 0;
-uint* ShapeController::EBObuffer = new uint[0];
+uint* ShapeController::EBObuffer = (uint*)malloc(0);
 float ShapeController::cameraDataBuffer[4] = {0.f, 0.f, 0.1f / 16.f * 9.f, 0.1f};
 
 GLuint ShapeController::VBO = 0;
@@ -116,11 +116,11 @@ void ShapeController::writeToEBObuffer(
 }
 
 void ShapeController::reallocateBuffers() {
-	delete[] vertexBuffer;
-	vertexBuffer = new float[vertexCount * VERTEX_SIZE];
+	free(vertexBuffer);
+	vertexBuffer = (float*)malloc(vertexCount * VERTEX_SIZE * sizeof(vertexBuffer));
 
 	delete[] EBObuffer;
-	EBObuffer = new uint[EBOsize];
+	EBObuffer = (uint*)malloc(sizeof(EBObuffer) * EBOsize);
 	glBindVertexArray(VAO);
 	glVertexAttribPointer(
 		1,
@@ -290,8 +290,8 @@ void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGro
 }
 
 void ShapeController::terminate() {
-	delete[] EBObuffer;
-	delete[] vertexBuffer;
+	free(EBObuffer);
+	free(vertexBuffer);
 	vertexBuffer = nullptr;
 	EBObuffer = nullptr;
 	glDeleteVertexArrays(1, &VAO);
