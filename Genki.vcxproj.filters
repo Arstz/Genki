@@ -13,124 +13,136 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\MemoryDumps">
-      <UniqueIdentifier>{98f40cfc-73fb-400a-9824-4511282a5bd9}</UniqueIdentifier>
+    <Filter Include="Source Files\LevelEvent">
+      <UniqueIdentifier>{8d327c5a-fd44-4ae9-bc9c-f838dc4d9066}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\LevelEvent">
-      <UniqueIdentifier>{6adb6dbc-8f79-4390-bc8c-bbb0c5e59943}</UniqueIdentifier>
+    <Filter Include="Source Files\headers">
+      <UniqueIdentifier>{50cd52ed-54bf-46b7-8d33-af077501a091}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="source\level.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="resources\level.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\LevelEvent\BackgroundColorAnimationEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\CameraAnimationEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\LevelEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\PlayerBindingEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\ShapeAnimationEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\ShapeGroupAnimationEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\ShapeGroupDestructionEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\ShapeGroupSpawnEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\LevelEvent\ShapeSpawnEvent.cpp">
+      <Filter>Source Files\LevelEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AnimationController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AnimationTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ByteArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EventController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ShapeController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ShapeGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShapeController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShapeGroup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\LevelEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\BackgroundColorAnimationEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\CameraAnimationEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\PlayerBindingEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\ShapeAnimationEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\ShapeGroupAnimationEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\ShapeGroupDestructionEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\ShapeGroupSpawnEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelEvent\ShapeSpawnEvent.cpp">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\AnimationController.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationTask.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\AnimationTask.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\ByteArray.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="EventController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\Engine.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\EventController.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\Player.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\LevelEvent\LevelEvent.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\Shape.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\ShapeController.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="ShapeGroup.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\ShapeGroup.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="ByteArray.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="source\Window.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="LevelEvent\LevelEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
+    <ClInclude Include="source\Animation.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="main.py">
+    <None Include="source\main.py">
       <Filter>Source Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="level.txt">
+    <None Include="source\raid_na_derevene.lvl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="resources\main.py">
       <Filter>Resource Files</Filter>
-    </Text>
+    </None>
+    <None Include="resources\raid_na_derevene.lvl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

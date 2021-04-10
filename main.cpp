@@ -1,9 +1,9 @@
 #include <vector>
 #include <iostream>
-#include "Engine.h"
+#include "source\Engine.h"
 
 #include "crtdbg.h"
-#include "mydbgnew.h"
+#include "include\CRTDBG\mydbgnew.h"
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif

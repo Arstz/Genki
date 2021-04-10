@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <chrono>
 #include <iostream>
-#include "GLFW/glfw3.h"
+#include "..\include\GLFW\glfw3.h"
 
 class Engine {
 

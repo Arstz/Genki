@@ -7,7 +7,7 @@
 #include "ByteArray.h"
 
 #include "crtdbg.h"
-#include "mydbgnew.h"
+#include "..\include\CRTDBG\mydbgnew.h"
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif

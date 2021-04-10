@@ -159,47 +159,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="AnimationTask.cpp" />
-    <ClCompile Include="ByteArray.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="EventController.cpp" />
-    <ClCompile Include="LevelEvent\BackgroundColorAnimationEvent.cpp" />
-    <ClCompile Include="LevelEvent\CameraAnimationEvent.cpp" />
-    <ClCompile Include="LevelEvent\LevelEvent.cpp" />
-    <ClCompile Include="LevelEvent\PlayerBindingEvent.cpp" />
-    <ClCompile Include="LevelEvent\ShapeAnimationEvent.cpp" />
-    <ClCompile Include="LevelEvent\ShapeGroupAnimationEvent.cpp" />
-    <ClCompile Include="LevelEvent\ShapeGroupDestructionEvent.cpp" />
-    <ClCompile Include="LevelEvent\ShapeGroupSpawnEvent.cpp" />
-    <ClCompile Include="LevelEvent\ShapeSpawnEvent.cpp" />
+    <Text Include="resources\level.txt" />
+    <Text Include="source\level.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="ShapeController.cpp" />
-    <ClCompile Include="ShapeGroup.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="source\Animation.cpp" />
+    <ClCompile Include="source\AnimationController.cpp" />
+    <ClCompile Include="source\AnimationTask.cpp" />
+    <ClCompile Include="source\ByteArray.cpp" />
+    <ClCompile Include="source\Engine.cpp" />
+    <ClCompile Include="source\EventController.cpp" />
+    <ClCompile Include="source\LevelEvent\BackgroundColorAnimationEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\CameraAnimationEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\LevelEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\PlayerBindingEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\ShapeAnimationEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\ShapeGroupAnimationEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\ShapeGroupDestructionEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\ShapeGroupSpawnEvent.cpp" />
+    <ClCompile Include="source\LevelEvent\ShapeSpawnEvent.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Shape.cpp" />
+    <ClCompile Include="source\ShapeController.cpp" />
+    <ClCompile Include="source\ShapeGroup.cpp" />
+    <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="AnimationTask.h" />
-    <ClInclude Include="ByteArray.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="EventController.h" />
-    <ClInclude Include="LevelEvent\LevelEvent.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Shape.h" />
-    <ClInclude Include="ShapeController.h" />
-    <ClInclude Include="ShapeGroup.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="source\Animation.h" />
+    <ClInclude Include="source\AnimationController.h" />
+    <ClInclude Include="source\AnimationTask.h" />
+    <ClInclude Include="source\ByteArray.h" />
+    <ClInclude Include="source\Engine.h" />
+    <ClInclude Include="source\EventController.h" />
+    <ClInclude Include="source\LevelEvent\LevelEvent.h" />
+    <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\Shape.h" />
+    <ClInclude Include="source\ShapeController.h" />
+    <ClInclude Include="source\ShapeGroup.h" />
+    <ClInclude Include="source\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="main.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="level.txt" />
+    <None Include="resources\main.py" />
+    <None Include="resources\raid_na_derevene.lvl" />
+    <None Include="source\main.py" />
+    <None Include="source\raid_na_derevene.lvl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

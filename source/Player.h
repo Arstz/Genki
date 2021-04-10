@@ -1,7 +1,7 @@
 #pragma once
 #include "Shape.h"
-#include "GL\glew.h"
-#include "GLFW/glfw3.h"
+#include "..\include\GL\glew.h"
+#include "..\include\GLFW\glfw3.h"
 
 class Player {
 	float* positionX;
