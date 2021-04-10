@@ -122,30 +122,6 @@
     <ClInclude Include="LevelEvent\LevelEvent.h">
       <Filter>Header Files\LevelEvent</Filter>
     </ClInclude>
-    <ClInclude Include="LevelEvent\BackgroundColorAnimationEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\CameraAnimationEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\PlayerBindingEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\ShapeAnimationEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\ShapeGroupAnimationEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\ShapeGroupDestructionEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\ShapeGroupSpawnEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelEvent\ShapeSpawnEvent.h">
-      <Filter>Header Files\LevelEvent</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="main.py">

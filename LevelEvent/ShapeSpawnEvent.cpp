@@ -1,7 +1,4 @@
-#include "ShapeSpawnEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 ShapeSpawnEvent* ShapeSpawnEvent::create(Shape shape, int shapeGroupID, int targetShapeGroupID, float initTime) {
 	return new ShapeSpawnEvent(shape, shapeGroupID, targetShapeGroupID, initTime);

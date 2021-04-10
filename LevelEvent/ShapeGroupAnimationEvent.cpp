@@ -1,7 +1,4 @@
-#include "ShapeGroupAnimationEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 ShapeGroupAnimationEvent::ShapeGroupAnimationEvent(
 	Animation animation,

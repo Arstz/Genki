@@ -1,7 +1,4 @@
-#include "PlayerBindingEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 Player* PlayerBindingEvent::player = nullptr;
 

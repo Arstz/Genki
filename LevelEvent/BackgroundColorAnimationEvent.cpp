@@ -1,15 +1,20 @@
-#include "BackgroundColorAnimationEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
-BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(Animation animation, uint valueNum, float initTime): LevelEvent(initTime) {
+BackgroundColorAnimationEvent::BackgroundColorAnimationEvent(
+	Animation animation, 
+	uint valueNum, 
+	float initTime
+): LevelEvent(initTime) {
 	this->type = LevelEventType::BACKGROUND_COLOR_ANIMATION;
 	this->animation = animation;
 	this->valueNum = valueNum;
 }
 
-BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(Animation animation, uint valueNum, float initTime) {
+BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(
+	Animation animation,
+	uint valueNum,
+	float initTime
+) {
 	return new BackgroundColorAnimationEvent(animation, valueNum, initTime);
 }
 

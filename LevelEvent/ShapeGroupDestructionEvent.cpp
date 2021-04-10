@@ -1,7 +1,4 @@
-#include "ShapeGroupDestructionEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 ShapeGroupDestructionEvent::ShapeGroupDestructionEvent(int shapeGroupID, float initTime): LevelEvent(initTime) {
 	this->shapeGroupID = shapeGroupID;

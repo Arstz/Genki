@@ -4,14 +4,8 @@
 #include "Shape.h"
 #include "ShapeGroup.h"
 #include "LevelEvent\LevelEvent.h"
-#include "LevelEvent\PlayerBindingEvent.h"
 #include "Window.h"
 #include "ShapeController.h"
-#include "LevelEvent\ShapeAnimationEvent.h"
-#include "LevelEvent\ShapeGroupSpawnEvent.h"
-#include "LevelEvent\ShapeSpawnEvent.h"
-#include "LevelEvent\BackgroundColorAnimationEvent.h"
-#include "LevelEvent\ShapeGroupAnimationEvent.h"
 
 #include "crtdbg.h"
 #include "mydbgnew.h"
@@ -38,7 +32,6 @@ void Engine::destroy()
 	AnimationController::destroy();
 	ShapeController::destroy();
 	EventController::destroy();
-	LevelEvent::destroy();
 }
 
 void Engine::terminate() {

@@ -1,7 +1,4 @@
 #include "LevelEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
 
 //LevelEvent
 
@@ -33,9 +30,5 @@ std::vector<char> LevelEvent::getByteArray() {
 	return std::vector<char>();
 }
 
-void LevelEvent::destroy()
-{
-//	delete[] shapeGroups;
-}
 
 void LevelEvent::write(std::ofstream& fout) {}

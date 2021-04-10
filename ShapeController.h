@@ -66,4 +66,3 @@ public:
 	static void terminate();
 
 };
-

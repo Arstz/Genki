@@ -1,7 +1,4 @@
-#include "ShapeAnimationEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 ShapeAnimationEvent::ShapeAnimationEvent(
 	Animation animation,

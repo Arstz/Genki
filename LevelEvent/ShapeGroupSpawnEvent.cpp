@@ -1,7 +1,4 @@
-#include "ShapeGroupSpawnEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 ShapeGroupSpawnEvent::ShapeGroupSpawnEvent(
 	ShapeGroup shapeGroup,

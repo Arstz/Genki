@@ -22,4 +22,3 @@ public:
 
 	unsigned int getKeyCount() const;
 };
-

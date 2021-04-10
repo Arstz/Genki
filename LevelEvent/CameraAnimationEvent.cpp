@@ -1,7 +1,4 @@
-#include "CameraAnimationEvent.h"
-#include "..\AnimationController.h"
-#include "..\ShapeController.h"
-#include "..\ByteArray.h"
+#include "LevelEvent.h"
 
 CameraAnimationEvent::CameraAnimationEvent(
 	Animation animation,
