@@ -128,8 +128,9 @@ void ShapeAnimationEvent::start() {
 			targets[i] = &shape->getVertexColorsPointer()[valueNum + i * 4];
 		}
 		AnimationController::add(AnimationTask(animation, targets, shapeVertexCount));
+		delete[] targets;
+		targets = nullptr;
 	}
-
 }
 
 std::vector<char> ShapeAnimationEvent::getByteArray() {

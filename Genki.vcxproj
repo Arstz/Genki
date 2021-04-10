@@ -160,10 +160,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="resources\level.txt" />
-    <Text Include="source\level.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="source\Animation.cpp" />
     <ClCompile Include="source\AnimationController.cpp" />
     <ClCompile Include="source\AnimationTask.cpp" />
@@ -179,6 +177,7 @@
     <ClCompile Include="source\LevelEvent\ShapeGroupDestructionEvent.cpp" />
     <ClCompile Include="source\LevelEvent\ShapeGroupSpawnEvent.cpp" />
     <ClCompile Include="source\LevelEvent\ShapeSpawnEvent.cpp" />
+    <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Shape.cpp" />
     <ClCompile Include="source\ShapeController.cpp" />
@@ -200,10 +199,8 @@
     <ClInclude Include="source\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="raid_na_derevene.lvl" />
     <None Include="resources\main.py" />
-    <None Include="resources\raid_na_derevene.lvl" />
-    <None Include="source\main.py" />
-    <None Include="source\raid_na_derevene.lvl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

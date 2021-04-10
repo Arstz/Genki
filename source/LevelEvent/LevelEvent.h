@@ -127,7 +127,6 @@ class ShapeAnimationEvent : public LevelEvent {
 	int shapeNum;
 	int vertexNum;
 	int valueNum;
-
 	ShapeAnimationEvent(
 		Animation animation,
 		AnimatedValueType animatedValueType,

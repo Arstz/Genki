@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="source\level.txt">
-      <Filter>Source Files</Filter>
-    </Text>
     <Text Include="resources\level.txt">
       <Filter>Resource Files</Filter>
     </Text>
@@ -89,7 +86,7 @@
     <ClCompile Include="source\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,16 +129,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\main.py">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="source\raid_na_derevene.lvl">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="resources\main.py">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="resources\raid_na_derevene.lvl">
+    <None Include="raid_na_derevene.lvl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
