@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 class ByteArray {
 	char* data;
@@ -12,36 +11,23 @@ public:
 	ByteArray(unsigned int size);
 	ByteArray& operator = (const ByteArray& byteArray);
 	void add(const ByteArray& byteArray);
+	void add(const char* value, unsigned int size);
 
-	template<class T>
-	void add(const T& t) {
-		char* value = (char*)&t;
-		for (int i = 0; i < sizeof(t); i++) data[offset + i] = value[i];
-		offset += sizeof(t);
-	}
+	template<typename T>
+	void add(const T& t) {add((char*)&t, sizeof(t));}
 
-	template<class T>
-	void add(const T* t, unsigned int size) {
-		char* value = (char*)t;
-		for (int i = 0; i < size; i++) data[offset + i] = value[i];
-		offset += size;
-	}
-
-	template<class T>
-	void read(T& t) {
-		char* value = (char*)&t;
-		for (int i = 0; i < sizeof(t); i++) value[i] = data[offset + i];
-		offset += sizeof(t);
-	}
-
-	template<class T>
-	void read(T* t, unsigned int size) {
-		char* value = (char*)t;
-		for (int i = 0; i < size; i++) value[i] = data[offset + i];
-		offset += size;
-	}
+	template<typename T>
+	void add(const T* t, unsigned int size) {add((char*)t, size);}
 
 	void read(ByteArray& byteArray);
+	void read(char* value, unsigned int size);
+
+	template<typename T>
+	void read(T& t) {read((char*)&t, sizeof(t));}
+
+	template<typename T>
+	void read(T* t, unsigned int size) {read((char*)t, size);}
+
 	unsigned int getSize();
 	char* getDataPointer();
 	void setOffset(unsigned int offset);

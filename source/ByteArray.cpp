@@ -44,9 +44,19 @@ void ByteArray::add(const ByteArray& byteArray) {
 	offset += byteArray.size;
 }
 
+void ByteArray::add(const char* value, unsigned int size) {
+	for (int i = 0; i < size; i++) data[offset + i] = value[i];
+	offset += size;
+}
+
 void ByteArray::read(ByteArray& byteArray) {
 	for (unsigned int i = 0; i < byteArray.size; i++) byteArray.data[i] = data[offset + i];
 	offset += byteArray.size;
+}
+
+void ByteArray::read(char* value, unsigned int size) {
+	for (int i = 0; i < size; i++) value[i] = data[offset + i];
+	offset += size;
 }
 
 unsigned int ByteArray::getSize() {
