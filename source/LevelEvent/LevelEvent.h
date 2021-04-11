@@ -46,9 +46,8 @@ protected:
 
 public:
 	static std::list<ShapeGroup>::iterator* shapeGroups;
-	virtual void write(std::ofstream& fout);
 	virtual void start();
-	virtual std::vector<char> getByteArray();
+	virtual ByteArray getByteArray();
 	float getInitTime();
 
 	LevelEventType getType();
@@ -67,11 +66,11 @@ public:
 		float initTime
 	);
 	static BackgroundColorAnimationEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -93,12 +92,12 @@ public:
 	);
 
 	static CameraAnimationEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -112,11 +111,11 @@ public:
 		float initTime
 	);
 	static PlayerBindingEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -164,12 +163,12 @@ public:
 		float initTime
 	);
 	static ShapeAnimationEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -193,12 +192,12 @@ public:
 		float initTime
 	);
 	static ShapeGroupAnimationEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -213,12 +212,12 @@ public:
 	);
 
 	static ShapeGroupDestructionEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 
 	void start() override;
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };
 
 
@@ -241,10 +240,10 @@ public:
 		float initTime
 	);
 	static ShapeGroupSpawnEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 	void start() override;
 };
 
@@ -267,10 +266,10 @@ public:
 		float initTime
 	);
 	static ShapeSpawnEvent* create(
-		char* byteArray,
+		ByteArray* byteArray,
 		float initTime
 	);
 	void start() override;
 
-	std::vector<char> getByteArray() override;
+	ByteArray getByteArray() override;
 };

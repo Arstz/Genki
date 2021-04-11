@@ -1,7 +1,5 @@
 #include "LevelEvent.h"
 
-//LevelEvent
-
 std::list<ShapeGroup>::iterator* LevelEvent::shapeGroups = nullptr;
 
 float LevelEvent::getInitTime() {
@@ -26,9 +24,6 @@ LevelEventType LevelEvent::getType() {
 
 void LevelEvent::start() {}
 
-std::vector<char> LevelEvent::getByteArray() {
-	return std::vector<char>();
+ByteArray LevelEvent::getByteArray() {
+	return ByteArray();
 }
-
-
-void LevelEvent::write(std::ofstream& fout) {}

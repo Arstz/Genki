@@ -27,16 +27,15 @@ ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 }
 
 ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
-	char* byteArray,
+	ByteArray* byteArray,
 	float initTime
 ) {
-	unsigned int offset = 0;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
-	writeFromByteArray((char*)&animatedValueType, byteArray, offset, sizeof(animatedValueType));
-	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
+	byteArray->read(animatedValueType);
+	byteArray->read(shapeGroupID);
 	return new ShapeGroupAnimationEvent(
-		Animation(byteArray, offset),
+		Animation(byteArray),
 		animatedValueType,
 		shapeGroupID,
 		initTime
@@ -65,21 +64,19 @@ void ShapeGroupAnimationEvent::start() {
 	AnimationController::add(AnimationTask(animation, target));
 }
 
-std::vector<char> ShapeGroupAnimationEvent::getByteArray() {
-	std::vector<char> animationArray = animation.getByteArray();
+ByteArray ShapeGroupAnimationEvent::getByteArray() {
+	ByteArray animationArray = animation.getByteArray();
 	unsigned int byteArraySize =
 		static_cast<unsigned int>(
-			animationArray.size() +
+			animationArray.getSize() +
 			sizeof(animatedValueType) +
 			sizeof(shapeGroupID));
 
-	std::vector<char> byteArray(byteArraySize);
+	ByteArray byteArray(byteArraySize);
 
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&animatedValueType, offset, sizeof(animatedValueType));
-	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
-	writeToByteArray(byteArray, animationArray, offset);
+	byteArray.add(animatedValueType);
+	byteArray.add(shapeGroupID);
+	byteArray.add(animationArray);
 
 	return byteArray;
 }

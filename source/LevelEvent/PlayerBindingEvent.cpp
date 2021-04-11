@@ -11,12 +11,11 @@ PlayerBindingEvent* PlayerBindingEvent::create(int shapeGroupID, float initTime)
 }
 
 PlayerBindingEvent* PlayerBindingEvent::create(
-	char* byteArray,
+	ByteArray* byteArray,
 	float initTime
 ) {
-	unsigned int offset = 0;
 	int shapeGroupID;
-	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
+	byteArray->read(shapeGroupID);
 	return new PlayerBindingEvent(shapeGroupID, initTime);
 }
 
@@ -27,13 +26,10 @@ void PlayerBindingEvent::start() {
 	);
 }
 
-std::vector<char> PlayerBindingEvent::getByteArray() {
-	unsigned int byteArraySize = sizeof(shapeGroupID);
-	std::vector<char> byteArray(byteArraySize);
+ByteArray PlayerBindingEvent::getByteArray() {
+	ByteArray byteArray(sizeof(shapeGroupID));
 
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	byteArray.add(shapeGroupID);
 
 	return byteArray;
 }

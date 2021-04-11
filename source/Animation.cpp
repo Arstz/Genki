@@ -1,6 +1,5 @@
 #pragma once
 #include "Animation.h"
-#include "ByteArray.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -61,12 +60,12 @@ Animation& Animation::operator=(const Animation& animation) {
 	return *this;
 }
 
-Animation::Animation(char* byteArray, unsigned int& offset) {
-	writeFromByteArray((char*)&keyCount, byteArray, offset, sizeof(keyCount));
+Animation::Animation(ByteArray* byteArray) {
+	byteArray->read(keyCount);
 	this->timeKeys = new float[keyCount];
 	this->stateKeys = new float[keyCount];
-	writeFromByteArray((char*)timeKeys, byteArray, offset, sizeof(*timeKeys) * keyCount);
-	writeFromByteArray((char*)stateKeys, byteArray, offset, sizeof(*stateKeys) * keyCount);
+	byteArray->read(timeKeys, sizeof(*timeKeys) * keyCount);
+	byteArray->read(stateKeys, sizeof(*stateKeys) * keyCount);
 }
 
 float* Animation::getTimeKeysPointer() {
@@ -77,14 +76,12 @@ float* Animation::getStateKeysPointer() {
 	return stateKeys;
 }
 
-std::vector<char> Animation::getByteArray() {
-	unsigned int byteArraySize = sizeof(keyCount) + (sizeof(*timeKeys) + sizeof(*stateKeys)) * keyCount;
-	std::vector<char> byteArray(byteArraySize);
-	unsigned int offset = 0;
+ByteArray Animation::getByteArray() {
+	ByteArray byteArray(sizeof(keyCount) + (sizeof(*timeKeys) + sizeof(*stateKeys)) * keyCount);
 
-	writeToByteArray(byteArray, (char*)&keyCount, offset, sizeof(keyCount));
-	writeToByteArray(byteArray, (char*)timeKeys, offset, sizeof(*timeKeys) * keyCount);
-	writeToByteArray(byteArray, (char*)stateKeys, offset, sizeof(*stateKeys) * keyCount);
+	byteArray.add(keyCount);
+	byteArray.add(timeKeys, sizeof(*timeKeys) * keyCount);
+	byteArray.add(stateKeys, sizeof(*stateKeys) * keyCount);
 
 	return byteArray;
 }
@@ -92,3 +89,4 @@ std::vector<char> Animation::getByteArray() {
 unsigned int Animation::getKeyCount() const {
 	return keyCount;
 }
+

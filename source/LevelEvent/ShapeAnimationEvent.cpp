@@ -73,19 +73,18 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 }
 
 ShapeAnimationEvent* ShapeAnimationEvent::create(
-	char* byteArray,
+	ByteArray* byteArray,
 	float initTime
 ) {
-	unsigned int offset = 0;
 	AnimatedValueType animatedValueType;
 	int shapeGroupID, shapeNum, vertexNum, valueNum;
-	writeFromByteArray((char*)&animatedValueType, byteArray, offset, sizeof(animatedValueType));
-	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
-	writeFromByteArray((char*)&shapeNum, byteArray, offset, sizeof(shapeNum));
-	writeFromByteArray((char*)&vertexNum, byteArray, offset, sizeof(vertexNum));
-	writeFromByteArray((char*)&valueNum, byteArray, offset, sizeof(valueNum));
+	byteArray->read(animatedValueType);
+	byteArray->read(shapeGroupID);
+	byteArray->read(shapeNum);
+	byteArray->read(vertexNum);
+	byteArray->read(valueNum);
 	return new ShapeAnimationEvent(
-		Animation(byteArray, offset),
+		Animation(byteArray),
 		animatedValueType,
 		shapeGroupID,
 		shapeNum,
@@ -133,27 +132,25 @@ void ShapeAnimationEvent::start() {
 	}
 }
 
-std::vector<char> ShapeAnimationEvent::getByteArray() {
-	std::vector<char> animationArray = animation.getByteArray();
+ByteArray ShapeAnimationEvent::getByteArray() {
+	ByteArray animationArray = animation.getByteArray();
 	unsigned int byteArraySize =
 		static_cast<unsigned int>(
-			animationArray.size() +
+			animationArray.getSize() +
 			sizeof(animatedValueType) +
 			sizeof(shapeGroupID) +
 			sizeof(shapeNum) +
 			sizeof(vertexNum) +
 			sizeof(valueNum));
 
-	std::vector<char> byteArray(byteArraySize);
+	ByteArray byteArray(byteArraySize);
 
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&animatedValueType, offset, sizeof(animatedValueType));
-	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
-	writeToByteArray(byteArray, (char*)&shapeNum, offset, sizeof(shapeNum));
-	writeToByteArray(byteArray, (char*)&vertexNum, offset, sizeof(vertexNum));
-	writeToByteArray(byteArray, (char*)&valueNum, offset, sizeof(valueNum));
-	writeToByteArray(byteArray, animationArray, offset);
+	byteArray.add(animatedValueType);
+	byteArray.add(shapeGroupID);
+	byteArray.add(shapeNum);
+	byteArray.add(vertexNum);
+	byteArray.add(valueNum);
+	byteArray.add(animationArray);
 
 	return byteArray;
 }

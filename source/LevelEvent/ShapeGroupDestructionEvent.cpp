@@ -10,12 +10,11 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(int shapeGroupID,
 }
 
 ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(
-	char* byteArray,
+	ByteArray* byteArray,
 	float initTime
 ) {
-	unsigned int offset = 0;
 	int shapeGroupID;
-	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
+	byteArray->read(shapeGroupID);
 	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
 }
 
@@ -23,13 +22,10 @@ void ShapeGroupDestructionEvent::start() {
 	ShapeController::removeShapeGroup(shapeGroups[shapeGroupID]);
 }
 
-std::vector<char> ShapeGroupDestructionEvent::getByteArray() {
-	unsigned int byteArraySize = sizeof(shapeGroupID);
-	std::vector<char> byteArray(byteArraySize);
+ByteArray ShapeGroupDestructionEvent::getByteArray() {
+	ByteArray byteArray(sizeof(shapeGroupID));
 
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
+	byteArray.add(shapeGroupID);
 
 	return byteArray;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "ByteArray.h"
 
 class Animation
 {
@@ -13,12 +13,14 @@ public:
 	Animation(const Animation &animation);
 	~Animation();
 	Animation& operator=(const Animation& animation);
-	Animation(char* byteArray, unsigned int& offset);
+	Animation(ByteArray* byteArray);
 
 	float* getTimeKeysPointer();
 	float* getStateKeysPointer();
 
-	std::vector<char> getByteArray();
+	ByteArray getByteArray();
 
 	unsigned int getKeyCount() const;
 };
+
+

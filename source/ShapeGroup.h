@@ -26,7 +26,7 @@ public:
 	);
 	ShapeGroup(const Shape &shape);
 	ShapeGroup(const ShapeGroup& shapeGroup);
-	ShapeGroup(char* byteArray, unsigned int &offset);
+	ShapeGroup(ByteArray* byteArray);
 	~ShapeGroup();
 	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 
@@ -46,5 +46,5 @@ public:
 
 	Shape* getShapesPointer();
 	std::list<ShapeGroup> getShapeGroups();
-	std::vector<char> getByteArray();
+	ByteArray getByteArray();
 };

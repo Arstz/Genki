@@ -16,31 +16,28 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(ShapeGroup shapeGroup, int sh
 }
 
 ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(
-	char* byteArray,
+	ByteArray* byteArray,
 	float initTime
 ) {
-	unsigned int offset = 0;
 	int shapeGroupID, targetShapeGroupID;
-	writeFromByteArray((char*)&shapeGroupID, byteArray, offset, sizeof(shapeGroupID));
-	writeFromByteArray((char*)&targetShapeGroupID, byteArray, offset, sizeof(targetShapeGroupID));
-	return new ShapeGroupSpawnEvent(ShapeGroup(byteArray, offset), shapeGroupID, targetShapeGroupID, initTime);
+	byteArray->read(shapeGroupID);
+	byteArray->read(targetShapeGroupID);
+	return new ShapeGroupSpawnEvent(ShapeGroup(byteArray), shapeGroupID, targetShapeGroupID, initTime);
 }
 
-std::vector<char> ShapeGroupSpawnEvent::getByteArray() {
-	std::vector<char> shapeGroupArray = shapeGroup.getByteArray();
+ByteArray ShapeGroupSpawnEvent::getByteArray() {
+	ByteArray shapeGroupArray = shapeGroup.getByteArray();
 	unsigned int byteArraySize =
 		static_cast<unsigned int>(
-			shapeGroupArray.size() +
+			shapeGroupArray.getSize() +
 			sizeof(shapeGroupID) +
 			sizeof(targetShapeGroupID));
 
-	std::vector<char> byteArray(byteArraySize);
+	ByteArray byteArray(byteArraySize);
 
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&shapeGroupID, offset, sizeof(shapeGroupID));
-	writeToByteArray(byteArray, (char*)&targetShapeGroupID, offset, sizeof(targetShapeGroupID));
-	writeToByteArray(byteArray, shapeGroupArray, offset);
+	byteArray.add(shapeGroupID);
+	byteArray.add(targetShapeGroupID);
+	byteArray.add(shapeGroupArray);
 
 	return byteArray;
 }

@@ -61,25 +61,26 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
 }
 
-ShapeGroup::ShapeGroup(char* byteArray, unsigned int& offset) {
+ShapeGroup::ShapeGroup(ByteArray* byteArray) {
 	unsigned int shapeGroupCount;
 	shapeGroups = std::list<ShapeGroup>();
-	writeFromByteArray((char*)&shapeCount, byteArray, offset, sizeof(shapeCount));
-	writeFromByteArray((char*)&shapeGroupCount, byteArray, offset, sizeof(shapeGroupCount));
-	writeFromByteArray((char*)&layer, byteArray, offset, sizeof(layer));
-	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
-	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
-	writeFromByteArray((char*)&positionY, byteArray, offset, sizeof(positionY));
+	byteArray->read(shapeCount);
+	byteArray->read(shapeGroupCount);
+	byteArray->read(layer);
+	byteArray->read(alphaChannel);
+	byteArray->read(positionX);
+	byteArray->read(positionY);
 	shapes = new Shape[shapeCount];
 	for (int i = 0; i < shapeCount; i++)
-		shapes[i] = Shape(byteArray, offset);
+		shapes[i] = Shape(byteArray);
 	for (int i = 0; i < shapeGroupCount; i++)
-		shapeGroups.push_back(ShapeGroup(byteArray, offset));
+		shapeGroups.push_back(ShapeGroup(byteArray));
 }
 
-std::vector<char> ShapeGroup::getByteArray() {
+ByteArray ShapeGroup::getByteArray() {
 	unsigned int shapeGroupCount = shapeGroups.size();
-	std::vector<std::vector<char>> byteShapeGroups(shapeGroupCount);
+	std::vector<ByteArray> byteShapes(shapeCount);
+	std::vector<ByteArray> byteShapeGroups(shapeGroupCount);
 	unsigned int byteArraySize =
 		sizeof(shapeCount) +
 		sizeof(shapeGroupCount) +
@@ -88,33 +89,31 @@ std::vector<char> ShapeGroup::getByteArray() {
 		sizeof(positionX) +
 		sizeof(positionY);
 
-	std::vector<std::vector<char>> byteShapes(shapeCount);
 	for (int i = 0; i < shapeCount; i++) {
 		byteShapes[i] = shapes[i].getByteArray();
-		byteArraySize += byteShapes[i].size();
+		byteArraySize += byteShapes[i].getSize();
 	}
 	if (shapeGroupCount) {
 		int i = 0;
 		for (auto& shapeGroup : shapeGroups) {
 			byteShapeGroups[i] = shapeGroup.getByteArray();
-			byteArraySize += byteShapeGroups[i].size();
+			byteArraySize += byteShapeGroups[i].getSize();
 			i++;
 		}
 	}
 
-	std::vector<char> byteArray(byteArraySize);
-	unsigned int offset = 0;
-	writeToByteArray(byteArray, (char*)&shapeCount, offset, sizeof(shapeCount));
-	writeToByteArray(byteArray, (char*)&shapeGroupCount, offset, sizeof(shapeGroupCount));
-	writeToByteArray(byteArray, (char*)&layer, offset, sizeof(layer));
-	writeToByteArray(byteArray, (char*)&alphaChannel, offset, sizeof(alphaChannel));
-	writeToByteArray(byteArray, (char*)&positionX, offset, sizeof(positionX));
-	writeToByteArray(byteArray, (char*)&positionY, offset, sizeof(positionY));
+	ByteArray byteArray(byteArraySize);
+	byteArray.add(shapeCount);
+	byteArray.add(shapeGroupCount);
+	byteArray.add(layer);
+	byteArray.add(alphaChannel);
+	byteArray.add(positionX);
+	byteArray.add(positionY);
 	for (int i = 0; i < byteShapes.size(); i++)
-		writeToByteArray(byteArray, byteShapes[i], offset);
+		byteArray.add(byteShapes[i]);
 	if (shapeGroupCount)
 		for (int i = 0; i < byteShapeGroups.size(); i++)
-			writeToByteArray(byteArray, byteShapeGroups[i], offset);
+			byteArray.add(byteShapeGroups[i]);
 	return byteArray;
 }
 

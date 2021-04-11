@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include "Engine.h"
+#include "ByteArray.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -15,6 +16,7 @@ void sex()
 
 int main()
 {
+
 	Engine::init();
 	while (Engine::running()) {
 

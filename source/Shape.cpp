@@ -70,23 +70,23 @@ Shape::Shape(const Shape& shape) {
 	this->layer = shape.layer;
 }
 
-Shape::Shape(char* byteArray, unsigned int& offset) {
-	writeFromByteArray((char*)&vertexCount, byteArray, offset, sizeof(vertexCount));
-	writeFromByteArray((char*)&EBOsize, byteArray, offset, sizeof(EBOsize));
-	writeFromByteArray((char*)&layer, byteArray, offset, sizeof(layer));
-	writeFromByteArray((char*)&alphaChannel, byteArray, offset, sizeof(alphaChannel));
-	writeFromByteArray((char*)&positionX, byteArray, offset, sizeof(positionX));
-	writeFromByteArray((char*)&positionY, byteArray, offset, sizeof(positionY));
+Shape::Shape(ByteArray* byteArray) {
+	byteArray->read(vertexCount);
+	byteArray->read(EBOsize);
+	byteArray->read(layer);
+	byteArray->read(alphaChannel);
+	byteArray->read(positionX);
+	byteArray->read(positionY);
 	vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
 	vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 	vertexIDs = new uint[EBOsize];
-	writeFromByteArray((char*)vertexCoords, byteArray, offset, sizeof(*vertexCoords) * vertexCount * 2);
-	writeFromByteArray((char*)vertexColors, byteArray, offset, sizeof(*vertexColors) * vertexCount * 4);
-	writeFromByteArray((char*)vertexIDs, byteArray, offset, sizeof(*vertexIDs) * EBOsize);
+	byteArray->read(vertexCoords, sizeof(*vertexCoords) * vertexCount * 2);
+	byteArray->read(vertexColors, sizeof(*vertexColors) * vertexCount * 4);
+	byteArray->read(vertexIDs, sizeof(*vertexIDs) * EBOsize);
 }
 
-std::vector<char> Shape::getByteArray() {
-	unsigned int byteArraySize =
+ByteArray Shape::getByteArray() {
+	ByteArray byteArray(
 		sizeof(vertexCount) +
 		sizeof(EBOsize) +
 		sizeof(layer) +
@@ -95,20 +95,18 @@ std::vector<char> Shape::getByteArray() {
 		sizeof(positionY) +
 		sizeof(*vertexIDs) * EBOsize +
 		sizeof(*vertexCoords) * vertexCount * 2 +
-		sizeof(*vertexColors) * vertexCount * 4;
+		sizeof(*vertexColors) * vertexCount * 4
+	);
 
-	std::vector<char> byteArray(byteArraySize);
-	unsigned int offset = 0;
-
-	writeToByteArray(byteArray, (char*)&vertexCount, offset, sizeof(vertexCount));
-	writeToByteArray(byteArray, (char*)&EBOsize, offset, sizeof(EBOsize));
-	writeToByteArray(byteArray, (char*)&layer, offset, sizeof(layer));
-	writeToByteArray(byteArray, (char*)&alphaChannel, offset, sizeof(alphaChannel));
-	writeToByteArray(byteArray, (char*)&positionX, offset, sizeof(positionX));
-	writeToByteArray(byteArray, (char*)&positionY, offset, sizeof(positionY));
-	writeToByteArray(byteArray, (char*)vertexCoords, offset, sizeof(*vertexCoords) * vertexCount * 2);
-	writeToByteArray(byteArray, (char*)vertexColors, offset, sizeof(*vertexColors) * vertexCount * 4);
-	writeToByteArray(byteArray, (char*)vertexIDs, offset, sizeof(*vertexIDs) * EBOsize);
+	byteArray.add(vertexCount);
+	byteArray.add(EBOsize);
+	byteArray.add(layer);
+	byteArray.add(alphaChannel);
+	byteArray.add(positionX);
+	byteArray.add(positionY);
+	byteArray.add(vertexCoords, sizeof(*vertexCoords) * vertexCount * 2);
+	byteArray.add(vertexColors, sizeof(*vertexColors) * vertexCount * 4);
+	byteArray.add(vertexIDs, sizeof(*vertexIDs) * EBOsize);
 
 	return byteArray;
 }

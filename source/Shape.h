@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "ByteArray.h"
 typedef unsigned int uint;
 
 class Shape {
@@ -12,7 +12,7 @@ class Shape {
 
 	float alphaChannel;
 
-	float positionX; //peredelaem primerno nikogda
+	float positionX;
 	float positionY;
 
 	float* vertexCoords;
@@ -32,7 +32,7 @@ public:
 	);
 
 	Shape(const Shape& shape);
-	Shape(char* byteArray, unsigned int& offset);
+	Shape(ByteArray* byteArray);
 	~Shape();
 
 	Shape& operator=(const Shape& shape);
@@ -50,5 +50,5 @@ public:
 	float* getPositionYpointer();
 
 	int getLayer() const;
-	std::vector<char> getByteArray();
+	ByteArray getByteArray();
 };

@@ -12,7 +12,7 @@
 #define new MYDEBUG_NEW
 #endif
 
-#define CREATE_EVENT create(byteLevel + offset, initTime)
+#define CREATE_EVENT create(byteLevel, initTime)
 
 std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
@@ -52,9 +52,9 @@ void EventController::loadLevel(std::string path) {
 	fin.read((char*)(&size), sizeof(size));
 	fin.read((char*)(&checkSum), sizeof(checkSum));
 
-	char* byteLevel = new char[byteLevelSize];
+	ByteArray* byteLevel = new ByteArray(byteLevelSize);
 
-	fin.read((char*)byteLevel, byteLevelSize);
+	fin.read(byteLevel->getDataPointer(), byteLevelSize);
 
 	fin.close();
 	level.resize(size);
@@ -63,9 +63,9 @@ void EventController::loadLevel(std::string path) {
 		float initTime;
 		unsigned int blockSize;
 
-		writeFromByteArray((char*)&type, byteLevel, offset, sizeof(type));
-		writeFromByteArray((char*)&initTime, byteLevel, offset, sizeof(initTime));
-		writeFromByteArray((char*)&blockSize, byteLevel, offset, sizeof(blockSize));
+		byteLevel->read(type);
+		byteLevel->read(initTime);
+		byteLevel->read(blockSize);
 
 		switch (type) {
 		case LevelEventType::EMPTY:
@@ -101,7 +101,7 @@ void EventController::loadLevel(std::string path) {
 	}
 
 
-	delete[] byteLevel;
+	delete byteLevel;
 	byteLevel = nullptr;
 }
 
@@ -109,37 +109,37 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 	unsigned int size = level.size();
 	unsigned int checkSum = 0;
 
-	std::vector<std::vector<char>> byteLevel(size);
+	std::vector<ByteArray> byteLevel(size);
 
 	unsigned int byteLevelSize = 0;
 
 	for (unsigned int i = 0; i < size; i++) {
 		LevelEventType type = level[i]->getType();
 		float initTime = level[i]->getInitTime();
-		std::vector<char> tempArray = level[i]->getByteArray();
-		unsigned int blockSize = tempArray.size();
-		byteLevel[i] = std::vector<char>(tempArray.size() + sizeof(type) + sizeof(initTime) + sizeof(blockSize));
+		ByteArray tempArray = level[i]->getByteArray();
+		unsigned int blockSize = tempArray.getSize();
+		byteLevel[i] = ByteArray(tempArray.getSize() + sizeof(type) + sizeof(initTime) + sizeof(blockSize));
 
 		unsigned int offset = 0;
-		writeToByteArray(byteLevel[i], (char*)&type, offset, sizeof(type));
-		writeToByteArray(byteLevel[i], (char*)&initTime, offset, sizeof(initTime));
-		writeToByteArray(byteLevel[i], (char*)&blockSize, offset, sizeof(initTime));
-		writeToByteArray(byteLevel[i], tempArray, offset);
+		byteLevel[i].add(type);
+		byteLevel[i].add(initTime);
+		byteLevel[i].add(blockSize);
+		byteLevel[i].add(tempArray);
 
-		byteLevelSize += static_cast<unsigned int>(byteLevel[i].size());
+		byteLevelSize += static_cast<unsigned int>(byteLevel[i].getSize());
 	}
 
 	unsigned int offset = 0;
 
-	char* fileData = new char[byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum)];
-	writeToByteArray(fileData, (char*)&byteLevelSize, offset, sizeof(byteLevelSize));
-	writeToByteArray(fileData, (char*)&size, offset, sizeof(size));
-	writeToByteArray(fileData, (char*)&checkSum, offset, sizeof(checkSum));
+	ByteArray fileData(byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
+	fileData.add(byteLevelSize);
+	fileData.add(size);
+	fileData.add(checkSum);
 
 //	unsigned int tempOffset = offset;
 //	unsigned int* value = (unsigned int*)(fileData + offset);
 
-	for (unsigned int i = 0; i < size; i++) writeToByteArray(fileData, byteLevel[i], offset);
+	for (unsigned int i = 0; i < size; i++) fileData.add(byteLevel[i]);
 
 //	int valueCount = (byteLevelSize - offset) / 4;
 //	for (int i = 0; i < valueCount; i++) checkSum += *(value + i);
@@ -147,11 +147,8 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 
 	std::ofstream fout;
 	fout.open("raid_na_derevene.lvl", std::ofstream::binary);
-	fout.write((char*)fileData, byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
+	fout.write(fileData.getDataPointer(), byteLevelSize + sizeof(byteLevelSize) + sizeof(size) + sizeof(checkSum));
 	fout.close();
 
 	byteLevel.clear();
-
-	delete[] fileData;
-	fileData = nullptr;
 }
