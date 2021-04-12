@@ -78,11 +78,7 @@ ShapeAnimationEvent* ShapeAnimationEvent::create(
 ) {
 	AnimatedValueType animatedValueType;
 	int shapeGroupID, shapeNum, vertexNum, valueNum;
-	byteArray->read(animatedValueType);
-	byteArray->read(shapeGroupID);
-	byteArray->read(shapeNum);
-	byteArray->read(vertexNum);
-	byteArray->read(valueNum);
+	*byteArray >> animatedValueType >> shapeGroupID >> shapeNum >> vertexNum >> valueNum;
 	return new ShapeAnimationEvent(
 		Animation(byteArray),
 		animatedValueType,
@@ -134,23 +130,14 @@ void ShapeAnimationEvent::start() {
 
 ByteArray ShapeAnimationEvent::getByteArray() {
 	ByteArray animationArray = animation.getByteArray();
-	unsigned int byteArraySize =
-		static_cast<unsigned int>(
-			animationArray.getSize() +
-			sizeof(animatedValueType) +
-			sizeof(shapeGroupID) +
-			sizeof(shapeNum) +
-			sizeof(vertexNum) +
-			sizeof(valueNum));
-
-	ByteArray byteArray(byteArraySize);
-
-	byteArray.add(animatedValueType);
-	byteArray.add(shapeGroupID);
-	byteArray.add(shapeNum);
-	byteArray.add(vertexNum);
-	byteArray.add(valueNum);
-	byteArray.add(animationArray);
-
+	ByteArray byteArray(
+		animationArray.getSize() +
+		sizeof(animatedValueType) +
+		sizeof(shapeGroupID) +
+		sizeof(shapeNum) +
+		sizeof(vertexNum) +
+		sizeof(valueNum)
+	);
+	byteArray << animatedValueType << shapeGroupID << shapeNum << vertexNum << valueNum << animationArray;
 	return byteArray;
 }

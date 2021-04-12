@@ -9,8 +9,7 @@ ShapeSpawnEvent* ShapeSpawnEvent::create(
 	float initTime
 ) {
 	int shapeGroupID, targetShapeGroupID;
-	byteArray->read(shapeGroupID);
-	byteArray->read(targetShapeGroupID);
+	*byteArray >> shapeGroupID >> targetShapeGroupID;
 	return new ShapeSpawnEvent(Shape(byteArray), shapeGroupID, targetShapeGroupID, initTime);
 }
 
@@ -33,17 +32,11 @@ void ShapeSpawnEvent::start() {
 
 ByteArray ShapeSpawnEvent::getByteArray() {
 	ByteArray shapeArray = shape.getByteArray();
-	unsigned int byteArraySize =
-		static_cast<unsigned int>(
-			shapeArray.getSize() +
-			sizeof(shapeGroupID) +
-			sizeof(targetShapeGroupID));
-
-	ByteArray byteArray(byteArraySize);
-
-	byteArray.add(shapeGroupID);
-	byteArray.add(targetShapeGroupID);
-	byteArray.add(shapeArray);
-
+	ByteArray byteArray(
+		shapeArray.getSize() +
+		sizeof(shapeGroupID) +
+		sizeof(targetShapeGroupID)
+	);
+	byteArray << shapeGroupID << targetShapeGroupID << shapeArray;
 	return byteArray;
 }

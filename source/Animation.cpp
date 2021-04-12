@@ -61,7 +61,7 @@ Animation& Animation::operator=(const Animation& animation) {
 }
 
 Animation::Animation(ByteArray* byteArray) {
-	byteArray->read(keyCount);
+	*byteArray >> keyCount;
 	this->timeKeys = new float[keyCount];
 	this->stateKeys = new float[keyCount];
 	byteArray->read(timeKeys, sizeof(*timeKeys) * keyCount);

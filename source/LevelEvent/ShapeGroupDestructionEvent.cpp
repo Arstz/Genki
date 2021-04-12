@@ -14,7 +14,7 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(
 	float initTime
 ) {
 	int shapeGroupID;
-	byteArray->read(shapeGroupID);
+	*byteArray >> shapeGroupID;
 	return new ShapeGroupDestructionEvent(shapeGroupID, initTime);
 }
 
@@ -24,8 +24,6 @@ void ShapeGroupDestructionEvent::start() {
 
 ByteArray ShapeGroupDestructionEvent::getByteArray() {
 	ByteArray byteArray(sizeof(shapeGroupID));
-
-	byteArray.add(shapeGroupID);
-
+	byteArray >> shapeGroupID;
 	return byteArray;
 }

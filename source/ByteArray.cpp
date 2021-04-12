@@ -54,6 +54,16 @@ void ByteArray::read(ByteArray& byteArray) {
 	offset += byteArray.size;
 }
 
+ByteArray& ByteArray::operator << (const ByteArray& byteArray) {
+	this->add(byteArray);
+	return *this;
+}
+
+ByteArray& ByteArray::operator >> (const ByteArray& byteArray) {
+	this->read(byteArray);
+	return *this;
+}
+
 void ByteArray::read(char* value, unsigned int size) {
 	for (int i = 0; i < size; i++) value[i] = data[offset + i];
 	offset += size;
@@ -70,6 +80,3 @@ char* ByteArray::getDataPointer() {
 void ByteArray::setOffset(unsigned int offset) {
 	this->offset = offset;
 }
-
-
-

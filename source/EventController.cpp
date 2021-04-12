@@ -63,9 +63,7 @@ void EventController::loadLevel(std::string path) {
 		float initTime;
 		unsigned int blockSize;
 
-		byteLevel->read(type);
-		byteLevel->read(initTime);
-		byteLevel->read(blockSize);
+		*byteLevel >> type >> initTime >> blockSize;
 
 		switch (type) {
 		case LevelEventType::EMPTY:
@@ -99,7 +97,6 @@ void EventController::loadLevel(std::string path) {
 		}
 		offset += blockSize;
 	}
-
 
 	delete byteLevel;
 	byteLevel = nullptr;

@@ -64,12 +64,7 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 ShapeGroup::ShapeGroup(ByteArray* byteArray) {
 	unsigned int shapeGroupCount;
 	shapeGroups = std::list<ShapeGroup>();
-	byteArray->read(shapeCount);
-	byteArray->read(shapeGroupCount);
-	byteArray->read(layer);
-	byteArray->read(alphaChannel);
-	byteArray->read(positionX);
-	byteArray->read(positionY);
+	*byteArray >> shapeCount >> shapeGroupCount >> layer >> alphaChannel >> positionX >> positionY;
 	shapes = new Shape[shapeCount];
 	for (int i = 0; i < shapeCount; i++)
 		shapes[i] = Shape(byteArray);
@@ -101,14 +96,8 @@ ByteArray ShapeGroup::getByteArray() {
 			i++;
 		}
 	}
-
 	ByteArray byteArray(byteArraySize);
-	byteArray.add(shapeCount);
-	byteArray.add(shapeGroupCount);
-	byteArray.add(layer);
-	byteArray.add(alphaChannel);
-	byteArray.add(positionX);
-	byteArray.add(positionY);
+	byteArray << shapeCount << shapeGroupCount << layer << alphaChannel << positionX << positionY;
 	for (int i = 0; i < byteShapes.size(); i++)
 		byteArray.add(byteShapes[i]);
 	if (shapeGroupCount)

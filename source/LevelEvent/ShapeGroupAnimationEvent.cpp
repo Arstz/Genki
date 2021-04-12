@@ -32,8 +32,7 @@ ShapeGroupAnimationEvent* ShapeGroupAnimationEvent::create(
 ) {
 	AnimatedValueType animatedValueType;
 	int shapeGroupID;
-	byteArray->read(animatedValueType);
-	byteArray->read(shapeGroupID);
+	*byteArray >> animatedValueType >> shapeGroupID;
 	return new ShapeGroupAnimationEvent(
 		Animation(byteArray),
 		animatedValueType,
@@ -66,17 +65,11 @@ void ShapeGroupAnimationEvent::start() {
 
 ByteArray ShapeGroupAnimationEvent::getByteArray() {
 	ByteArray animationArray = animation.getByteArray();
-	unsigned int byteArraySize =
-		static_cast<unsigned int>(
-			animationArray.getSize() +
-			sizeof(animatedValueType) +
-			sizeof(shapeGroupID));
-
-	ByteArray byteArray(byteArraySize);
-
-	byteArray.add(animatedValueType);
-	byteArray.add(shapeGroupID);
-	byteArray.add(animationArray);
-
+	ByteArray byteArray(
+		animationArray.getSize() +
+		sizeof(animatedValueType) +
+		sizeof(shapeGroupID)
+	);
+	byteArray << animatedValueType << shapeGroupID << animationArray;
 	return byteArray;
 }

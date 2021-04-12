@@ -23,7 +23,7 @@ BackgroundColorAnimationEvent* BackgroundColorAnimationEvent::create(
 	float initTime
 ) {
 	uint valueNum;
-	byteArray->read(valueNum);
+	*byteArray >> valueNum;
 	return new BackgroundColorAnimationEvent(Animation(byteArray), valueNum, initTime);
 }
 
@@ -34,9 +34,6 @@ void BackgroundColorAnimationEvent::start() {
 ByteArray BackgroundColorAnimationEvent::getByteArray() {
 	ByteArray animationArray = animation.getByteArray();
 	ByteArray byteArray(animationArray.getSize() + sizeof(valueNum));
-
-	byteArray.add(valueNum);
-	byteArray.add(animationArray);
-
+	byteArray << valueNum << animationArray;
 	return byteArray;
 }

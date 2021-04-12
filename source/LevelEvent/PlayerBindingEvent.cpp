@@ -15,7 +15,7 @@ PlayerBindingEvent* PlayerBindingEvent::create(
 	float initTime
 ) {
 	int shapeGroupID;
-	byteArray->read(shapeGroupID);
+	*byteArray >> shapeGroupID;
 	return new PlayerBindingEvent(shapeGroupID, initTime);
 }
 
@@ -28,8 +28,6 @@ void PlayerBindingEvent::start() {
 
 ByteArray PlayerBindingEvent::getByteArray() {
 	ByteArray byteArray(sizeof(shapeGroupID));
-
-	byteArray.add(shapeGroupID);
-
+	byteArray << shapeGroupID;
 	return byteArray;
 }

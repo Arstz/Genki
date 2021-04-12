@@ -71,12 +71,7 @@ Shape::Shape(const Shape& shape) {
 }
 
 Shape::Shape(ByteArray* byteArray) {
-	byteArray->read(vertexCount);
-	byteArray->read(EBOsize);
-	byteArray->read(layer);
-	byteArray->read(alphaChannel);
-	byteArray->read(positionX);
-	byteArray->read(positionY);
+	*byteArray >> vertexCount >> EBOsize >> layer >> alphaChannel >> positionX >> positionY;
 	vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
 	vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 	vertexIDs = new uint[EBOsize];
@@ -97,13 +92,7 @@ ByteArray Shape::getByteArray() {
 		sizeof(*vertexCoords) * vertexCount * 2 +
 		sizeof(*vertexColors) * vertexCount * 4
 	);
-
-	byteArray.add(vertexCount);
-	byteArray.add(EBOsize);
-	byteArray.add(layer);
-	byteArray.add(alphaChannel);
-	byteArray.add(positionX);
-	byteArray.add(positionY);
+	byteArray << vertexCount << EBOsize << layer << alphaChannel << positionX << positionY;
 	byteArray.add(vertexCoords, sizeof(*vertexCoords) * vertexCount * 2);
 	byteArray.add(vertexColors, sizeof(*vertexColors) * vertexCount * 4);
 	byteArray.add(vertexIDs, sizeof(*vertexIDs) * EBOsize);

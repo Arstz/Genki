@@ -28,6 +28,21 @@ public:
 	template<typename T>
 	void read(T* t, unsigned int size) {read((char*)t, size);}
 
+	ByteArray& operator << (const ByteArray& byteArray);
+	ByteArray& operator >> (const ByteArray& byteArray);
+
+	template<typename T>
+	ByteArray& operator << (const T& t) {
+		this->add((char*)&t, sizeof(t));
+		return *this;
+	}
+
+	template<typename T>
+	ByteArray& operator >> (const T& t) {
+		this->read((char*)&t, sizeof(t));
+		return *this;
+	}
+
 	unsigned int getSize();
 	char* getDataPointer();
 	void setOffset(unsigned int offset);

@@ -20,25 +20,18 @@ ShapeGroupSpawnEvent* ShapeGroupSpawnEvent::create(
 	float initTime
 ) {
 	int shapeGroupID, targetShapeGroupID;
-	byteArray->read(shapeGroupID);
-	byteArray->read(targetShapeGroupID);
+	*byteArray >> shapeGroupID >> targetShapeGroupID;
 	return new ShapeGroupSpawnEvent(ShapeGroup(byteArray), shapeGroupID, targetShapeGroupID, initTime);
 }
 
 ByteArray ShapeGroupSpawnEvent::getByteArray() {
 	ByteArray shapeGroupArray = shapeGroup.getByteArray();
-	unsigned int byteArraySize =
-		static_cast<unsigned int>(
-			shapeGroupArray.getSize() +
-			sizeof(shapeGroupID) +
-			sizeof(targetShapeGroupID));
-
-	ByteArray byteArray(byteArraySize);
-
-	byteArray.add(shapeGroupID);
-	byteArray.add(targetShapeGroupID);
-	byteArray.add(shapeGroupArray);
-
+	ByteArray byteArray(
+		shapeGroupArray.getSize() +
+		sizeof(shapeGroupID) +
+		sizeof(targetShapeGroupID)
+	);
+	byteArray << shapeGroupID << targetShapeGroupID << shapeGroupArray;
 	return byteArray;
 }
 

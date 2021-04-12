@@ -19,7 +19,7 @@ CameraAnimationEvent* CameraAnimationEvent::create(
 	float initTime
 ) {
 	uint valueNum;
-	byteArray->read(valueNum);
+	*byteArray >> valueNum;
 	return new CameraAnimationEvent(Animation(byteArray), valueNum, initTime);
 }
 
@@ -30,9 +30,6 @@ void CameraAnimationEvent::start() {
 ByteArray CameraAnimationEvent::getByteArray() {
 	ByteArray animationArray = animation.getByteArray();
 	ByteArray byteArray(animationArray.getSize() + sizeof(valueNum));
-
-	byteArray.add(valueNum);
-	byteArray.add(animationArray);
-
+	byteArray << valueNum << animationArray;
 	return byteArray;
 }
