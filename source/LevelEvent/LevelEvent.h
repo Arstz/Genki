@@ -39,16 +39,18 @@ class LevelEvent {
 	friend EventController;
 protected:
 	float initTime;
-	LevelEventType type;
+	LevelEventType type;	
 	LevelEvent();
 	virtual ~LevelEvent();
 	LevelEvent(float initTime);
-
-public:
 	static std::list<ShapeGroup>::iterator* shapeGroups;
+	static ShapeController* shapeController;
+public:
 	virtual void start();
 	virtual ByteArray getByteArray();
 	float getInitTime();
+	static void setShapeController(ShapeController* shapeController);
+	static void setShapeGroupsSize(unsigned int size);
 
 	LevelEventType getType();
 };

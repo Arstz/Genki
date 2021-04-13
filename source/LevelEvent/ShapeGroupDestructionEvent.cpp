@@ -19,7 +19,7 @@ ShapeGroupDestructionEvent* ShapeGroupDestructionEvent::create(
 }
 
 void ShapeGroupDestructionEvent::start() {
-	ShapeController::removeShapeGroup(shapeGroups[shapeGroupID]);
+	shapeController->removeShapeGroup(shapeGroups[shapeGroupID]);
 }
 
 ByteArray ShapeGroupDestructionEvent::getByteArray() {

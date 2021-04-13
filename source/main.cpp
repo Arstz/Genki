@@ -16,15 +16,16 @@ void sex()
 
 int main()
 {
+	Engine engine = Engine();
 
-	Engine::init();
-	while (Engine::running()) {
+	engine.init();
+	while (engine.running()) {
 
-		Engine::update();
-		Engine::render();
+		engine.update();
+		engine.render();
 	}
 
-	Engine::terminate();
+	engine.terminate();
 //	Engine::destroy();
 //	_CrtMemDumpAllObjectsSince(NULL);
 	return 0;

@@ -36,6 +36,6 @@ ByteArray ShapeGroupSpawnEvent::getByteArray() {
 }
 
 void ShapeGroupSpawnEvent::start() {
-	if (targetShapeGroupID) shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(shapeGroup, shapeGroups[targetShapeGroupID]);
-	else shapeGroups[shapeGroupID] = ShapeController::addShapeGroup(shapeGroup);
+	if (targetShapeGroupID) shapeGroups[shapeGroupID] = shapeController->addShapeGroup(shapeGroup, shapeGroups[targetShapeGroupID]);
+	else shapeGroups[shapeGroupID] = shapeController->addShapeGroup(shapeGroup);
 }

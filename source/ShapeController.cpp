@@ -7,25 +7,6 @@
 #define new MYDEBUG_NEW
 #endif
 
-ShapeGroup ShapeController::shapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
-
-uint ShapeController::vertexCount = 0;
-float* ShapeController::vertexBuffer = (float*)malloc(0);
-
-GLuint ShapeController::bufferID = 0;
-
-uint ShapeController::EBOsize = 0;
-uint* ShapeController::EBObuffer = (uint*)malloc(0);
-float ShapeController::cameraDataBuffer[4] = {0.f, 0.f, 0.1f / 16.f * 9.f, 0.1f};
-
-GLuint ShapeController::VBO = 0;
-GLuint ShapeController::VAO = 0;
-GLuint ShapeController::EBO = 0;
-GLuint ShapeController::CDB = 0;
-
-int ShapeController::shader = 0;
-
-GLFWwindow* ShapeController::window = nullptr;
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec2 pos;\n"
@@ -141,10 +122,6 @@ void ShapeController::reallocateBuffers() {
 	glBindVertexArray(0);
 }
 
-void ShapeController::setWindow(GLFWwindow* window) {
-	ShapeController::window = window;
-}
-
 void ShapeController::initBuffers() {
 	ShapeController::bufferID = Window::generateBufferID();
 	glGenBuffers(bufferID, &CDB);
@@ -222,16 +199,6 @@ void ShapeController::destroy()
 	shapeGroup.~ShapeGroup();
 }
 
-void ShapeController::init() {
-	setWindow(Window::getWindow());
-	initShader();
-	initBuffers();
-	
-//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
 float* ShapeController::getCameraValuePointer(uint valueNum) {
 	return &cameraDataBuffer[valueNum];
 }
@@ -289,11 +256,133 @@ void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGro
 	reallocateBuffers();
 }
 
-void ShapeController::terminate() {
+ShapeController::ShapeController() {
+	this->shapeGroup = ShapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
+
+	this->vertexCount = 0;
+	this->vertexBuffer = (float*)malloc(0);
+
+	this->bufferID = 0;
+
+	this->EBOsize = 0;
+	this->EBObuffer = (uint*)malloc(0);
+
+	this->cameraDataBuffer[0] = 0.f;
+	this->cameraDataBuffer[1] = 0.f;
+	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[3] = 0.1f;
+
+	this->VBO = 0;
+	this->VAO = 0;
+	this->EBO = 0;
+	this->CDB = 0;
+
+	this->shader = 0;
+
+	this->window = nullptr;
+
+	initShader();
+	initBuffers();
+}
+
+ShapeController& ShapeController::operator=(const ShapeController& shapeController) {
 	free(EBObuffer);
 	free(vertexBuffer);
-	vertexBuffer = nullptr;
-	EBObuffer = nullptr;
+
+	this->shapeGroup = shapeController.shapeGroup;
+
+	this->vertexCount = shapeController.vertexCount;
+	this->vertexBuffer = (float*)malloc(vertexCount * 6);
+
+	this->bufferID = shapeController.bufferID;
+
+	this->EBOsize = shapeController.EBOsize;
+	this->EBObuffer = (uint*)malloc(EBOsize);
+
+	this->cameraDataBuffer[0] = 0.f;
+	this->cameraDataBuffer[1] = 0.f;
+	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[3] = 0.1f;
+
+	this->VBO = shapeController.VBO;
+	this->VAO = shapeController.VAO;
+	this->EBO = shapeController.EBO;
+	this->CDB = shapeController.CDB;
+
+	this->shader = shapeController.shader;
+
+	this->window = shapeController.window;
+
+	initShader();
+	initBuffers();
+
+	return *this;
+}
+
+ShapeController::ShapeController(const ShapeController& shapeController) {
+	this->shapeGroup = shapeController.shapeGroup;
+
+	this->vertexCount = shapeController.vertexCount;
+	this->vertexBuffer = (float*)malloc(vertexCount*6);
+
+	this->bufferID = shapeController.bufferID;
+
+	this->EBOsize = shapeController.EBOsize;
+	this->EBObuffer = (uint*)malloc(EBOsize);
+
+	this->cameraDataBuffer[0] = 0.f;
+	this->cameraDataBuffer[1] = 0.f;
+	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[3] = 0.1f;
+
+	this->VBO = shapeController.VBO;
+	this->VAO = shapeController.VAO;
+	this->EBO = shapeController.EBO;
+	this->CDB = shapeController.CDB;
+
+	this->shader = shapeController.shader;
+
+	this->window = shapeController.window;
+}
+
+ShapeController::ShapeController(GLFWwindow* window) {
+	this->shapeGroup = ShapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
+
+	this->vertexCount = 0;
+	this->vertexBuffer = (float*)malloc(0);
+
+	this->bufferID = 0;
+
+	this->EBOsize = 0;
+	this->EBObuffer = (uint*)malloc(0);
+
+	this->cameraDataBuffer[0] = 0.f;
+	this->cameraDataBuffer[1] = 0.f;
+	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[3] = 0.1f;
+
+	this->VBO = 0;
+	this->VAO = 0;
+	this->EBO = 0;
+	this->CDB = 0;
+
+	this->shader = 0;
+
+	this->window = window;
+
+	initShader();
+	initBuffers();
+
+	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+ShapeController::~ShapeController(){
+	free(EBObuffer);
+	free(vertexBuffer);
+	this->vertexBuffer = nullptr;
+	this->EBObuffer = nullptr;
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);

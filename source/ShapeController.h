@@ -8,33 +8,34 @@
 #define CAMERA_DATA_SIZE 4u
 
 class ShapeController {
-	static int shader;
+private:
+	int shader;
 
-	static GLuint bufferID;
-	static GLuint VBO;
-	static GLuint VAO;
-	static GLuint EBO;
-	static GLuint CDB;
+	GLuint bufferID;
+	GLuint VBO;
+	GLuint VAO;
+	GLuint EBO;
+	GLuint CDB;
 
-	static uint EBOsize;
-	static uint vertexCount;
+	uint EBOsize;
+	uint vertexCount;
 
-	static uint* EBObuffer;
+	uint* EBObuffer;
 
-	static float cameraDataBuffer[4];
+	float cameraDataBuffer[4];
 
-	static float* vertexBuffer;	
+	float* vertexBuffer;	
 
-	static ShapeGroup shapeGroup;
+	ShapeGroup shapeGroup;
 
-	static GLFWwindow* window;
+	GLFWwindow* window;
 
-	static void updateBuffers();
-	static void reallocateBuffers();
-	static void initBuffers();
-	static void initShader();		
+	void updateBuffers();
+	void reallocateBuffers();
+	void initBuffers();
+	void initShader();		
 
-	static void writeToVertexbuffer(
+	void writeToVertexbuffer(
 		ShapeGroup& shapeGroup,
 		uint& positionOffsetCounter,
 		uint& colorOffsetCounter,
@@ -42,27 +43,30 @@ class ShapeController {
 		float positionX,
 		float positionY
 	);
-	static void writeToEBObuffer(
+	void writeToEBObuffer(
 		ShapeGroup& shapeGroup,
 		uint& EBOoffsetCounter,
 		uint& vertexCounter
 	);
 
 public:
-	static void destroy();
-	static void init();
-	static void draw();
+	void destroy();
+	void draw();
 	
-	static void setWindow(GLFWwindow* window);
-	static void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
+	void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
 
-	static float* getCameraValuePointer(uint valueNum);
+	float* getCameraValuePointer(uint valueNum);
 
-	static std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
-	static std::list<ShapeGroup>::iterator addShapeGroup(
+	std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
+	std::list<ShapeGroup>::iterator addShapeGroup(
 		const ShapeGroup& shapeGroup, 
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
-	static void terminate();
 
+	ShapeController();
+	ShapeController& operator=(const ShapeController& shapeController);
+	ShapeController(const ShapeController& shapeController);
+	ShapeController(GLFWwindow* window);
+	~ShapeController();
 };
+

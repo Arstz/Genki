@@ -24,7 +24,7 @@ CameraAnimationEvent* CameraAnimationEvent::create(
 }
 
 void CameraAnimationEvent::start() {
-	AnimationController::add(AnimationTask(animation, ShapeController::getCameraValuePointer(valueNum)));
+	AnimationController::add(AnimationTask(animation, shapeController->getCameraValuePointer(valueNum)));
 }
 
 ByteArray CameraAnimationEvent::getByteArray() {

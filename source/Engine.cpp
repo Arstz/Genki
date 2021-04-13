@@ -21,30 +21,20 @@
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 #define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 
-float Engine::currentTime = 0;
-float Engine::frameTime = 0;
-std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
-Player Engine::player = Player();
-GLFWwindow* Engine::window = nullptr;
-
 void Engine::destroy()
 {
 	AnimationController::destroy();
-	ShapeController::destroy();
+	levelShapeController.destroy();
 	EventController::destroy();
 }
 
 void Engine::terminate() {
-	ShapeController::terminate();
-	delete[] LevelEvent::shapeGroups;
-
 	glfwTerminate();
 }
 
 void Engine::init() {
 	Window::init();
 	window = Window::getWindow();
-	ShapeController::init();
 
 	PlayerBindingEvent::player = &player;
 
@@ -52,15 +42,12 @@ void Engine::init() {
 	
 	EventController::currentTime = &currentTime;
 	
-	LevelEvent::shapeGroups = new std::list<ShapeGroup>::iterator[10];
+	LevelEvent::setShapeGroupsSize(10);
+	LevelEvent::setShapeController(&levelShapeController);
 
 	EventController::loadLevel("a");
 
 //	EventController::saveLevel("a", EventController::level);
-
-
-
-
 }
 
 void Engine::pollEvents() {
@@ -78,7 +65,7 @@ void Engine::update() {
 }
 
 void Engine::render() {
-	ShapeController::draw();
+	levelShapeController.draw();
 	Window::clear();
 }
 
@@ -114,4 +101,14 @@ void Engine::pollKeyEvents() {
 		player.move(0.f, 1.f);
 		player.lastDirectionY = 1;
 	}
+}
+
+Engine::Engine() {
+	Window::init();
+	this->currentTime = 0;
+	this->frameTime = 0;
+	this->start = std::chrono::system_clock::now();
+	this->player = Player();
+	this->window = Window::getWindow();
+	this->levelShapeController = ShapeController(window);	
 }
