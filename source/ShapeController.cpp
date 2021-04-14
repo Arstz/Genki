@@ -280,9 +280,7 @@ ShapeController::ShapeController() {
 	this->shader = 0;
 
 	this->window = nullptr;
-
-	initShader();
-	initBuffers();
+	
 }
 
 ShapeController& ShapeController::operator=(const ShapeController& shapeController) {
@@ -378,12 +376,15 @@ ShapeController::ShapeController(GLFWwindow* window) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-ShapeController::~ShapeController(){
+ShapeController::~ShapeController() {
 	free(EBObuffer);
 	free(vertexBuffer);
 	this->vertexBuffer = nullptr;
 	this->EBObuffer = nullptr;
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	if (window) {
+		glDeleteVertexArrays(1, &VAO);
+		glDeleteBuffers(1, &VBO);
+		glDeleteBuffers(1, &EBO);
+		glDeleteShader(shader);
+	}
 }

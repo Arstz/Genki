@@ -33,17 +33,6 @@ void Engine::terminate() {
 }
 
 void Engine::init() {
-	Window::init();
-	window = Window::getWindow();
-
-	PlayerBindingEvent::player = &player;
-
-	AnimationController::setTimePointer(&frameTime);
-	
-	EventController::currentTime = &currentTime;
-	
-	LevelEvent::setShapeGroupsSize(10);
-	LevelEvent::setShapeController(&levelShapeController);
 
 	EventController::loadLevel("a");
 
@@ -105,10 +94,19 @@ void Engine::pollKeyEvents() {
 
 Engine::Engine() {
 	Window::init();
+	window = Window::getWindow();
 	this->currentTime = 0;
 	this->frameTime = 0;
 	this->start = std::chrono::system_clock::now();
 	this->player = Player();
 	this->window = Window::getWindow();
-	this->levelShapeController = ShapeController(window);	
+	this->levelShapeController = ShapeController(window);
+	PlayerBindingEvent::player = &player;
+
+	AnimationController::setTimePointer(&frameTime);
+
+	EventController::currentTime = &currentTime;
+
+	LevelEvent::setShapeGroupsSize(10);
+	LevelEvent::setShapeController(&levelShapeController);
 }
