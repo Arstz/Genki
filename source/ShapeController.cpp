@@ -32,6 +32,8 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "   FragColor = vertexColor;\n"
 "}\n\0";
 
+GLFWwindow* ShapeController::window = nullptr;
+
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
 	uint colorOffsetCounter = vertexCount * 2;
@@ -248,6 +250,10 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 	return otherShapeGroupIterator;
 }
 
+void ShapeController::setWindow(GLFWwindow* window) {
+	ShapeController::window = window;
+}
+
 void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGroupIterator) {
 	vertexCount -= (*shapeGroupIterator).getVertexCount();
 	EBOsize -= (*shapeGroupIterator).getEBOsize();
@@ -279,8 +285,12 @@ ShapeController::ShapeController() {
 
 	this->shader = 0;
 
-	this->window = nullptr;
-	
+	initShader();
+	initBuffers();
+
+	//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 ShapeController& ShapeController::operator=(const ShapeController& shapeController) {
@@ -308,8 +318,6 @@ ShapeController& ShapeController::operator=(const ShapeController& shapeControll
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
-
-	this->window = shapeController.window;
 
 	initShader();
 	initBuffers();
@@ -339,52 +347,20 @@ ShapeController::ShapeController(const ShapeController& shapeController) {
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
-
-	this->window = shapeController.window;
 }
 
-ShapeController::ShapeController(GLFWwindow* window) {
-	this->shapeGroup = ShapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
-
-	this->vertexCount = 0;
-	this->vertexBuffer = (float*)malloc(0);
-
-	this->bufferID = 0;
-
-	this->EBOsize = 0;
-	this->EBObuffer = (uint*)malloc(0);
-
-	this->cameraDataBuffer[0] = 0.f;
-	this->cameraDataBuffer[1] = 0.f;
-	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
-	this->cameraDataBuffer[3] = 0.1f;
-
-	this->VBO = 0;
-	this->VAO = 0;
-	this->EBO = 0;
-	this->CDB = 0;
-
-	this->shader = 0;
-
-	this->window = window;
-
-	initShader();
-	initBuffers();
-
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
 
 ShapeController::~ShapeController() {
 	free(EBObuffer);
 	free(vertexBuffer);
 	this->vertexBuffer = nullptr;
 	this->EBObuffer = nullptr;
+	/*
 	if (window) {
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
 		glDeleteShader(shader);
 	}
+	*/
 }

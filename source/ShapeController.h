@@ -28,7 +28,7 @@ private:
 
 	ShapeGroup shapeGroup;
 
-	GLFWwindow* window;
+	static GLFWwindow* window;
 
 	void updateBuffers();
 	void reallocateBuffers();
@@ -53,6 +53,7 @@ public:
 	void destroy();
 	void draw();
 	
+	static void setWindow(GLFWwindow* window);
 	void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
 
 	float* getCameraValuePointer(uint valueNum);
@@ -66,7 +67,6 @@ public:
 	ShapeController();
 	ShapeController& operator=(const ShapeController& shapeController);
 	ShapeController(const ShapeController& shapeController);
-	ShapeController(GLFWwindow* window);
 	~ShapeController();
 };
 

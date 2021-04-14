@@ -94,13 +94,13 @@ void Engine::pollKeyEvents() {
 
 Engine::Engine() {
 	Window::init();
-	window = Window::getWindow();
 	this->currentTime = 0;
 	this->frameTime = 0;
 	this->start = std::chrono::system_clock::now();
 	this->player = Player();
 	this->window = Window::getWindow();
-	this->levelShapeController = ShapeController(window);
+	ShapeController::setWindow(window);
+	this->levelShapeController = ShapeController();
 	PlayerBindingEvent::player = &player;
 
 	AnimationController::setTimePointer(&frameTime);
