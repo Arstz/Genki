@@ -8,26 +8,23 @@
 class Engine {
 
 private:
-	void pollEvents();
+	static void pollEvents();
 
-	float currentTime;
-	float frameTime;
-	std::chrono::system_clock::time_point start;
-	GLFWwindow* window;
-	ShapeController levelShapeController;
-	Player player;
+	static float currentTime;
+	static float frameTime;
+	static std::chrono::system_clock::time_point start;
+	static GLFWwindow* window;
+	static ShapeController levelShapeController;
+	static Player player;
+
 
 public:
-	void init();
-	
-	void update();
-	void render();
-
-	void destroy();
-	void terminate();
-	bool running();
-	void pollKeyEvents();
-
-	Engine();
+	static void init();
+	static void update();
+	static void render();
+	static void destroy();
+	static void terminate();
+	static bool running();
+	static void pollKeyEvents();
 };
 

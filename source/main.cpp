@@ -14,18 +14,20 @@ void sex()
 	std::cout << "$3cks" << "\n";
 }
 
+
+
 int main()
 {
-	Engine engine = Engine();
+//	Engine engine = Engine();
 
-	engine.init();
-	while (engine.running()) {
+	Engine::init();
+	while (Engine::running()) {
 
-		engine.update();
-		engine.render();
+		Engine::update();
+		Engine::render();
 	}
 
-	engine.terminate();
+	Engine::terminate();
 //	Engine::destroy();
 //	_CrtMemDumpAllObjectsSince(NULL);
 	return 0;

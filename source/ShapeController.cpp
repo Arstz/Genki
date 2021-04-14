@@ -285,10 +285,11 @@ ShapeController::ShapeController() {
 
 	this->shader = 0;
 
-	initShader();
-	initBuffers();
-
-	//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (window) {
+		initShader();
+		initBuffers();
+	}
+//  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -318,10 +319,10 @@ ShapeController& ShapeController::operator=(const ShapeController& shapeControll
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
-
-	initShader();
-	initBuffers();
-
+	if (window) {
+		initShader();
+		initBuffers();
+	}
 	return *this;
 }
 
@@ -347,6 +348,10 @@ ShapeController::ShapeController(const ShapeController& shapeController) {
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
+	if (window) {
+		initShader();
+		initBuffers();
+	}
 }
 
 
@@ -355,12 +360,11 @@ ShapeController::~ShapeController() {
 	free(vertexBuffer);
 	this->vertexBuffer = nullptr;
 	this->EBObuffer = nullptr;
-	/*
 	if (window) {
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
 		glDeleteShader(shader);
 	}
-	*/
 }
+
