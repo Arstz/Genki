@@ -162,13 +162,14 @@
     <Text Include="resources\level.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="source\Animation.cpp" />
     <ClCompile Include="source\AnimationController.cpp" />
     <ClCompile Include="source\AnimationTask.cpp" />
     <ClCompile Include="source\ByteArray.cpp" />
     <ClCompile Include="source\Engine.cpp" />
     <ClCompile Include="source\EventController.cpp" />
+    <ClCompile Include="source\GUI.cpp" />
+    <ClCompile Include="source\GUIcanvas.cpp" />
     <ClCompile Include="source\LevelEvent\BackgroundColorAnimationEvent.cpp" />
     <ClCompile Include="source\LevelEvent\CameraAnimationEvent.cpp" />
     <ClCompile Include="source\LevelEvent\LevelEvent.cpp" />
@@ -186,13 +187,14 @@
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="source\Animation.h" />
     <ClInclude Include="source\AnimationController.h" />
     <ClInclude Include="source\AnimationTask.h" />
     <ClInclude Include="source\ByteArray.h" />
     <ClInclude Include="source\Engine.h" />
     <ClInclude Include="source\EventController.h" />
+    <ClInclude Include="source\GUI.h" />
+    <ClInclude Include="source\GUIcanvas.h" />
     <ClInclude Include="source\LevelEvent\LevelEvent.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Shape.h" />
@@ -203,6 +205,9 @@
   <ItemGroup>
     <None Include="raid_na_derevene.lvl" />
     <None Include="resources\main.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\n0lbborfz0hhdzjfjpor.jfif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

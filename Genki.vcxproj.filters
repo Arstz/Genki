@@ -89,7 +89,10 @@
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
+    <ClCompile Include="source\GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUIcanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -130,7 +133,10 @@
     <ClInclude Include="source\Animation.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
+    <ClInclude Include="source\GUI.h">
+      <Filter>Source Files\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GUIcanvas.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -141,5 +147,10 @@
     <None Include="raid_na_derevene.lvl">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\n0lbborfz0hhdzjfjpor.jfif">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
