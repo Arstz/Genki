@@ -33,6 +33,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "}\n\0";
 
 GLFWwindow* ShapeController::window = nullptr;
+int ShapeController::shader = 0;
 
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
@@ -100,62 +101,77 @@ void ShapeController::writeToEBObuffer(
 
 void ShapeController::reallocateBuffers() {
 	free(vertexBuffer);
-	vertexBuffer = (float*)malloc(vertexCount * VERTEX_SIZE * sizeof(vertexBuffer));
+	vertexBuffer = (float*)malloc(vertexCount * VERTEX_SIZE * sizeof(*vertexBuffer));
 
 	delete[] EBObuffer;
-	EBObuffer = (uint*)malloc(sizeof(EBObuffer) * EBOsize);
-	glBindVertexArray(VAO);
-	glVertexAttribPointer(
-		1,
-		4,
-		GL_FLOAT,
-		GL_FALSE,
-		4 * sizeof(GLfloat),
-		(GLvoid*)(2 * vertexCount * sizeof(float)));
-
-
-
+	EBObuffer = (uint*)malloc(sizeof(*EBObuffer) * EBOsize);
 	uint EBOoffsetCounter = 0;
 	uint vertexCounter = 0;
 
 	writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
+	glBindVertexArray(VAO);
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * EBOsize, EBObuffer, GL_STATIC_DRAW);
+	glVertexAttribPointer(
+		VERTEX_ATTRIB_ARRAY_2,
+		4,
+		GL_FLOAT,
+		GL_FALSE,
+		4 * sizeof(GLfloat),
+		(GLvoid*)(2 * vertexCount * sizeof(*vertexBuffer))
+	);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(*EBObuffer) * EBOsize, EBObuffer, GL_STATIC_DRAW);
 	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ShapeController::initBuffers() {
-	ShapeController::bufferID = Window::generateBufferID();
-	glGenBuffers(bufferID, &CDB);
+	
+	glGenBuffers(1, &CDB);
 	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
-
+		
 	glUniformBlockBinding(
 		shader,
 		glGetUniformBlockIndex(shader, "Camera"),
 		1
 	);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);
+	
 
-	glGenBuffers(bufferID, &VBO);
+	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glGenVertexArrays(bufferID, &VAO);
+	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	glGenBuffers(bufferID, &EBO);
+	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glVertexAttribPointer(
-		0,
+		VERTEX_ATTRIB_ARRAY_1,
 		2,
 		GL_FLOAT,
 		GL_FALSE,
 		2 * sizeof(GLfloat),
 		(GLvoid*)0
 	);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
+	
+	
+	glVertexAttribPointer(
+		VERTEX_ATTRIB_ARRAY_2,
+		4,
+		GL_FLOAT,
+		GL_FALSE,
+		4 * sizeof(GLfloat),
+		(GLvoid*)0
+	);
+	
+	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
+	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
 	glBindVertexArray(0);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void ShapeController::initShader() {
@@ -207,6 +223,10 @@ float* ShapeController::getCameraValuePointer(uint valueNum) {
 
 void ShapeController::draw() {
 	updateBuffers();
+	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	
+	
 
 	glBufferData(
 		GL_ARRAY_BUFFER,
@@ -223,10 +243,12 @@ void ShapeController::draw() {
 	);
 
 	glUseProgram(shader);
-
 	glBindVertexArray(VAO);
+	
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+//	glBindVertexArray(0);
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup) {
@@ -280,9 +302,9 @@ ShapeController::ShapeController() {
 	this->VAO = 0;
 	this->EBO = 0;
 	this->CDB = 0;
-
-	this->shader = 0;
-
+	if (window) {
+		initBuffers();
+	}
 //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -311,11 +333,8 @@ ShapeController& ShapeController::operator=(const ShapeController& shapeControll
 	this->VAO = shapeController.VAO;
 	this->EBO = shapeController.EBO;
 	this->CDB = shapeController.CDB;
-
-	this->shader = shapeController.shader;
 	
 	if (window) {
-		initShader();
 		initBuffers();
 	}
 	return *this;
@@ -355,7 +374,7 @@ ShapeController::~ShapeController() {
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
-		glDeleteShader(shader);
+		glDeleteBuffers(1, &CDB);
 	}
 }
 

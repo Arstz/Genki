@@ -2,7 +2,7 @@
 
 Player* PlayerBindingEvent::player = nullptr;
 
-PlayerBindingEvent::PlayerBindingEvent(int shapeGroupID, float initTime): LevelEvent(initTime) {
+PlayerBindingEvent::PlayerBindingEvent(int shapeGroupID, float initTime) : LevelEvent(initTime) {
 	this->shapeGroupID = shapeGroupID;
 	this->type = LevelEventType::PLAYER_BINDING;
 }

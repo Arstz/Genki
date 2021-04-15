@@ -9,6 +9,7 @@
 
 float Window::backgroundColor[4] = { 1.f, 1.f, 1.f, 1.f };
 GLuint Window::currentBufferID = 1;
+GLuint Window::currentAttribArrayID = 0;
 GLFWwindow* Window::window = nullptr;
 
 void Window::init() {
@@ -54,4 +55,8 @@ void Window::clear() {
 
 GLuint Window::generateBufferID() {
 	return currentBufferID++;
+}
+
+GLuint Window::generateAttribArray() {
+	return currentAttribArrayID++;
 }

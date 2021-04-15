@@ -7,6 +7,7 @@
 #include "Window.h"
 #include "ShapeController.h"
 #include "GUIcanvas.h"
+#include "GUI.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -26,13 +27,13 @@ float Engine::currentTime = 0;
 float Engine::frameTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
 GLFWwindow* Engine::window = nullptr;
-ShapeController Engine::levelShapeController = ShapeController();
+ShapeController* Engine::levelShapeController = nullptr;
 Player Engine::player = Player();
 
 void Engine::destroy()
 {
 	AnimationController::destroy();
-	levelShapeController.destroy();
+	levelShapeController->destroy();
 	EventController::destroy();
 }
 
@@ -41,16 +42,19 @@ void Engine::terminate() {
 }
 
 void Engine::init() {
+
 	Window::init();
 	window = Window::getWindow();
 	GUIcanvas::setWindow(window);
-	start = std::chrono::system_clock::now();
-	player = Player();
+
 
 	ShapeController::setWindow(window);
+	ShapeController::initShader();
+	levelShapeController = new ShapeController();
 	GUIcanvas::init();
 
-	levelShapeController = ShapeController();
+	start = std::chrono::system_clock::now();
+	player = Player();
 	PlayerBindingEvent::player = &player;
 
 	AnimationController::setTimePointer(&frameTime);
@@ -58,10 +62,20 @@ void Engine::init() {
 	EventController::currentTime = &currentTime;
 
 	LevelEvent::setShapeGroupsSize(10);
-	LevelEvent::setShapeController(&levelShapeController);
+	LevelEvent::setShapeController(levelShapeController);
 	EventController::loadLevel("a");
 
 //	EventController::saveLevel("a", EventController::level);
+
+	float vertexCoords[] = {0.f, 0.f, 0.f, 10.f, 10.f, 0.f, 10.f, 10.f};
+	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
+	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
+	Shape shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
+	ShapeGroup ass(shape);
+
+	ButtonSex* buttonSex = new ButtonSex(0.f, 0.f, ass, -2000.f, 1000.f, -2000.f, 1000.f);
+	GUIcanvas::addGUIobject(buttonSex);
+
 }
 
 void Engine::pollEvents() {
@@ -81,10 +95,9 @@ void Engine::update() {
 
 void Engine::render() {
 	Window::clear();
-	levelShapeController.draw();
-	glfwSwapBuffers(window);
+	levelShapeController->draw();
 	GUIcanvas::draw();
-	
+	glfwSwapBuffers(window);
 }
 
 bool Engine::running() {

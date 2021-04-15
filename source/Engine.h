@@ -14,7 +14,7 @@ private:
 	static float frameTime;
 	static std::chrono::system_clock::time_point start;
 	static GLFWwindow* window;
-	static ShapeController levelShapeController;
+	static ShapeController* levelShapeController;
 	static Player player;
 
 

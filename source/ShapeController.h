@@ -6,10 +6,12 @@
 
 #define VERTEX_SIZE 6ul
 #define CAMERA_DATA_SIZE 4u
+#define VERTEX_ATTRIB_ARRAY_1 0
+#define VERTEX_ATTRIB_ARRAY_2 1
 
 class ShapeController {
 private:
-	int shader;
+	static int shader;
 
 	GLuint bufferID;
 	GLuint VBO;
@@ -33,7 +35,7 @@ private:
 	void updateBuffers();
 	void reallocateBuffers();
 	void initBuffers();
-	void initShader();		
+		
 
 	void writeToVertexbuffer(
 		ShapeGroup& shapeGroup,
@@ -50,6 +52,7 @@ private:
 	);
 
 public:
+	static void initShader();
 	void destroy();
 	void draw();
 	

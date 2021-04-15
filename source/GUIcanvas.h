@@ -15,13 +15,16 @@ private:
 	static double mousePositionY;
 	static bool mouseButtonStates[3];
 	
+	static int currentButtonID;
+
 	static GLFWwindow* window;
 	static std::vector<GUIinteractiveObject*> objects;
-	static ShapeController shapeController;
+	static ShapeController* shapeController;
 	static void interact();
 public:
 	static void setWindow(GLFWwindow* window);
 	static void init();
 	static void update();
 	static void draw();
+	static void addGUIobject(GUIinteractiveObject* object);
 };

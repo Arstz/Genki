@@ -10,8 +10,10 @@ class Window {
 	static GLFWwindow* window;
 	static float backgroundColor[4];
 	static GLuint currentBufferID;
+	static GLuint currentAttribArrayID;
 public:
 	static GLuint generateBufferID();
+	static GLuint generateAttribArray();
 	static void init();
 	static GLFWwindow* getWindow();
 	static float* getBackgroundColorValuePointer(uint valueNum);
