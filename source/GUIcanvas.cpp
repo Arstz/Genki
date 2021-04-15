@@ -12,6 +12,7 @@ void GUIcanvas::update() {
 	for (int i = 0; i < sizeof(mouseButtonStates); i++) {
 		mouseButtonStates[i] = glfwGetMouseButton(window, i);
 	}
+	GUIcanvas::interact();
 }
 
 void GUIcanvas::interact() {

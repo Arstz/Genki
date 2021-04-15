@@ -227,8 +227,6 @@ void ShapeController::draw() {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-
-	glfwSwapBuffers(window);
 }
 
 std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup) {
@@ -285,10 +283,6 @@ ShapeController::ShapeController() {
 
 	this->shader = 0;
 
-	if (window) {
-		initShader();
-		initBuffers();
-	}
 //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -319,6 +313,7 @@ ShapeController& ShapeController::operator=(const ShapeController& shapeControll
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
+	
 	if (window) {
 		initShader();
 		initBuffers();
@@ -348,10 +343,6 @@ ShapeController::ShapeController(const ShapeController& shapeController) {
 	this->CDB = shapeController.CDB;
 
 	this->shader = shapeController.shader;
-	if (window) {
-		initShader();
-		initBuffers();
-	}
 }
 
 

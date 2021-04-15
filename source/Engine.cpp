@@ -6,6 +6,7 @@
 #include "LevelEvent\LevelEvent.h"
 #include "Window.h"
 #include "ShapeController.h"
+#include "GUIcanvas.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -42,10 +43,13 @@ void Engine::terminate() {
 void Engine::init() {
 	Window::init();
 	window = Window::getWindow();
+	GUIcanvas::setWindow(window);
 	start = std::chrono::system_clock::now();
 	player = Player();
 
 	ShapeController::setWindow(window);
+	GUIcanvas::init();
+
 	levelShapeController = ShapeController();
 	PlayerBindingEvent::player = &player;
 
@@ -72,11 +76,15 @@ void Engine::update() {
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	EventController::update();
 	AnimationController::update();
+	GUIcanvas::update();
 }
 
 void Engine::render() {
-	levelShapeController.draw();
 	Window::clear();
+	levelShapeController.draw();
+	glfwSwapBuffers(window);
+	GUIcanvas::draw();
+	
 }
 
 bool Engine::running() {

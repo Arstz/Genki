@@ -18,11 +18,10 @@ private:
 	static GLFWwindow* window;
 	static std::vector<GUIinteractiveObject*> objects;
 	static ShapeController shapeController;
-
-	static void update();
 	static void interact();
-	static void draw();
 public:
 	static void setWindow(GLFWwindow* window);
 	static void init();
+	static void update();
+	static void draw();
 };
