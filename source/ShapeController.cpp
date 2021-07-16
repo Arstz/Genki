@@ -14,13 +14,12 @@ const char* vertexShaderSource = "#version 330 core\n"
 
 "layout(std140) uniform Camera"
 "{"
-"	vec2 offset;"
 "	vec2 scale;"
 "};"
 "out vec4 vertexColor;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4((pos-offset)*scale, 0.f, 1.f);\n"
+"   gl_Position = vec4(pos*scale, 0.f, 1.f);\n"
 "   vertexColor = color;\n"
 "}\0";
 
@@ -231,7 +230,7 @@ void ShapeController::draw() {
 
 	glBufferData(
 		GL_UNIFORM_BUFFER,
-		sizeof(float) * 4,
+		sizeof(float) * CAMERA_DATA_SIZE,
 		cameraDataBuffer,
 		GL_STATIC_DRAW
 	);
@@ -290,10 +289,8 @@ ShapeController::ShapeController() {
 	this->EBOsize = 0;
 	this->EBObuffer = (uint*)malloc(0);
 
-	this->cameraDataBuffer[0] = 0.f;
-	this->cameraDataBuffer[1] = 0.f;
-	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
-	this->cameraDataBuffer[3] = 0.1f;
+	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[1] = 0.1f;
 
 	this->VBO = 0;
 	this->VAO = 0;
@@ -321,10 +318,8 @@ ShapeController& ShapeController::operator=(const ShapeController& shapeControll
 	this->EBOsize = shapeController.EBOsize;
 	this->EBObuffer = (uint*)malloc(EBOsize);
 
-	this->cameraDataBuffer[0] = 0.f;
-	this->cameraDataBuffer[1] = 0.f;
-	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
-	this->cameraDataBuffer[3] = 0.1f;
+	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
+	this->cameraDataBuffer[1] = 0.1f;
 
 	this->VBO = shapeController.VBO;
 	this->VAO = shapeController.VAO;

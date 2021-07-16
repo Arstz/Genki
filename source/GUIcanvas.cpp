@@ -15,7 +15,8 @@ GLFWwindow* GUIcanvas::window = nullptr;
 ShapeController* GUIcanvas::shapeController = nullptr;
 ButtonType GUIcanvas::ButtonState::type = ButtonType::EMPTY;
 std::vector<GUIinteractiveObject*> GUIcanvas::objects(0);
-
+int GUIcanvas::windowWidth = 0;
+int GUIcanvas::windowHeight = 0;
 int GUIcanvas::currentButtonID = -1;
 
 void GUIcanvas::update() {
@@ -72,8 +73,10 @@ void GUIcanvas::addGUIobject(GUIinteractiveObject* object) {
 	shapeController->addShapeGroup(object->getShapeGroup());
 }
 
-void GUIcanvas::setWindow(GLFWwindow* window) {
-	GUIcanvas::window = window;
+void GUIcanvas::setWindow() {
+	GUIcanvas::window = Window::getWindow();
+	GUIcanvas::windowWidth = Window::getWidth();
+	GUIcanvas::windowHeight = Window::getHeight();
 }
 
 void GUIcanvas::init() {

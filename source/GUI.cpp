@@ -1,8 +1,9 @@
-#include "GUI.h"
-#include <iostream>
-
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
+
+#include <iostream>
+#include "GUI.h"
+#include "Window.h"
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif
@@ -24,10 +25,10 @@ GUIinteractiveObject::GUIinteractiveObject(ShapeGroup shapeGroup) : GUIobject(sh
 	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
 	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
 
-	this->LeftBorderX = 960 + (positionX + minX) / 10 * 540; 
-	this->RightBorderX = 960 + (positionX + maxX) / 10 * 540; 
-	this->UpBorderY = 540 - (positionY + maxY) / 10 * 540;
-	this->BottomBorderY = 540 - (positionY + minY) / 10 * 540;
+	this->LeftBorderX = 960 + (positionX + minX) / 10 * Window::getHeight() / 2; 
+	this->RightBorderX = 960 + (positionX + maxX) / 10 * Window::getHeight() / 2;
+	this->UpBorderY = 540 - (positionY + maxY) / 10 * Window::getHeight() / 2;
+	this->BottomBorderY = 540 - (positionY + minY) / 10 * Window::getHeight() / 2;
 }
 
 GUIinteractiveObject::GUIinteractiveObject(

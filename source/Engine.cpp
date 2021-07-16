@@ -43,9 +43,9 @@ void Engine::terminate() {
 
 void Engine::init() {
 
-	Window::init();
+	Window::init(1920, 1080);
 	window = Window::getWindow();
-	GUIcanvas::setWindow(window);
+	GUIcanvas::setWindow();
 
 
 	ShapeController::setWindow(window);

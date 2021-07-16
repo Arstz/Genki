@@ -11,13 +11,17 @@ class Window {
 	static float backgroundColor[4];
 	static GLuint currentBufferID;
 	static GLuint currentAttribArrayID;
+	static int width;
+	static int height;
 public:
 	static GLuint generateBufferID();
 	static GLuint generateAttribArray();
-	static void init();
+	static void init(int width, int height);
 	static GLFWwindow* getWindow();
 	static float* getBackgroundColorValuePointer(uint valueNum);
 	static bool running();
 	static void clear();
+	static int getWidth();
+	static int getHeight();
 };
 

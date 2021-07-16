@@ -5,7 +5,7 @@
 #include <list>
 
 #define VERTEX_SIZE 6ul
-#define CAMERA_DATA_SIZE 4u
+#define CAMERA_DATA_SIZE 2u
 #define VERTEX_ATTRIB_ARRAY_1 0
 #define VERTEX_ATTRIB_ARRAY_2 1
 
@@ -24,7 +24,7 @@ private:
 
 	uint* EBObuffer;
 
-	float cameraDataBuffer[4];
+	float cameraDataBuffer[2];
 
 	float* vertexBuffer;	
 
