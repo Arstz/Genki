@@ -25,10 +25,10 @@ GUIinteractiveObject::GUIinteractiveObject(ShapeGroup shapeGroup) : GUIobject(sh
 	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
 	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
 
-	this->LeftBorderX = 960 + (positionX + minX) / 10 * Window::getHeight() / 2; 
-	this->RightBorderX = 960 + (positionX + maxX) / 10 * Window::getHeight() / 2;
-	this->UpBorderY = 540 - (positionY + maxY) / 10 * Window::getHeight() / 2;
-	this->BottomBorderY = 540 - (positionY + minY) / 10 * Window::getHeight() / 2;
+	this->LeftBorderX = Window::getWidth() / 2 + (positionX + minX) / 10 * Window::getHeight() / 2;
+	this->RightBorderX = Window::getWidth() / 2 + (positionX + maxX) / 10 * Window::getHeight() / 2;
+	this->UpBorderY = Window::getHeight() / 2 - (positionY + maxY) / 10 * Window::getHeight() / 2;
+	this->BottomBorderY = Window::getHeight() / 2 - (positionY + minY) / 10 * Window::getHeight() / 2;
 }
 
 GUIinteractiveObject::GUIinteractiveObject(
