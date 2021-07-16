@@ -1,20 +1,25 @@
 #pragma once
 #include "ShapeGroup.h"
 
+enum class ButtonType 
+{
+	EMPTY,
+	BUTTON_SEX,
+	BUTTON
+};
+
 class GUIobject {
 protected:
-	float positionX;
-	float positionY;
 	ShapeGroup shapeGroup;
 	virtual ~GUIobject();
-	GUIobject(float positionX, float positionY, ShapeGroup shapeGroup);
+	GUIobject(ShapeGroup shapeGroup);
 public:
 	ShapeGroup getShapeGroup();
 };
 
 class GUIinteractiveObject : public GUIobject {
 public:	
-	virtual bool interact(bool mouseButtonStates[3], float x, float y) = 0;
+	GUIinteractiveObject(ShapeGroup shapeGroup);
 	GUIinteractiveObject(
 		float positionX, 
 		float positionY, 
@@ -24,29 +29,28 @@ public:
 		float UpBorderY,
 		float BottomBorderY
 	);
+	virtual ButtonType getType();
+	bool checkCollision(float x, float y);
 protected:
 	float LeftBorderX;
 	float RightBorderX;
 	float UpBorderY;
 	float BottomBorderY;
-	bool checkCollision(float x, float y);
 };
 
 class ButtonSex : public GUIinteractiveObject {
 public:
 	bool state;
-	bool interact(bool mouseButtonStates[3], float x, float y) override;
-	ButtonSex(
-		float positionX,
-		float positionY,
-		ShapeGroup shapeGroup,
-		float LeftBorderX,
-		float RightBorderX,
-		float UpBorderY,
-		float BottomBorderY
-	);
+	ButtonType getType() override;
+	ButtonSex(ShapeGroup shapeGroup);
 };
 
+class Button : public GUIinteractiveObject {
+public:
+	bool state;
+	ButtonType getType() override;
+	Button(ShapeGroup shapeGroup);
+};
 
 class CheckBox : public GUIinteractiveObject {
 public:

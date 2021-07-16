@@ -7,6 +7,29 @@
 #define new MYDEBUG_NEW
 #endif
 
+GUIinteractiveObject::GUIinteractiveObject(ShapeGroup shapeGroup) : GUIobject(shapeGroup)
+{
+	Shape* shapes = shapeGroup.getShapesPointer();	
+	if (shapes == nullptr) {
+		throw std::exception("Failed to find shape inside shapegroup");
+	}
+	if (shapes[0].getVertexCount() != 4) {
+		throw std::exception("Shape is not a tetragon");
+	}
+
+	float minX, minY, maxX, maxY;
+	std::tie(minX, minY, maxX, maxY) = shapes[0].getBounds();
+
+	float* coords = shapes[0].getVertexCoordsPointer();
+	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
+	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
+
+	this->LeftBorderX = 960 + (positionX + minX) / 10 * 540; 
+	this->RightBorderX = 960 + (positionX + maxX) / 10 * 540; 
+	this->UpBorderY = 540 - (positionY + maxY) / 10 * 540;
+	this->BottomBorderY = 540 - (positionY + minY) / 10 * 540;
+}
+
 GUIinteractiveObject::GUIinteractiveObject(
 	float positionX,
 	float positionY,
@@ -15,7 +38,7 @@ GUIinteractiveObject::GUIinteractiveObject(
 	float RightBorderX,
 	float UpBorderY,
 	float BottomBorderY
-) : GUIobject(positionX, positionY, shapeGroup) {
+) : GUIobject(shapeGroup) {
 	this->LeftBorderX	= LeftBorderX;
 	this->RightBorderX	= RightBorderX;
 	this->UpBorderY		= UpBorderY;
@@ -23,15 +46,19 @@ GUIinteractiveObject::GUIinteractiveObject(
 
 }
 
+ButtonType GUIinteractiveObject::getType()
+{
+	return ButtonType();
+}
+
 bool GUIinteractiveObject::checkCollision(float x, float y){
+	//std::cout << x <<'\t' << y << std::endl;
 	return x < RightBorderX && x > LeftBorderX && y > UpBorderY && y < BottomBorderY;
 }
 
 GUIobject::~GUIobject() {}
 
-GUIobject::GUIobject(float positionX, float positionY, ShapeGroup shapeGroup) {
-	this->positionX = positionX;
-	this->positionY = positionY;
+GUIobject::GUIobject(ShapeGroup shapeGroup) {
 	this->shapeGroup = shapeGroup;
 }
 
@@ -39,35 +66,20 @@ ShapeGroup GUIobject::getShapeGroup() {
 	return shapeGroup;
 }
 
-bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
-	if (!state && checkCollision(x, y) && mouseButtonStates[0]) { 
-		std::cout << "sex\n";
-		this->state = true;
-	}
-	if (!mouseButtonStates[0]) {
-		this->state = false;
-		return false;
-	}
-
-	return true;
+ButtonType ButtonSex::getType()
+{
+	return ButtonType::BUTTON_SEX;
 }
 
-ButtonSex::ButtonSex(
-	float positionX,
-	float positionY,
-	ShapeGroup shapeGroup,
-	float LeftBorderX,
-	float RightBorderX,
-	float UpBorderY,
-	float BottomBorderY
-): GUIinteractiveObject(
-	positionX,
-	positionY,
-	shapeGroup,
-	LeftBorderX,
-	RightBorderX,
-	UpBorderY,
-	BottomBorderY
-) {
+ButtonSex::ButtonSex(ShapeGroup shapeGroup) : GUIinteractiveObject(shapeGroup) {
+	this->state = false;
+}
+
+ButtonType Button::getType()
+{
+	return ButtonType::BUTTON;
+}
+
+Button::Button(ShapeGroup shapeGroup) : GUIinteractiveObject(shapeGroup) {
 	this->state = false;
 }

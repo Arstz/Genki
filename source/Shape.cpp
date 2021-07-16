@@ -156,6 +156,23 @@ uint* Shape::getVertexIDsPointer() {
 	return vertexIDs;
 }
 
+std::tuple<float, float, float, float> Shape::getBounds()
+{
+	float minX = std::numeric_limits<float>::max();
+	float minY = std::numeric_limits<float>::max();
+	float maxX = std::numeric_limits<float>::min();
+	float maxY = std::numeric_limits<float>::min();
+
+	for (int i = 0; i < vertexCount * 2; i += 2) {
+		minX = std::min(minX, vertexCoords[i]);
+		maxX = std::max(maxX, vertexCoords[i]);
+
+		minY = std::min(minY, vertexCoords[i+1]);
+		maxY = std::max(maxY, vertexCoords[i+1]);
+	}
+	return std::make_tuple(minX,minY,maxX,maxY);
+}
+
 float* Shape::getAlphaChannelPointer() {
 	return &alphaChannel;
 }
