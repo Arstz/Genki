@@ -2,6 +2,8 @@
 #include <iostream>
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
+#define CURRENT_BUTTON_SEX ((ButtonSex*)&objects[currentButtonID])
+#define CURRENT_BUTTON ((Button*)&objects[currentButtonID])
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif
@@ -11,7 +13,7 @@ double GUIcanvas::mousePositionX = 0;
 double GUIcanvas::mousePositionY = 0;
 GLFWwindow* GUIcanvas::window = nullptr;
 ShapeController* GUIcanvas::shapeController = nullptr;
-
+ButtonType GUIcanvas::ButtonState::type = ButtonType::EMPTY;
 std::vector<GUIinteractiveObject*> GUIcanvas::objects(0);
 
 int GUIcanvas::currentButtonID = -1;
@@ -27,15 +29,36 @@ void GUIcanvas::update() {
 
 void GUIcanvas::interact() {
 	if (currentButtonID >= 0) {
-		if (!objects[currentButtonID]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
-			currentButtonID = -1;
-			
+		switch (ButtonState::type) {
+		case ButtonType::BUTTON_SEX:
+			if (!CURRENT_BUTTON_SEX->state && mouseButtonStates[0]) {
+				std::cout << "sex\n";
+				CURRENT_BUTTON_SEX->state = true;
+			}
+			if (!mouseButtonStates[0]) {
+				CURRENT_BUTTON_SEX->state = false;
+				currentButtonID = -1;
+				ButtonState::type = ButtonType::EMPTY;
+			}
+			break;
+		case ButtonType::BUTTON:
+			if (!CURRENT_BUTTON->state && mouseButtonStates[0]) {
+				std::cout << "button\n";
+				CURRENT_BUTTON->state = true;
+			}
+			if (!mouseButtonStates[0]) {
+				CURRENT_BUTTON->state = false;
+				currentButtonID = -1;
+				ButtonState::type = ButtonType::EMPTY;
+			}
+			break;
 		}
 	}
 	else
 	for (int i = 0; i < objects.size(); i++) {
-		if (objects[i]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
+		if (objects[i]->checkCollision((float)mousePositionX, (float)mousePositionY)) {
 			currentButtonID = i;
+			ButtonState::type = objects[i]->getType();
 		}
 	}
 }

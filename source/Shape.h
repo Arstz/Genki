@@ -1,5 +1,7 @@
 #pragma once
 #include "ByteArray.h"
+#include <tuple>
+#include <limits>
 typedef unsigned int uint;
 
 class Shape {
@@ -45,6 +47,7 @@ public:
 
 	uint* getVertexIDsPointer();
 
+	std::tuple<float, float, float, float> getBounds();
 	float* getAlphaChannelPointer();
 	float* getPositionXpointer();
 	float* getPositionYpointer();
