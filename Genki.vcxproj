@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="resources\level.txt" />
+    <Text Include="src.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Animation.cpp" />

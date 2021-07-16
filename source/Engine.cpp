@@ -50,7 +50,7 @@ void Engine::init() {
 
 	ShapeController::setWindow(window);
 	ShapeController::initShader();
-	levelShapeController = new ShapeController();
+//	levelShapeController = new ShapeController();
 	GUIcanvas::init();
 
 	start = std::chrono::system_clock::now();
@@ -61,11 +61,11 @@ void Engine::init() {
 
 	EventController::currentTime = &currentTime;
 
-	LevelEvent::setShapeGroupsSize(10);
-	LevelEvent::setShapeController(levelShapeController);
-	EventController::loadLevel("a");
+//	LevelEvent::setShapeGroupsSize(10);
+//	LevelEvent::setShapeController(levelShapeController);
+//	EventController::loadLevel("a");
 
-//	EventController::saveLevel("a", EventController::level);
+	EventController::saveLevel("a", EventController::level);
 
 	float vertexCoords[] = {0.f, 0.f, 0.f, 10.f, 10.f, 0.f, 10.f, 10.f};
 	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
@@ -88,14 +88,14 @@ void Engine::update() {
 	auto end = std::chrono::system_clock::now();
 	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	EventController::update();
+//	EventController::update();
 	AnimationController::update();
 	GUIcanvas::update();
 }
 
 void Engine::render() {
 	Window::clear();
-	levelShapeController->draw();
+//	levelShapeController->draw();
 	GUIcanvas::draw();
 	glfwSwapBuffers(window);
 }

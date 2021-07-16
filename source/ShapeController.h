@@ -68,8 +68,8 @@ public:
 	);
 
 	ShapeController();
-	ShapeController& operator=(const ShapeController& shapeController);
-	ShapeController(const ShapeController& shapeController);
+//	ShapeController& operator=(const ShapeController& shapeController);
+//	ShapeController(const ShapeController& shapeController);
 	~ShapeController();
 };
 

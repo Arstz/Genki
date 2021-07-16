@@ -48,23 +48,6 @@ public:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class CheckBox : public GUIinteractiveObject {
 public:
 	bool* state;

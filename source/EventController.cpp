@@ -111,10 +111,10 @@ void EventController::saveLevel(std::string path, std::vector<LevelEvent*>& leve
 	unsigned int byteLevelSize = 0;
 
 	for (unsigned int i = 0; i < size; i++) {
-		LevelEventType type = level[i]->getType();
-		float initTime = level[i]->getInitTime();
-		ByteArray tempArray = level[i]->getByteArray();
-		unsigned int blockSize = tempArray.getSize();
+		LevelEventType type		= level[i]->getType();
+		float initTime			= level[i]->getInitTime();
+		ByteArray tempArray		= level[i]->getByteArray();
+		unsigned int blockSize	= tempArray.getSize();
 		byteLevel[i] = ByteArray(tempArray.getSize() + sizeof(type) + sizeof(initTime) + sizeof(blockSize));
 
 		unsigned int offset = 0;

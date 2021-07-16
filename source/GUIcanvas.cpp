@@ -1,5 +1,10 @@
 #include "GUIcanvas.h"
 #include <iostream>
+#include "crtdbg.h"
+#include "..\include\CRTDBG\mydbgnew.h"
+#ifdef _DEBUG
+#define new MYDEBUG_NEW
+#endif
 
 bool GUIcanvas::mouseButtonStates[] = {false, false, false};
 double GUIcanvas::mousePositionX = 0;

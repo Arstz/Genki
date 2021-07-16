@@ -24,6 +24,9 @@
     <Text Include="resources\level.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="src.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\LevelEvent\BackgroundColorAnimationEvent.cpp">

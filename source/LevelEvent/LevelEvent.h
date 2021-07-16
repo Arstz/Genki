@@ -188,10 +188,10 @@ class ShapeGroupAnimationEvent : public LevelEvent {
 public:
 
 	static ShapeGroupAnimationEvent* create(
-		Animation animation,
-		AnimatedValueType animatedValueType,
-		int shapeGroupID,
-		float initTime
+		Animation			animation,
+		AnimatedValueType	animatedValueType,
+		int					shapeGroupID,
+		float				initTime
 	);
 	static ShapeGroupAnimationEvent* create(
 		ByteArray* byteArray,
@@ -224,9 +224,9 @@ public:
 
 
 class ShapeGroupSpawnEvent : public LevelEvent {
-	ShapeGroup shapeGroup;
-	int shapeGroupID;
-	int targetShapeGroupID;
+	ShapeGroup	shapeGroup;
+	int			shapeGroupID;
+	int			targetShapeGroupID;
 
 	ShapeGroupSpawnEvent(
 		ShapeGroup shapeGroup,
