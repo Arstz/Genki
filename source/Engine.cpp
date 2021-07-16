@@ -65,16 +65,21 @@ void Engine::init() {
 //	LevelEvent::setShapeController(levelShapeController);
 //	EventController::loadLevel("a");
 
-	EventController::saveLevel("a", EventController::level);
+//	EventController::saveLevel("a", EventController::level);
 
 	float vertexCoords[] = {0.f, 0.f, 0.f, 10.f, 10.f, 0.f, 10.f, 10.f};
+	float vertexCoords1[] = { 0.f, 0.f, 0.f, -10.f, -10.f, 0.f, -10.f, -10.f };
 	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
 	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
 	Shape shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
+	Shape shape1(4, vertexCoords1, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
 	ShapeGroup ass(shape);
+	ShapeGroup ass1(shape1);
 
-	ButtonSex* buttonSex = new ButtonSex(0.f, 0.f, ass, -2000.f, 1000.f, -2000.f, 1000.f);
+	Button* button = new Button(ass1);
+	ButtonSex* buttonSex = new ButtonSex(ass);
 	GUIcanvas::addGUIobject(buttonSex);
+	GUIcanvas::addGUIobject(button);
 
 }
 
