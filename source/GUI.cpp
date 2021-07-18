@@ -34,14 +34,41 @@ GUIinteractiveObject::GUIinteractiveObject(
 	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
 	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
 
-	this->LeftBorderX = Window::getWidth() / 2 + (positionX + minX) / 10 * Window::getHeight() / 2;
-	this->RightBorderX = Window::getWidth() / 2 + (positionX + maxX) / 10 * Window::getHeight() / 2;
-	this->UpBorderY = Window::getHeight() / 2 - (positionY + maxY) / 10 * Window::getHeight() / 2;
-	this->BottomBorderY = Window::getHeight() / 2 - (positionY + minY) / 10 * Window::getHeight() / 2;
+	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
+	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
+
+	this->LeftBorderX = bordersX.x;
+	this->RightBorderX = bordersY.x;
+	this->UpBorderY = bordersX.y;
+	this->BottomBorderY = bordersY.y;
 }
 
-bool GUIinteractiveObject::checkCollision(float x, float y){
-	//std::cout << x <<'\t' << y << std::endl;
+//GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController) {
+//	Shape* shapes = shapeGroup.getShapesPointer();
+//	if (shapes == nullptr) {
+//		throw std::exception("Failed to find shape inside shapegroup");
+//	}
+//	if (shapes[0].getVertexCount() != 4) {
+//		throw std::exception("Shape is not a tetragon");
+//	}
+//
+//	float minX, minY, maxX, maxY;
+//	std::tie(minX, minY, maxX, maxY) = shapes[0].getBounds();
+//
+//	float* coords = shapes[0].getVertexCoordsPointer();
+//	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
+//	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
+//
+//	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
+//	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
+//
+//	this->LeftBorderX = bordersX.x;
+//	this->RightBorderX = bordersY.x;
+//	this->UpBorderY = bordersX.y;
+//	this->BottomBorderY = bordersY.y;
+//}
+
+bool GUIinteractiveObject::checkCollision(float x, float y) {
 	return x < RightBorderX && x > LeftBorderX && y > UpBorderY && y < BottomBorderY;
 }
 
@@ -63,8 +90,14 @@ bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 	return true;
 }
 
-ButtonSex::ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
+ButtonSex::ButtonSex(Vector2f position,	Vector2f size, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
+	float vertexCoords[] = { 0.f, 0.f, 0.f, size.y, size.x, 0.f, size.x, size.y };
+	float vertexColors[] = { 1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
+	uint vertexIDs[] = { 0, 1, 2, 1, 2, 3 };
+
+	Shape shape[] = { Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, 0.f, 0.f, 0) };	
+	ShapeGroup shapeGroup (1, shape, 1.f, position.x, position.y, 0);
 }
 
 

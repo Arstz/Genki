@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Shape.h"
 #include "ShapeGroup.h"
+#include "Vector2f.h"
 #include <list>
 
 #define VERTEX_SIZE 6ul
@@ -67,8 +68,8 @@ public:
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
 
-	float pxToValue();
-	float valueToPx();
+	Vector2f pxToValue(Vector2f vector);
+	Vector2f valueToPx(Vector2f vector);
 
 	ShapeController();
 //	ShapeController& operator=(const ShapeController& shapeController);

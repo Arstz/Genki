@@ -7,6 +7,7 @@
 #include "Window.h"
 #include "ShapeController.h"
 #include "GUIcanvas.h"
+#include "Vector2f.h"
 #include "GUI.h"
 
 #include "crtdbg.h"
@@ -82,8 +83,8 @@ void Engine::init() {
 
 	ShapeGroup a(2, shps, 1, 0, 0, 1);
 
-	GUIcanvas::addSex(0, 0, 1, 3);
-	GUIcanvas::addSex(-10, -10, 5, 5);
+	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
+	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
 }
 
 void Engine::pollEvents() {

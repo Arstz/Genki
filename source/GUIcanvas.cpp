@@ -46,17 +46,10 @@ void GUIcanvas::draw() {
 }
 
 void GUIcanvas::addSex(
-	float positionX, 
-	float positionY,
-	float sizeX, 
-	float sizeY
+	Vector2f position,
+	Vector2f size
 ) {
-	float vertexCoords[] = {0.f, 0.f, 0.f, sizeY, sizeX, 0.f, sizeX, sizeY};
-	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
-	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
-	
-	Shape shape[] = {Shape (4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, 0.f, 0.f, 0)};
-	ButtonSex* buttonSex = new ButtonSex(ShapeGroup(1, shape, 1.f, positionX, positionY, 0), shapeController);
+	ButtonSex* buttonSex = new ButtonSex(position, size, shapeController);
 	objects.push_back(buttonSex);
 }
 

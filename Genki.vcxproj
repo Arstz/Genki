@@ -185,6 +185,7 @@
     <ClCompile Include="source\Shape.cpp" />
     <ClCompile Include="source\ShapeController.cpp" />
     <ClCompile Include="source\ShapeGroup.cpp" />
+    <ClCompile Include="source\Vector2f.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +202,7 @@
     <ClInclude Include="source\Shape.h" />
     <ClInclude Include="source\ShapeController.h" />
     <ClInclude Include="source\ShapeGroup.h" />
+    <ClInclude Include="source\Vector2f.h" />
     <ClInclude Include="source\Window.h" />
   </ItemGroup>
   <ItemGroup>

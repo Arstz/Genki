@@ -98,6 +98,9 @@
     <ClCompile Include="source\GUIcanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\Vector2f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AnimationController.h">
@@ -140,6 +143,9 @@
       <Filter>Source Files\headers</Filter>
     </ClInclude>
     <ClInclude Include="source\GUIcanvas.h">
+      <Filter>Source Files\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Vector2f.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
   </ItemGroup>

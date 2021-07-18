@@ -30,6 +30,10 @@ public:
 		ShapeGroup& shapeGroup,
 		ShapeController* shapeController
 	);
+	//GUIinteractiveObject(
+	//	ShapeGroup&& shapeGroup,
+	//	ShapeController* shapeController
+	//);
 	bool checkCollision(float x, float y);
 	virtual bool interact(bool mouseButtonStates[3], float x, float y) = 0;
 protected:
@@ -43,7 +47,7 @@ class ButtonSex : public GUIinteractiveObject {
 public:
 	bool state;
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
-	ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController);
+	ButtonSex(Vector2f position, Vector2f size, ShapeController* shapeController);
 };
 
 class Button : public GUIinteractiveObject {
@@ -58,14 +62,12 @@ public:
 };
 
 class Slider : public GUIinteractiveObject {
-public:
-	float minX;
-	float maxX;
-	float* x;
-	float minY;
-	float maxY;
+public:	
+	float* x; 
 	float* y;
-	Slider(ShapeGroup&& shapeGroup, ShapeController* shapeController);
+	Vector2f min;
+	Vector2f max;
+	Slider(ShapeGroup&& shapeGroup, ShapeController* shapeController); // ( & _ & ) 
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 

@@ -266,14 +266,19 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 	return otherShapeGroupIterator;
 }
 
-float ShapeController::pxToValue()
-{
-    return 0.0f;
+Vector2f ShapeController::pxToValue(Vector2f vector) {
+	return Vector2f(
+		(vector.x * 2 / Window::getWidth() - 1) / cameraDataBuffer[0],
+		(vector.y * 2 / Window::getHeight() + 1) / cameraDataBuffer[1]
+	);
 }
 
-float ShapeController::valueToPx()
+Vector2f ShapeController::valueToPx(Vector2f vector)
 {
-	return 0.0f;
+	return Vector2f(
+		Window::getWidth() / 2  * (1 + vector.x * cameraDataBuffer[0]),
+		Window::getHeight() / 2  * (1 - vector.y * cameraDataBuffer[1])
+	);
 }
 
 void ShapeController::setWindow(GLFWwindow* window) {

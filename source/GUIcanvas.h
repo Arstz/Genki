@@ -7,6 +7,7 @@
 #include "Window.h"
 #include <vector>
 #include "GUI.h"
+#include "Vector2f.h"
 #include "ShapeController.h"
 #include "AnimationController.h"
 
@@ -31,9 +32,7 @@ public:
 	static void update();
 	static void draw();
 	static void addSex(
-		float positionX,
-		float positionY,
-		float sizeX,
-		float sizeY
+		Vector2f position,
+		Vector2f size
 	);
 };
