@@ -60,7 +60,7 @@ ButtonType ButtonSex::getType()
 	return ButtonType::BUTTON_SEX;
 }
 
-ButtonSex::ButtonSex(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
+ButtonSex::ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 

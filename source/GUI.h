@@ -40,7 +40,7 @@ class ButtonSex : public GUIinteractiveObject {
 public:
 	bool state;
 	ButtonType getType() override;
-	ButtonSex(ShapeGroup& shapeGroup, ShapeController* shapeController);
+	ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController);
 };
 
 class Button : public GUIinteractiveObject {

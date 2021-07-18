@@ -91,8 +91,7 @@ void GUIcanvas::addSex(
 	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
 	
 	Shape shape[] = {Shape (4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, 0.f, 0.f, 0)};
-	ShapeGroup shapeGroup(ShapeGroup(1, shape, 1.f, positionX, positionY, 0));
-	ButtonSex* buttonSex = new ButtonSex(shapeGroup, shapeController);
+	ButtonSex* buttonSex = new ButtonSex(ShapeGroup(1, shape, 1.f, positionX, positionY, 0), shapeController);
 	objects.push_back(buttonSex);
 }
 
