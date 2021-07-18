@@ -2,14 +2,6 @@
 #include "ShapeGroup.h"
 #include "ShapeController.h"
 
-enum class ButtonType 
-{
-	EMPTY,
-	BUTTON_SEX,
-	BUTTON,
-	SLIDER
-};
-
 class GUIobject {
 protected:
 	std::list<ShapeGroup>::iterator shapeGroup;
@@ -21,14 +13,25 @@ public:
 };
 
 class GUIinteractiveObject : public GUIobject {
+	struct InteractionData {
+		bool lastMouseButtonStates[3];
+		bool lastMousePositionX;
+		bool lastMousePositionY;
+		bool lastCollisionCheckResult;
+		//slider
+		bool isActive;
+		void reset();
+
+	};
 public:	
+	static InteractionData interactionData;
 	GUIinteractiveObject() = delete;
 	GUIinteractiveObject(
 		ShapeGroup& shapeGroup,
 		ShapeController* shapeController
 	);
-	virtual ButtonType getType();
 	bool checkCollision(float x, float y);
+	virtual bool interact(bool mouseButtonStates[3], float x, float y) = 0;
 protected:
 	float LeftBorderX;
 	float RightBorderX;
@@ -39,14 +42,13 @@ protected:
 class ButtonSex : public GUIinteractiveObject {
 public:
 	bool state;
-	ButtonType getType() override;
+	bool interact(bool mouseButtonStates[3], float x, float y) override;
 	ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController);
 };
 
 class Button : public GUIinteractiveObject {
 public:
 	bool state;
-	ButtonType getType() override;
 	Button(ShapeGroup& shapeGroup, ShapeController* shapeController);
 };
 
@@ -57,10 +59,13 @@ public:
 
 class Slider : public GUIinteractiveObject {
 public:
-	bool state;
-	float* cursorPointerX;
-	float* cursorPointerY;
-	ButtonType getType() override;
-	Slider(ShapeGroup& shapeGroup, ShapeController* shapeController);
+	float minX;
+	float maxX;
+	float* x;
+	float minY;
+	float maxY;
+	float* y;
+	Slider(ShapeGroup&& shapeGroup, ShapeController* shapeController);
+	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 

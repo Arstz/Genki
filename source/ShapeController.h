@@ -67,6 +67,9 @@ public:
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
 
+	float pxToValue();
+	float valueToPx();
+
 	ShapeController();
 //	ShapeController& operator=(const ShapeController& shapeController);
 //	ShapeController(const ShapeController& shapeController);

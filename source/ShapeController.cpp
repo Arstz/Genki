@@ -266,6 +266,16 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 	return otherShapeGroupIterator;
 }
 
+float ShapeController::pxToValue()
+{
+    return 0.0f;
+}
+
+float ShapeController::valueToPx()
+{
+	return 0.0f;
+}
+
 void ShapeController::setWindow(GLFWwindow* window) {
 	ShapeController::window = window;
 }

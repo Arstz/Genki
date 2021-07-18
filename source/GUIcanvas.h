@@ -12,12 +12,6 @@
 
 class GUIcanvas {
 private:
-	class ButtonState {
-	public:
-		static ButtonType type;
-
-	};
-
 	static double mousePositionX;
 	static double mousePositionY;
 	static bool mouseButtonStates[3];

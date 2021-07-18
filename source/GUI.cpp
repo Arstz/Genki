@@ -40,47 +40,52 @@ GUIinteractiveObject::GUIinteractiveObject(
 	this->BottomBorderY = Window::getHeight() / 2 - (positionY + minY) / 10 * Window::getHeight() / 2;
 }
 
-ButtonType GUIinteractiveObject::getType() {
-	return ButtonType();
-}
-
 bool GUIinteractiveObject::checkCollision(float x, float y){
 	//std::cout << x <<'\t' << y << std::endl;
 	return x < RightBorderX && x > LeftBorderX && y > UpBorderY && y < BottomBorderY;
 }
 
 
-
 std::list<ShapeGroup>::iterator GUIobject::getShapeGroup() {
 	return shapeGroup;
 }
 
-ButtonType ButtonSex::getType()
-{
-	return ButtonType::BUTTON_SEX;
+bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
+	if (!state && checkCollision(x, y) && mouseButtonStates[0]) {
+		std::cout << "sex\n";
+		this->state = true;
+	}
+	if (!mouseButtonStates[0]) {
+		this->state = false;
+		return false;
+	}
+
+	return true;
 }
 
 ButtonSex::ButtonSex(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 
-ButtonType Button::getType()
-{
-	return ButtonType::BUTTON;
-}
 
 Button::Button(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 
-ButtonType Slider::getType()
-{
-	return ButtonType::SLIDER;
+Slider::Slider(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
+
 }
 
-Slider::Slider(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
-	this->state = false;
-	Shape* shapes = shapeGroup.getShapesPointer();
-	this->cursorPointerX = shapes[1].getPositionXpointer();
-	this->cursorPointerY = shapes[1].getPositionYpointer();
+bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
+	return false;
+}
+
+void GUIinteractiveObject::InteractionData::reset() {
+	lastMouseButtonStates[0] = false;
+	lastMouseButtonStates[1] = false;
+	lastMouseButtonStates[2] = false;
+	lastMousePositionX = 0;
+	lastMousePositionY = 0;
+	lastCollisionCheckResult = false;
+	isActive = false;
 }
