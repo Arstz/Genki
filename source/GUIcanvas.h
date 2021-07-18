@@ -8,6 +8,7 @@
 #include <vector>
 #include "GUI.h"
 #include "ShapeController.h"
+#include "AnimationController.h"
 
 class GUIcanvas {
 private:

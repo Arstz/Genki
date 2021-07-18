@@ -5,7 +5,8 @@ enum class ButtonType
 {
 	EMPTY,
 	BUTTON_SEX,
-	BUTTON
+	BUTTON,
+	SLIDER
 };
 
 class GUIobject {
@@ -19,7 +20,7 @@ public:
 
 class GUIinteractiveObject : public GUIobject {
 public:	
-	GUIinteractiveObject(ShapeGroup shapeGroup);
+	GUIinteractiveObject();
 	GUIinteractiveObject(
 		float positionX, 
 		float positionY, 
@@ -55,5 +56,14 @@ public:
 class CheckBox : public GUIinteractiveObject {
 public:
 	bool* state;
+};
+
+class Slider : public GUIinteractiveObject {
+public:
+	bool state;
+	float* cursorPointerX;
+	float* cursorPointerY;
+	ButtonType getType() override;
+	Slider(ShapeGroup shapeGroup);
 };
 

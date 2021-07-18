@@ -68,19 +68,23 @@ void Engine::init() {
 //	EventController::saveLevel("a", EventController::level);
 
 	float vertexCoords[] = {0.f, 0.f, 0.f, 10.f, 10.f, 0.f, 10.f, 10.f};
-	float vertexCoords1[] = { 0.f, 0.f, 0.f, -10.f, -10.f, 0.f, -10.f, -10.f };
+	float vertexCoords1[] = { 0.f, 0.f, 0.f, 2.f, 2.f, 0.f, 2.f, 2.f };
 	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
 	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
 	Shape shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
-	Shape shape1(4, vertexCoords1, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
+
 	ShapeGroup ass(shape);
-	ShapeGroup ass1(shape1);
 
-	Button* button = new Button(ass1);
-	ButtonSex* buttonSex = new ButtonSex(ass);
-	GUIcanvas::addGUIobject(buttonSex);
-	GUIcanvas::addGUIobject(button);
+	Shape shps[] = {
+		Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 0.5, 0, 0, 0),
+		Shape(4, vertexCoords1, vertexColors, 6, vertexIDs, 0.5, 0, 0, 0),
+	};
 
+	ShapeGroup a(2, shps, 1, 0, 0, 1);
+
+	Slider* slider = new Slider(a);
+	//Button* button = new Button(a);
+	GUIcanvas::addGUIobject(slider);
 }
 
 void Engine::pollEvents() {

@@ -8,8 +8,9 @@
 #define new MYDEBUG_NEW
 #endif
 
-GUIinteractiveObject::GUIinteractiveObject(ShapeGroup shapeGroup) : GUIobject(shapeGroup)
+GUIinteractiveObject::GUIinteractiveObject() : GUIobject(shapeGroup)
 {
+	this->shapeGroup = ShapeGroup();
 	Shape* shapes = shapeGroup.getShapesPointer();	
 	if (shapes == nullptr) {
 		throw std::exception("Failed to find shape inside shapegroup");
@@ -44,7 +45,6 @@ GUIinteractiveObject::GUIinteractiveObject(
 	this->RightBorderX	= RightBorderX;
 	this->UpBorderY		= UpBorderY;
 	this->BottomBorderY	= BottomBorderY;
-
 }
 
 ButtonType GUIinteractiveObject::getType()
@@ -72,7 +72,7 @@ ButtonType ButtonSex::getType()
 	return ButtonType::BUTTON_SEX;
 }
 
-ButtonSex::ButtonSex(ShapeGroup shapeGroup) : GUIinteractiveObject(shapeGroup) {
+ButtonSex::ButtonSex(ShapeGroup shapeGroup) : GUIinteractiveObject() {
 	this->state = false;
 }
 
@@ -81,6 +81,18 @@ ButtonType Button::getType()
 	return ButtonType::BUTTON;
 }
 
-Button::Button(ShapeGroup shapeGroup) : GUIinteractiveObject(shapeGroup) {
+Button::Button(ShapeGroup shapeGroup) : GUIinteractiveObject() {
 	this->state = false;
+}
+
+ButtonType Slider::getType()
+{
+	return ButtonType::SLIDER;
+}
+
+Slider::Slider(ShapeGroup shapeGroup) : GUIinteractiveObject() {
+	this->state = false;
+	Shape* shapes = shapeGroup.getShapesPointer();
+	this->cursorPointerX = shapes[1].getPositionXpointer();
+	this->cursorPointerY = shapes[1].getPositionYpointer();
 }

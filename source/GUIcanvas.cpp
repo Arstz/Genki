@@ -4,6 +4,7 @@
 #include "..\include\CRTDBG\mydbgnew.h"
 #define CURRENT_BUTTON_SEX ((ButtonSex*)&objects[currentButtonID])
 #define CURRENT_BUTTON ((Button*)&objects[currentButtonID])
+#define CURRENT_SLIDER ((Slider*)&objects[currentButtonID])
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif
@@ -53,6 +54,17 @@ void GUIcanvas::interact() {
 				ButtonState::type = ButtonType::EMPTY;
 			}
 			break;
+		case ButtonType::SLIDER:
+			if (!CURRENT_SLIDER->state && mouseButtonStates[0]) {
+				CURRENT_SLIDER->state = true;
+				std::cout << CURRENT_SLIDER->cursorPointerX << '\n';
+				*(CURRENT_SLIDER->cursorPointerX) += 1;
+			}
+			if (!mouseButtonStates[0]) {
+				CURRENT_SLIDER->state = false;
+				currentButtonID = -1;
+				ButtonState::type = ButtonType::EMPTY;				
+			}
 		}
 	}
 	else
