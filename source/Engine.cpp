@@ -82,9 +82,8 @@ void Engine::init() {
 
 	ShapeGroup a(2, shps, 1, 0, 0, 1);
 
-	Slider* slider = new Slider(a);
-	//Button* button = new Button(a);
-	GUIcanvas::addGUIobject(slider);
+	GUIcanvas::addSex(0, 0, 1, 3);
+	GUIcanvas::addSex(-10, -10, 5, 5);
 }
 
 void Engine::pollEvents() {

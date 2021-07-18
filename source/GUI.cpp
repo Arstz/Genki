@@ -8,10 +8,18 @@
 #define new MYDEBUG_NEW
 #endif
 
-GUIinteractiveObject::GUIinteractiveObject() : GUIobject(shapeGroup)
-{
-	this->shapeGroup = ShapeGroup();
-	Shape* shapes = shapeGroup.getShapesPointer();	
+GUIobject::~GUIobject() {}
+
+GUIobject::GUIobject(const ShapeGroup& shapeGroup, ShapeController* shapeController) {
+	this->shapeGroup = shapeController->addShapeGroup(shapeGroup);
+}
+
+GUIinteractiveObject::GUIinteractiveObject(
+	ShapeGroup& shapeGroup,
+	ShapeController* shapeController
+
+) : GUIobject(shapeGroup, shapeController) {
+	Shape* shapes = shapeGroup.getShapesPointer();
 	if (shapes == nullptr) {
 		throw std::exception("Failed to find shape inside shapegroup");
 	}
@@ -32,23 +40,7 @@ GUIinteractiveObject::GUIinteractiveObject() : GUIobject(shapeGroup)
 	this->BottomBorderY = Window::getHeight() / 2 - (positionY + minY) / 10 * Window::getHeight() / 2;
 }
 
-GUIinteractiveObject::GUIinteractiveObject(
-	float positionX,
-	float positionY,
-	ShapeGroup shapeGroup,
-	float LeftBorderX,
-	float RightBorderX,
-	float UpBorderY,
-	float BottomBorderY
-) : GUIobject(shapeGroup) {
-	this->LeftBorderX	= LeftBorderX;
-	this->RightBorderX	= RightBorderX;
-	this->UpBorderY		= UpBorderY;
-	this->BottomBorderY	= BottomBorderY;
-}
-
-ButtonType GUIinteractiveObject::getType()
-{
+ButtonType GUIinteractiveObject::getType() {
 	return ButtonType();
 }
 
@@ -57,13 +49,9 @@ bool GUIinteractiveObject::checkCollision(float x, float y){
 	return x < RightBorderX && x > LeftBorderX && y > UpBorderY && y < BottomBorderY;
 }
 
-GUIobject::~GUIobject() {}
 
-GUIobject::GUIobject(ShapeGroup shapeGroup) {
-	this->shapeGroup = shapeGroup;
-}
 
-ShapeGroup GUIobject::getShapeGroup() {
+std::list<ShapeGroup>::iterator GUIobject::getShapeGroup() {
 	return shapeGroup;
 }
 
@@ -72,7 +60,7 @@ ButtonType ButtonSex::getType()
 	return ButtonType::BUTTON_SEX;
 }
 
-ButtonSex::ButtonSex(ShapeGroup shapeGroup) : GUIinteractiveObject() {
+ButtonSex::ButtonSex(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 
@@ -81,7 +69,7 @@ ButtonType Button::getType()
 	return ButtonType::BUTTON;
 }
 
-Button::Button(ShapeGroup shapeGroup) : GUIinteractiveObject() {
+Button::Button(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 
@@ -90,7 +78,7 @@ ButtonType Slider::getType()
 	return ButtonType::SLIDER;
 }
 
-Slider::Slider(ShapeGroup shapeGroup) : GUIinteractiveObject() {
+Slider::Slider(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 	Shape* shapes = shapeGroup.getShapesPointer();
 	this->cursorPointerX = shapes[1].getPositionXpointer();

@@ -1,5 +1,6 @@
 #pragma once
 #include "ShapeGroup.h"
+#include "ShapeController.h"
 
 enum class ButtonType 
 {
@@ -11,24 +12,20 @@ enum class ButtonType
 
 class GUIobject {
 protected:
-	ShapeGroup shapeGroup;
+	std::list<ShapeGroup>::iterator shapeGroup;
 	virtual ~GUIobject();
-	GUIobject(ShapeGroup shapeGroup);
+	GUIobject() = delete;
+	GUIobject(const ShapeGroup& shapeGroup, ShapeController* shapeController);
 public:
-	ShapeGroup getShapeGroup();
+	std::list<ShapeGroup>::iterator getShapeGroup();
 };
 
 class GUIinteractiveObject : public GUIobject {
 public:	
-	GUIinteractiveObject();
+	GUIinteractiveObject() = delete;
 	GUIinteractiveObject(
-		float positionX, 
-		float positionY, 
-		ShapeGroup shapeGroup,
-		float LeftBorderX,
-		float RightBorderX,
-		float UpBorderY,
-		float BottomBorderY
+		ShapeGroup& shapeGroup,
+		ShapeController* shapeController
 	);
 	virtual ButtonType getType();
 	bool checkCollision(float x, float y);
@@ -43,14 +40,14 @@ class ButtonSex : public GUIinteractiveObject {
 public:
 	bool state;
 	ButtonType getType() override;
-	ButtonSex(ShapeGroup shapeGroup);
+	ButtonSex(ShapeGroup& shapeGroup, ShapeController* shapeController);
 };
 
 class Button : public GUIinteractiveObject {
 public:
 	bool state;
 	ButtonType getType() override;
-	Button(ShapeGroup shapeGroup);
+	Button(ShapeGroup& shapeGroup, ShapeController* shapeController);
 };
 
 class CheckBox : public GUIinteractiveObject {
@@ -64,6 +61,6 @@ public:
 	float* cursorPointerX;
 	float* cursorPointerY;
 	ButtonType getType() override;
-	Slider(ShapeGroup shapeGroup);
+	Slider(ShapeGroup& shapeGroup, ShapeController* shapeController);
 };
 

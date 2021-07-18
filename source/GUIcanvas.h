@@ -36,5 +36,10 @@ public:
 	static void init();
 	static void update();
 	static void draw();
-	static void addGUIobject(GUIinteractiveObject* object);
+	static void addSex(
+		float positionX,
+		float positionY,
+		float sizeX,
+		float sizeY
+	);
 };
