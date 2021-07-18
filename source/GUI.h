@@ -30,10 +30,10 @@ public:
 		ShapeGroup& shapeGroup,
 		ShapeController* shapeController
 	);
-	//GUIinteractiveObject(
-	//	ShapeGroup&& shapeGroup,
-	//	ShapeController* shapeController
-	//);
+	GUIinteractiveObject(
+		ShapeGroup&& shapeGroup,
+		ShapeController* shapeController
+	);
 	bool checkCollision(float x, float y);
 	virtual bool interact(bool mouseButtonStates[3], float x, float y) = 0;
 protected:

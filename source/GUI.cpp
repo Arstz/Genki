@@ -4,6 +4,7 @@
 #include <iostream>
 #include "GUI.h"
 #include "Window.h"
+#include <initializer_list>
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif
@@ -43,30 +44,30 @@ GUIinteractiveObject::GUIinteractiveObject(
 	this->BottomBorderY = bordersY.y;
 }
 
-//GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController) {
-//	Shape* shapes = shapeGroup.getShapesPointer();
-//	if (shapes == nullptr) {
-//		throw std::exception("Failed to find shape inside shapegroup");
-//	}
-//	if (shapes[0].getVertexCount() != 4) {
-//		throw std::exception("Shape is not a tetragon");
-//	}
-//
-//	float minX, minY, maxX, maxY;
-//	std::tie(minX, minY, maxX, maxY) = shapes[0].getBounds();
-//
-//	float* coords = shapes[0].getVertexCoordsPointer();
-//	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
-//	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
-//
-//	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
-//	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
-//
-//	this->LeftBorderX = bordersX.x;
-//	this->RightBorderX = bordersY.x;
-//	this->UpBorderY = bordersX.y;
-//	this->BottomBorderY = bordersY.y;
-//}
+GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController) {
+	Shape* shapes = shapeGroup.getShapesPointer();
+	if (shapes == nullptr) {
+		throw std::exception("Failed to find shape inside shapegroup");
+	}
+	if (shapes[0].getVertexCount() != 4) {
+		throw std::exception("Shape is not a tetragon");
+	}
+
+	float minX, minY, maxX, maxY;
+	std::tie(minX, minY, maxX, maxY) = shapes[0].getBounds();
+
+	float* coords = shapes[0].getVertexCoordsPointer();
+	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
+	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
+
+	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
+	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
+
+	this->LeftBorderX = bordersX.x;
+	this->RightBorderX = bordersY.x;
+	this->UpBorderY = bordersX.y;
+	this->BottomBorderY = bordersY.y;
+}
 
 bool GUIinteractiveObject::checkCollision(float x, float y) {
 	return x < RightBorderX && x > LeftBorderX && y > UpBorderY && y < BottomBorderY;
@@ -90,14 +91,20 @@ bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 	return true;
 }
 
-ButtonSex::ButtonSex(Vector2f position,	Vector2f size, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
+ButtonSex::ButtonSex(Vector2f position,	Vector2f size, ShapeController* shapeController) : GUIinteractiveObject(
+	ShapeGroup(1, (Shape*)std::begin(std::initializer_list<Shape> {Shape(4,
+		(float*)std::begin(std::initializer_list<float> { 0.f, 0.f, 0.f, size.y, size.x, 0.f, size.x, size.y }),
+		(float*)std::begin(std::initializer_list<float> { 1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f}),
+		6,
+		(uint*)std::begin(std::initializer_list<uint> { 0, 1, 2, 1, 2, 3 })
+		,1.f,
+		0.f,
+		0.f, 
+		0.f )}),
+		1.f, position.x, position.y, 0),
+	shapeController
+) {
 	this->state = false;
-	float vertexCoords[] = { 0.f, 0.f, 0.f, size.y, size.x, 0.f, size.x, size.y };
-	float vertexColors[] = { 1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f };
-	uint vertexIDs[] = { 0, 1, 2, 1, 2, 3 };
-
-	Shape shape[] = { Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, 0.f, 0.f, 0) };	
-	ShapeGroup shapeGroup (1, shape, 1.f, position.x, position.y, 0);
 }
 
 
