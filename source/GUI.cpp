@@ -62,21 +62,9 @@ GUIinteractiveObject::GUIinteractiveObject(
 	if (shapes[0].getVertexCount() != 4) {
 		throw std::exception("Shape is not a tetragon");
 	}
+	
+	setBorders(0);
 
-	float minX, minY, maxX, maxY;
-	std::tie(minX, minY, maxX, maxY) = shapes[0].getBounds();
-
-	float* coords = shapes[0].getVertexCoordsPointer();
-	float positionX = *shapes[0].getPositionXpointer() + *shapeGroup.getPositionXpointer();
-	float positionY = *shapes[0].getPositionYpointer() + *shapeGroup.getPositionYpointer();
-
-	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
-	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
-
-	this->LeftBorderX = bordersX.x;
-	this->RightBorderX = bordersY.x;
-	this->UpBorderY = bordersX.y;
-	this->BottomBorderY = bordersY.y;
 }
 
 GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController) {
@@ -163,17 +151,17 @@ Slider::Slider(
 	Vector2f max,
 	ShapeController* shapeController
 ) : GUIinteractiveObject(
-	ShapeGroup(
+	std::move(ShapeGroup(
 		2,
 		(Shape*)std::begin(std::initializer_list<Shape> {
-			Shape::makeRectangle(Vector2f(0, 0), size, Vector2f(0, 0), Color(0.5, 0.5, 0.5, 1.f), 0),
-			Shape::makeRectangle(Vector2f(-1, -1), Vector2f(1, 1), Vector2f(1, 1), Color(0, 0, 0, 1), 1)
+			std::move(Shape::makeRectangle(Vector2f(0, 0), size, Vector2f(0, 0), Color(0.5, 0.5, 0.5, 1.f), 0)),
+			std::move(Shape::makeRectangle(Vector2f(-1, -1), Vector2f(1, 1), Vector2f(1, 1), Color(0, 0, 0, 1), 1))
 		}),
 		1.f,
 		position.x,
 		position.y,
 		0
-	),
+	)),
 	shapeController) {
 	cursor = GUIinteractiveObject(shapeGroup, shapeController);
 	this->x = x;
@@ -190,10 +178,11 @@ bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
 			*shapeGroup->getShapesPointer()[1].getPositionYpointer() = pos.y - *shapeGroup->getPositionYpointer();
 			
 		} else {
-			cursor.setBorders(1);
-			if (checkCollision(x, y))
+			
+			if (checkCollision(x, y)) {
 				interactionData.isActive = false;
-			else return false;
+				cursor.setBorders(1);
+			} else return false;
 		}
 	}
 	else {
