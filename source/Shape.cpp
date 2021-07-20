@@ -93,6 +93,15 @@ Shape Shape::makeRectangle(
 	return Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, pos.x, pos.y, layer);
 }
 
+void Shape::setColor(Color color) {
+	for (int i = 0; i < vertexCount; i++) {
+		vertexColors[i * 4 + 0] = color.r;
+		vertexColors[i * 4 + 1] = color.g;
+		vertexColors[i * 4 + 2] = color.b;
+		vertexColors[i * 4 + 3] = color.a;
+	}
+}
+
 ByteArray Shape::getByteArray() {
 	ByteArray byteArray(
 		sizeof(vertexCount) +

@@ -49,6 +49,8 @@ public:
 		int layer = 0
 	);
 
+	void setColor(Color color);
+
 	uint getVertexCount() const;
 	uint getEBOsize() const;
 

@@ -266,18 +266,32 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 	return otherShapeGroupIterator;
 }
 
-Vector2f ShapeController::pxToValue(Vector2f vector) {
+Vector2f ShapeController::screenCoordsToEngineCoords(Vector2f vector) {
 	return Vector2f(
 		(vector.x * 2 / Window::getWidth() - 1) / cameraDataBuffer[0],
 		-(vector.y * 2 / Window::getHeight() - 1) / cameraDataBuffer[1]
 	);
 }
 
-Vector2f ShapeController::valueToPx(Vector2f vector)
+Vector2f ShapeController::engineCoordsToScreenCoords(Vector2f vector)
 {
 	return Vector2f(
 		Window::getWidth() / 2  * (1 + vector.x * cameraDataBuffer[0]),
 		Window::getHeight() / 2  * (1 - vector.y * cameraDataBuffer[1])
+	);
+}
+
+Vector2f ShapeController::pxToValue(Vector2f px) {
+	return Vector2f(
+		px.x * 2 / Window::getWidth() / cameraDataBuffer[0],
+		px.y * 2 / Window::getHeight() / cameraDataBuffer[1]
+	);
+}
+ 
+Vector2f ShapeController::valueToPx(Vector2f value) {
+	return Vector2f(
+		Window::getWidth() / 2 * value.x * cameraDataBuffer[0],
+		Window::getHeight() / 2 * value.y * cameraDataBuffer[1]
 	);
 }
 

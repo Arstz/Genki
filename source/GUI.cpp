@@ -33,8 +33,8 @@ void GUIinteractiveObject::setBorders(int shapeID) {
 	float positionX = *shape->getPositionXpointer() + *shapeGroup->getPositionXpointer();
 	float positionY = *shape->getPositionYpointer() + *shapeGroup->getPositionYpointer();
 
-	Vector2f bordersX(shapeController->valueToPx(Vector2f(positionX + minX, positionY + maxY)));
-	Vector2f bordersY(shapeController->valueToPx(Vector2f(positionX + maxX, positionY + minY)));
+	Vector2f bordersX(shapeController->engineCoordsToScreenCoords(Vector2f(positionX + minX, positionY + maxY)));
+	Vector2f bordersY(shapeController->engineCoordsToScreenCoords(Vector2f(positionX + maxX, positionY + minY)));
 
 	this->LeftBorderX = bordersX.x;
 	this->RightBorderX = bordersY.x;
@@ -145,17 +145,18 @@ Button::Button(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIin
 Slider::Slider(
 	Vector2f position,
 	Vector2f size,
-	float* x,
-	float* y,
+	float* valueX,
+	float* valueY,
 	Vector2f min,
 	Vector2f max,
-	ShapeController* shapeController
-) : GUIinteractiveObject(
+	ShapeController* shapeController,
+	float cursorSize
+) : GUIinteractiveObject(	
 	std::move(ShapeGroup(
 		2,
 		(Shape*)std::begin(std::initializer_list<Shape> {
 			std::move(Shape::makeRectangle(Vector2f(0, 0), size, Vector2f(0, 0), Color(0.5, 0.5, 0.5, 1.f), 0)),
-			std::move(Shape::makeRectangle(Vector2f(-1, -1), Vector2f(1, 1), Vector2f(1, 1), Color(0, 0, 0, 1), 1))
+			std::move(Shape::makeRectangle(Vector2f(-cursorSize, -cursorSize), Vector2f(cursorSize, cursorSize), Vector2f(cursorSize, cursorSize), Color(0, 0, 0, 1), 1))
 		}),
 		1.f,
 		position.x,
@@ -164,33 +165,53 @@ Slider::Slider(
 	)),
 	shapeController) {
 	cursor = GUIinteractiveObject(shapeGroup, shapeController);
-	this->x = x;
-	this->y = y;
+	this->size = size;
+	this->valueX = valueX;
+	this->valueY = valueY;
 	this->min = min;
 	this->max = max;
+	this->cursorSize = cursorSize;
+	this->position = position;
 }
 
 bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
-	if (interactionData.isActive) {
+	if (interactionData.isActive) { //If in last frame cursor was active
 		if (mouseButtonStates[0]) {
-			Vector2f pos(shapeController->pxToValue(Vector2f(x, y)));
+			Vector2f pos(x, y);
+			Vector2f cursorSizePx(shapeController->valueToPx(Vector2f(cursorSize, cursorSize)));
+			pos.x = std::max(pos.x, LeftBorderX + cursorSizePx.x); //aaaa
+			pos.x = std::min(pos.x, RightBorderX - cursorSizePx.x);
+			pos.y = std::min(pos.y, BottomBorderY - cursorSizePx.y);
+			pos.y = std::max(pos.y, UpBorderY + cursorSizePx.y);
+
+			pos = shapeController->screenCoordsToEngineCoords(pos);
+
 			*shapeGroup->getShapesPointer()[1].getPositionXpointer() = pos.x - *shapeGroup->getPositionXpointer();
 			*shapeGroup->getShapesPointer()[1].getPositionYpointer() = pos.y - *shapeGroup->getPositionYpointer();
-			
-		} else {
-			
+
+			*valueX = (pos.x - position.x - cursorSize) / (size.x - 2 * cursorSize) * (max.x - min.x) + min.x;
+			*valueY = (pos.y - position.y - cursorSize) / (size.y - 2 * cursorSize) * (max.y - min.y) + min.y;
+
+			std::cout << *valueX << '\t' << *valueY << '\n';
+		} else {			
 			if (checkCollision(x, y)) {
-				interactionData.isActive = false;
+				interactionData.isActive = false;	
+				shapeGroup->getShapesPointer()[1].setColor(Color(0, 0, 0, 1));
 				cursor.setBorders(1);
 			} else return false;
 		}
 	}
 	else {
 		if (checkCollision(x, y)) {
-			if (mouseButtonStates[0])
-			interactionData.isActive = true;
+			if (mouseButtonStates[0]) {
+				interactionData.isActive = true;
+				shapeGroup->getShapesPointer()[1].setColor(Color(0, 0.5, 1, 1));
+			}
 		}
-		else return false;
+		else {
+			shapeGroup->getShapesPointer()[1].setColor(Color(0, 0, 0, 1));
+			return false; //If mouse cursor leaves padding area
+		}
 	}
 	return true;
 }

@@ -38,7 +38,7 @@ public:
 		ShapeController* shapeController
 	);
 	GUIinteractiveObject(
-		ShapeGroup&& shapeGroup,
+		ShapeGroup&& shapeGroup, // ( & _ & )
 		ShapeController* shapeController
 	);
 	GUIinteractiveObject(
@@ -74,23 +74,27 @@ public:
 
 class Slider : public GUIinteractiveObject {
 protected:
-	float* x; 
-	float* y;
+	float* valueX; 
+	float* valueY;
+	float cursorSize;
 	Vector2f min;
 	Vector2f max;
+	Vector2f position;
+	Vector2f size;
 	Color activeColor;
 	Color passiveColor;
 	GUIinteractiveObject cursor;
 public:
 	Slider(
-		Vector2f position, 
-		Vector2f size, 
-		float* x, 
+		Vector2f position,
+		Vector2f size,
+		float* x,
 		float* y,
 		Vector2f min,
 		Vector2f max,
-		ShapeController* shapeController
-	); // ( & _ & ) 
+		ShapeController* shapeController,
+		float cursorSize = 0.25
+	);  
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 

@@ -68,8 +68,11 @@ public:
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
 
-	Vector2f pxToValue(Vector2f vector);
-	Vector2f valueToPx(Vector2f vector);
+	Vector2f screenCoordsToEngineCoords(Vector2f vector);
+	Vector2f engineCoordsToScreenCoords(Vector2f vector);
+
+	Vector2f pxToValue(Vector2f px);
+	Vector2f valueToPx(Vector2f value);
 
 	ShapeController();
 //	ShapeController& operator=(const ShapeController& shapeController);
