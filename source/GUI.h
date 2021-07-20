@@ -39,11 +39,13 @@ public:
 	);
 	GUIinteractiveObject(
 		ShapeGroup&& shapeGroup, // ( & _ & )
-		ShapeController* shapeController
+		ShapeController* shapeController, 
+		int shapeID
 	);
 	GUIinteractiveObject(
 		std::list<ShapeGroup>::iterator shapeGroup,
-		ShapeController* shapeController
+		ShapeController* shapeController, 
+		int shapeID
 	);
 	bool checkCollision(float x, float y);
 	virtual bool interact(bool mouseButtonStates[3], float x, float y);
@@ -93,7 +95,7 @@ public:
 		Vector2f min,
 		Vector2f max,
 		ShapeController* shapeController,
-		float cursorSize = 0.25
+		float cursorSize = 0.5
 	);  
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };

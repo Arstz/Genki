@@ -67,27 +67,20 @@ GUIinteractiveObject::GUIinteractiveObject(
 
 }
 
-GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController) {
+GUIinteractiveObject::GUIinteractiveObject(ShapeGroup&& shapeGroup, ShapeController* shapeController, int shapeID) : GUIobject(shapeGroup, shapeController) {
 	Shape* shapes = shapeGroup.getShapesPointer();
 	if (shapes == nullptr) {
 		throw std::exception("Failed to find shape inside shapegroup");
 	}
-	if (shapes[0].getVertexCount() != 4) {
-		throw std::exception("Shape is not a tetragon");
-	}
-
-	setBorders(0);
+	setBorders(shapeID);
 }
 
-GUIinteractiveObject::GUIinteractiveObject(std::list<ShapeGroup>::iterator shapeGroup, ShapeController* shapeController) : GUIobject(shapeGroup, shapeController){
+GUIinteractiveObject::GUIinteractiveObject(std::list<ShapeGroup>::iterator shapeGroup, ShapeController* shapeController, int shapeID) : GUIobject(shapeGroup, shapeController){
 	Shape* shapes = shapeGroup->getShapesPointer();
 	if (shapes == nullptr) {
 		throw std::exception("Failed to find shape inside shapegroup");
 	}
-	if (shapes[0].getVertexCount() != 4) {
-		throw std::exception("Shape is not a tetragon");
-	}
-	setBorders(0);
+	setBorders(shapeID);
 }
 
 bool GUIinteractiveObject::checkCollision(float x, float y) {
@@ -133,7 +126,8 @@ ButtonSex::ButtonSex(Vector2f position,
 		position.y,
 		0
 	),
-	shapeController
+	shapeController,
+	0
 ) {
 	this->state = false;
 }
@@ -155,17 +149,19 @@ Slider::Slider(
 	std::move(ShapeGroup(
 		2,
 		(Shape*)std::begin(std::initializer_list<Shape> {
-			std::move(Shape::makeRectangle(Vector2f(0, 0), size, Vector2f(0, 0), Color(0.5, 0.5, 0.5, 1.f), 0)),
-			std::move(Shape::makeRectangle(Vector2f(-cursorSize, -cursorSize), Vector2f(cursorSize, cursorSize), Vector2f(cursorSize, cursorSize), Color(0, 0, 0, 1), 1))
+			std::move(Shape::makeRectangle(Vector2f(0, 0), Vector2f(std::max(size.x, cursorSize), std::max(size.y, cursorSize)), Vector2f(0, 0), Color(0.5, 0.5, 0.5, 1.f), 0)),
+			std::move(Shape::makeRectangle(Vector2f(-cursorSize /2, -cursorSize / 2), Vector2f(cursorSize / 2, cursorSize / 2), Vector2f(cursorSize / 2, cursorSize / 2), Color(0, 0, 0, 1), 1))
 		}),
 		1.f,
 		position.x,
 		position.y,
 		0
 	)),
-	shapeController) {
-	cursor = GUIinteractiveObject(shapeGroup, shapeController);
-	this->size = size;
+	shapeController, 
+	0
+	) {
+	cursor = GUIinteractiveObject(shapeGroup, shapeController, 1);
+	this->size = Vector2f(std::max(size.x, cursorSize), std::max(size.y, cursorSize));
 	this->valueX = valueX;
 	this->valueY = valueY;
 	this->min = min;
@@ -177,8 +173,9 @@ Slider::Slider(
 bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
 	if (interactionData.isActive) { //If in last frame cursor was active
 		if (mouseButtonStates[0]) {
+			update:
 			Vector2f pos(x, y);
-			Vector2f cursorSizePx(shapeController->valueToPx(Vector2f(cursorSize, cursorSize)));
+			Vector2f cursorSizePx(shapeController->valueToPx(Vector2f(cursorSize / 2, cursorSize / 2)));
 			pos.x = std::max(pos.x, LeftBorderX + cursorSizePx.x); //aaaa
 			pos.x = std::min(pos.x, RightBorderX - cursorSizePx.x);
 			pos.y = std::min(pos.y, BottomBorderY - cursorSizePx.y);
@@ -189,16 +186,25 @@ bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
 			*shapeGroup->getShapesPointer()[1].getPositionXpointer() = pos.x - *shapeGroup->getPositionXpointer();
 			*shapeGroup->getShapesPointer()[1].getPositionYpointer() = pos.y - *shapeGroup->getPositionYpointer();
 
-			*valueX = (pos.x - position.x - cursorSize) / (size.x - 2 * cursorSize) * (max.x - min.x) + min.x;
-			*valueY = (pos.y - position.y - cursorSize) / (size.y - 2 * cursorSize) * (max.y - min.y) + min.y;
-
-			std::cout << *valueX << '\t' << *valueY << '\n';
+			*valueX = (pos.x - position.x - cursorSize) / (size.x - cursorSize) * (max.x - min.x) + min.x;
+			*valueY = (pos.y - position.y - cursorSize) / (size.y - cursorSize) * (max.y - min.y) + min.y;
 		} else {			
 			if (checkCollision(x, y)) {
 				interactionData.isActive = false;	
 				shapeGroup->getShapesPointer()[1].setColor(Color(0, 0, 0, 1));
 				cursor.setBorders(1);
-			} else return false;
+				if (cursor.checkCollision(x, y)) {
+					shapeGroup->getShapesPointer()[1].setColor(Color(1, 1, 1, 1));
+					interactionData.lastCollisionCheckResult = true;
+				}
+				else {
+					interactionData.lastCollisionCheckResult = false;
+				}
+			}
+			else {
+				cursor.setBorders(1);
+				return false; 
+			}
 		}
 	}
 	else {
@@ -206,6 +212,19 @@ bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
 			if (mouseButtonStates[0]) {
 				interactionData.isActive = true;
 				shapeGroup->getShapesPointer()[1].setColor(Color(0, 0.5, 1, 1));
+				goto update;
+			}
+			else {
+				if (cursor.checkCollision(x, y)) {
+					if (!interactionData.lastCollisionCheckResult) {
+						shapeGroup->getShapesPointer()[1].setColor(Color(1, 1, 1, 1));
+					}
+					interactionData.lastCollisionCheckResult = true;
+				}
+				else if (interactionData.lastCollisionCheckResult == true) {
+					interactionData.lastCollisionCheckResult = false;
+					shapeGroup->getShapesPointer()[1].setColor(Color(0, 0, 0, 1));
+				}
 			}
 		}
 		else {
