@@ -269,7 +269,7 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 Vector2f ShapeController::pxToValue(Vector2f vector) {
 	return Vector2f(
 		(vector.x * 2 / Window::getWidth() - 1) / cameraDataBuffer[0],
-		(vector.y * 2 / Window::getHeight() + 1) / cameraDataBuffer[1]
+		-(vector.y * 2 / Window::getHeight() - 1) / cameraDataBuffer[1]
 	);
 }
 

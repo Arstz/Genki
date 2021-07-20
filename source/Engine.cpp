@@ -85,6 +85,9 @@ void Engine::init() {
 
 	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
 	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
+	float* x = new float(0);
+	float* y = new float(0);
+	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(5, 5), x, y, Vector2f(200, 200), Vector2f(500, 500));
 }
 
 void Engine::pollEvents() {

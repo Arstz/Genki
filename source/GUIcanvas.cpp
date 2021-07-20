@@ -31,6 +31,7 @@ void GUIcanvas::update() {
 void GUIcanvas::interact() {
 	if (currentButtonID >= 0) {
 		if (!objects[currentButtonID]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
+			GUIinteractiveObject::resetInteratiocData();
 			currentButtonID = -1;
 		}
 	} else for (int i = 0; i < objects.size(); i++) {
@@ -49,8 +50,18 @@ void GUIcanvas::addSex(
 	Vector2f position,
 	Vector2f size
 ) {
-	ButtonSex* buttonSex = new ButtonSex(position, size, shapeController);
-	objects.push_back(buttonSex);
+	objects.push_back(new ButtonSex(position, size, shapeController));
+}
+
+void GUIcanvas::addSlider(
+	Vector2f position,
+	Vector2f size,
+	float* x,
+	float* y,
+	Vector2f min,
+	Vector2f max
+) {
+	objects.push_back(new Slider(position, size, x, y, min, max, shapeController));
 }
 
 void GUIcanvas::setWindow() {
@@ -61,4 +72,5 @@ void GUIcanvas::setWindow() {
 
 void GUIcanvas::init() {
 	GUIcanvas::shapeController = new ShapeController();
+	GUIinteractiveObject::resetInteratiocData();
 }

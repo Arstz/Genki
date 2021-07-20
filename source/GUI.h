@@ -1,13 +1,18 @@
 #pragma once
 #include "ShapeGroup.h"
 #include "ShapeController.h"
+#include "Color.h"
 
 class GUIobject {
 protected:
+	ShapeController* shapeController;
 	std::list<ShapeGroup>::iterator shapeGroup;
 	virtual ~GUIobject();
-	GUIobject() = delete;
+	GUIobject();
 	GUIobject(const ShapeGroup& shapeGroup, ShapeController* shapeController);
+	GUIobject(
+		std::list<ShapeGroup>::iterator shapeGroup, ShapeController* shapeController
+	);
 public:
 	std::list<ShapeGroup>::iterator getShapeGroup();
 };
@@ -24,8 +29,10 @@ class GUIinteractiveObject : public GUIobject {
 
 	};
 public:	
+	void setBorders(int shapeID);
+	static void resetInteratiocData();
 	static InteractionData interactionData;
-	GUIinteractiveObject() = delete;
+	GUIinteractiveObject();
 	GUIinteractiveObject(
 		ShapeGroup& shapeGroup,
 		ShapeController* shapeController
@@ -34,8 +41,12 @@ public:
 		ShapeGroup&& shapeGroup,
 		ShapeController* shapeController
 	);
+	GUIinteractiveObject(
+		std::list<ShapeGroup>::iterator shapeGroup,
+		ShapeController* shapeController
+	);
 	bool checkCollision(float x, float y);
-	virtual bool interact(bool mouseButtonStates[3], float x, float y) = 0;
+	virtual bool interact(bool mouseButtonStates[3], float x, float y);
 protected:
 	float LeftBorderX;
 	float RightBorderX;
@@ -62,12 +73,24 @@ public:
 };
 
 class Slider : public GUIinteractiveObject {
-public:	
+protected:
 	float* x; 
 	float* y;
 	Vector2f min;
 	Vector2f max;
-	Slider(ShapeGroup&& shapeGroup, ShapeController* shapeController); // ( & _ & ) 
+	Color activeColor;
+	Color passiveColor;
+	GUIinteractiveObject cursor;
+public:
+	Slider(
+		Vector2f position, 
+		Vector2f size, 
+		float* x, 
+		float* y,
+		Vector2f min,
+		Vector2f max,
+		ShapeController* shapeController
+	); // ( & _ & ) 
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 

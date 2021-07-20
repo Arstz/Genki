@@ -2,6 +2,8 @@
 #include "ByteArray.h"
 #include <tuple>
 #include <limits>
+#include "Vector2f.h"
+#include "Color.h"
 typedef unsigned int uint;
 
 class Shape {
@@ -32,12 +34,20 @@ public:
 		float positionY,
 		int layer
 	);
-
-	Shape(const Shape& shape);
-	Shape(ByteArray* byteArray);
 	~Shape();
-
+	Shape(const Shape& shape);
 	Shape& operator=(const Shape& shape);
+	Shape(Shape&& shape) noexcept;
+	Shape& operator=(Shape&& shape) noexcept;
+	Shape(ByteArray* byteArray);
+
+	static Shape makeRectangle(
+		Vector2f point1,
+		Vector2f point2,
+		Vector2f pos = Vector2f(0, 0),
+		Color col = Color(1, 1, 1, 1),
+		int layer = 0
+	);
 
 	uint getVertexCount() const;
 	uint getEBOsize() const;

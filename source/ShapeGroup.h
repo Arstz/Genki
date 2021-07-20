@@ -15,7 +15,13 @@ class ShapeGroup {
 	Shape* shapes;
 	std::list<ShapeGroup> shapeGroups;
 public:
+	~ShapeGroup();
 	ShapeGroup();
+	ShapeGroup(const ShapeGroup& shapeGroup);
+	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
+	ShapeGroup(ShapeGroup&& shapeGroup) noexcept;
+	ShapeGroup& operator=(ShapeGroup&& shapeGroup) noexcept;
+
 	ShapeGroup(
 		uint shapeCount,
 		Shape* shapes,
@@ -24,11 +30,8 @@ public:
 		float positionY,
 		int layer
 	);
-	ShapeGroup(const Shape &shape);
-	ShapeGroup(const ShapeGroup& shapeGroup);
+	ShapeGroup(const Shape& shape);
 	ShapeGroup(ByteArray* byteArray);
-	~ShapeGroup();
-	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
 
 	std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
 	void removeShapeGroup(const std::list<ShapeGroup>::iterator& shapeGroupIterator);

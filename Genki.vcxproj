@@ -167,6 +167,7 @@
     <ClCompile Include="source\AnimationController.cpp" />
     <ClCompile Include="source\AnimationTask.cpp" />
     <ClCompile Include="source\ByteArray.cpp" />
+    <ClCompile Include="source\Color.cpp" />
     <ClCompile Include="source\Engine.cpp" />
     <ClCompile Include="source\EventController.cpp" />
     <ClCompile Include="source\GUI.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="source\AnimationController.h" />
     <ClInclude Include="source\AnimationTask.h" />
     <ClInclude Include="source\ByteArray.h" />
+    <ClInclude Include="source\Color.h" />
     <ClInclude Include="source\Engine.h" />
     <ClInclude Include="source\EventController.h" />
     <ClInclude Include="source\GUI.h" />

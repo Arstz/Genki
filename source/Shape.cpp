@@ -80,6 +80,19 @@ Shape::Shape(ByteArray* byteArray) {
 	byteArray->read(vertexIDs, sizeof(*vertexIDs) * EBOsize);
 }
 
+Shape Shape::makeRectangle(
+	Vector2f point1,
+	Vector2f point2,
+	Vector2f pos, 
+	Color col, 
+	int layer
+) {
+	float vertexCoords[] = {point1.x, point1.y, point1.x, point2.y, point2.x, point1.y, point2.x, point2.y};
+	float vertexColors[] = {col.r, col.g, col.b, col.a, col.r, col.g, col.b, col.a, col.r, col.g, col.b, col.a, col.r, col.g, col.b, col.a};
+	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
+	return Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1.f, pos.x, pos.y, layer);
+}
+
 ByteArray Shape::getByteArray() {
 	ByteArray byteArray(
 		sizeof(vertexCount) +
@@ -132,6 +145,44 @@ Shape& Shape::operator=(const Shape& shape) {
 	this->positionY = shape.positionY;
 
 	this->layer = shape.layer;
+
+	return *this;
+}
+
+Shape::Shape(Shape&& shape) noexcept {
+	vertexCoords = shape.vertexCoords;
+	vertexColors = shape.vertexColors;
+	vertexIDs = shape.vertexIDs;
+	vertexCount = shape.vertexCount;
+	EBOsize = shape.EBOsize;
+	alphaChannel = shape.alphaChannel;
+	layer = shape.layer;
+	positionX = shape.positionX;
+	positionY = shape.positionY;
+
+	shape.vertexCoords = nullptr;
+	shape.vertexColors = nullptr;
+	shape.vertexIDs = nullptr;
+}
+
+Shape& Shape::operator=(Shape&& shape) noexcept {
+	delete[] vertexCoords;
+	delete[] vertexColors;
+	delete[] vertexIDs;
+
+	vertexCoords = shape.vertexCoords;
+	vertexColors = shape.vertexColors;
+	vertexIDs = shape.vertexIDs;
+	vertexCount = shape.vertexCount;
+	EBOsize = shape.EBOsize;
+	alphaChannel = shape.alphaChannel;
+	layer = shape.layer;
+	positionX = shape.positionX;
+	positionY = shape.positionY;
+
+	shape.vertexCoords = nullptr;
+	shape.vertexColors = nullptr;
+	shape.vertexIDs = nullptr;
 
 	return *this;
 }

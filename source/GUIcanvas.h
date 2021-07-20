@@ -35,4 +35,12 @@ public:
 		Vector2f position,
 		Vector2f size
 	);
+	static void addSlider(
+		Vector2f position,
+		Vector2f size,
+		float* x,
+		float* y,
+		Vector2f min,
+		Vector2f max
+	);
 };

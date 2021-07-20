@@ -124,6 +124,28 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	return *this;
 }
 
+ShapeGroup::ShapeGroup(ShapeGroup&& shapeGroup) noexcept {
+	this->shapes = shapeGroup.shapes;
+	this->layer = shapeGroup.layer;
+	this->alphaChannel = shapeGroup.alphaChannel;
+	this->positionX = shapeGroup.positionX;
+	this->positionY = shapeGroup.positionY;
+	this->shapeCount = shapeGroup.shapeCount;
+	shapeGroup.shapes = nullptr;
+}
+
+ShapeGroup& ShapeGroup::operator=(ShapeGroup&& shapeGroup) noexcept {
+	delete[] shapes;
+	this->shapes = shapeGroup.shapes;
+	this->layer = shapeGroup.layer;
+	this->alphaChannel = shapeGroup.alphaChannel;
+	this->positionX = shapeGroup.positionX;
+	this->positionY = shapeGroup.positionY;
+	this->shapeCount = shapeGroup.shapeCount;
+	shapeGroup.shapes = nullptr;
+	return *this;
+}
+
 std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(const ShapeGroup &shapeGroup) {
 	std::list<ShapeGroup>::iterator i = shapeGroups.begin();
 	while (i != shapeGroups.end() && (*i).layer < shapeGroup.layer) i++;
