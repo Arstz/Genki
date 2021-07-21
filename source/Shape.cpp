@@ -204,6 +204,13 @@ uint Shape::getEBOsize() const {
 	return EBOsize;
 }
 
+void Shape::scale(Vector2f multiplier) {
+	for (int i = 0; i < vertexCount; i++) {
+		vertexCoords[i * 2 + 0] *= multiplier.x;
+		vertexCoords[i * 2 + 1] *= multiplier.y;
+	}
+}
+
 float* Shape::getVertexCoordsPointer() {
 	return vertexCoords;
 }

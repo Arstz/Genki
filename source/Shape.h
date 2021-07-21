@@ -4,6 +4,7 @@
 #include <limits>
 #include "Vector2f.h"
 #include "Color.h"
+
 typedef unsigned int uint;
 
 class Shape {
@@ -53,6 +54,8 @@ public:
 
 	uint getVertexCount() const;
 	uint getEBOsize() const;
+
+	void scale(Vector2f multiplier);
 
 	float* getVertexCoordsPointer();
 	float* getVertexColorsPointer();

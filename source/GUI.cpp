@@ -5,6 +5,7 @@
 #include "GUI.h"
 #include "Window.h"
 #include <initializer_list>
+
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
 #endif
@@ -119,7 +120,8 @@ ButtonSex::ButtonSex(Vector2f position,
 				size,
 				Vector2f(0, 0),
 				Color(1.f, 1.f, 0.f, 1.f)
-			))
+			)),
+
 		}),
 		1.f, 
 		position.x, 

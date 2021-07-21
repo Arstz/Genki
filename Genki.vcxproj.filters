@@ -104,6 +104,9 @@
     <ClCompile Include="source\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AnimationController.h">
@@ -152,6 +155,12 @@
       <Filter>Source Files\headers</Filter>
     </ClInclude>
     <ClInclude Include="source\Color.h">
+      <Filter>Source Files\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Text.h">
+      <Filter>Source Files\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Asphlt.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
   </ItemGroup>

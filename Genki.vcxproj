@@ -186,6 +186,7 @@
     <ClCompile Include="source\Shape.cpp" />
     <ClCompile Include="source\ShapeController.cpp" />
     <ClCompile Include="source\ShapeGroup.cpp" />
+    <ClCompile Include="source\Text.cpp" />
     <ClCompile Include="source\Vector2f.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
@@ -193,6 +194,7 @@
     <ClInclude Include="source\Animation.h" />
     <ClInclude Include="source\AnimationController.h" />
     <ClInclude Include="source\AnimationTask.h" />
+    <ClInclude Include="source\Asphlt.h" />
     <ClInclude Include="source\ByteArray.h" />
     <ClInclude Include="source\Color.h" />
     <ClInclude Include="source\Engine.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="source\Shape.h" />
     <ClInclude Include="source\ShapeController.h" />
     <ClInclude Include="source\ShapeGroup.h" />
+    <ClInclude Include="source\Text.h" />
     <ClInclude Include="source\Vector2f.h" />
     <ClInclude Include="source\Window.h" />
   </ItemGroup>

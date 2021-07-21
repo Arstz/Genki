@@ -7,14 +7,15 @@ class GUIobject {
 protected:
 	ShapeController* shapeController;
 	std::list<ShapeGroup>::iterator shapeGroup;
+
+public:
+	std::list<ShapeGroup>::iterator getShapeGroup();
 	virtual ~GUIobject();
 	GUIobject();
 	GUIobject(const ShapeGroup& shapeGroup, ShapeController* shapeController);
 	GUIobject(
 		std::list<ShapeGroup>::iterator shapeGroup, ShapeController* shapeController
 	);
-public:
-	std::list<ShapeGroup>::iterator getShapeGroup();
 };
 
 class GUIinteractiveObject : public GUIobject {
