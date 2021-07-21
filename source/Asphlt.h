@@ -107,11 +107,11 @@ const Shape Text::symbols[] ={
 	),
 	//C
 	Shape(
-		0,
-		(float*)std::begin(std::initializer_list<float> {}),
-		(float*)std::begin(std::initializer_list<float> {}),
-		0,
-		(uint*)std::begin(std::initializer_list<uint> {}),
+		8,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1.f + 1.f / 4.f, 1, 4.f + 1.f / 4.f, 1, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 6, 7, 0, 5, 6, 0, 5, 4, 0, 1, 4, 1, 4, 2, 4, 3, 2}),
 		1.f,
 		0.f,
 		0.f,
@@ -119,36 +119,136 @@ const Shape Text::symbols[] ={
 	),
 	//D
 	Shape(
-		0,
-		(float*)std::begin(std::initializer_list<float> {}),
-		(float*)std::begin(std::initializer_list<float> {}),
-		0,
-		(uint*)std::begin(std::initializer_list<uint> {}),
+		10,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 4.f + 1.f / 2.f, 2, 3, 0, 1.f + 1.f / 4.f, 1, 2.f + 3.f / 4.f, 7, 4.f + 3.f / 4.f, 7, 3.f + 1.f / 2.f, 2, 2.f + 3.f / 4.f, 1}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		30,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 6, 6, 5, 0, 0, 5, 9, 0, 9, 4, 4, 9, 3, 9, 8, 3, 7, 8, 3, 7, 2, 3, 6, 1, 2, 2, 6, 7}),
 		1.f,
 		0.f,
 		0.f,
 		0
 	),
 	//E
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1.f + 1.f / 4.f, 1, 4.f + 1.f / 4.f, 1, 4, 0, 3, 4, 3.f + 1.f / 4.f, 5, 5.f + 1.f / 4.f, 5, 5, 4}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		24,
+		(uint*)std::begin(std::initializer_list<uint> {0, 5, 6, 0, 6, 7, 0, 4, 5, 0, 1, 4, 1, 4, 2, 2, 4, 3, 8, 9, 10, 10, 11, 8}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//F
-	Shape(),
+	Shape(
+		10,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5 + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1, 0, 3, 4, 3.f + 1.f / 4.f, 5, 5.f + 1.f / 4.f, 5, 5, 4}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 5, 4, 0, 1, 4, 1, 4, 2, 4, 2, 3, 6, 7, 8, 6, 8, 9}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//G
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1.f + 1.f / 4.f, 1, 3.f + 1.f / 4.f, 1, 4, 4, 3, 4, 3.f + 1.f / 4.f, 5, 5.f + 1.f / 4.f, 5, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		30,
+		(uint*)std::begin(std::initializer_list<uint> {0, 5, 4, 0, 1, 4, 0, 5, 6, 0, 6, 11, 6, 10, 11, 6, 7, 10, 7, 8, 10, 8, 9, 10, 1, 4, 2, 4, 2, 3}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//H
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 2.f + 1.f / 4.f, 5, 3.f + 1.f / 4.f, 5, 3, 4, 2, 4, 1, 0, 3, 0, 5, 8, 6, 8, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 7, 2, 0, 1, 2, 6, 3, 4, 6, 5, 4, 8, 9, 10, 8, 10, 11}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//I
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 1.f / 4.f, 1, 1.f + 3.f / 4.f, 1, 3, 7, 1.f + 3.f / 4.f, 7, 2, 8, 6, 8, 5.f + 3.f / 4.f, 7, 4.f + 1.f / 4.f, 7, 2.f + 3.f / 4.f, 1, 4.f + 1.f / 4.f, 1, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 10, 0, 10, 11, 2, 3, 8, 2, 8, 9, 4, 5, 6, 7, 6, 4}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//J
-	Shape(),
+	Shape(
+		8,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 1, 4, 2, 4, 1.f + 1.f / 4.f, 1, 3.f + 1.f / 4.f, 1, 5, 8, 6, 8, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 7, 7, 4, 5, 5, 6, 7}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//K
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1, 0, 3, 4, 3.f + 1.f / 2.f, 6, 5, 8, 6, 8, 3.f + 1.f / 2.f, 2, 3.f + 3.f / 4.f, 3, 6, 0, 5, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7, 8, 9, 10, 8, 11, 10}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//L
-	Shape(),
+	Shape(
+		6,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1.f + 1.f / 4.f, 1, 4.f + 1.f / 4.f, 1, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		12,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//M
-	Shape(),
+	Shape(
+		11,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1, 0, 3, 4, 3.f + 1.f / 2.f, 6, 5, 8, 6, 8, 4, 0, 3, 0, 4.f + 1.f / 2.f, 6}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 10, 6, 9, 6, 7, 9, 7, 8}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//N
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 2.f + 1.f / 2.f, 6, 3.f + 1.f / 4.f, 5, 3, 4, 2.f + 1.f / 4.f, 5, 1, 0, 3, 0, 5, 8, 6, 8, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {0, 1, 2, 0, 7, 2, 6, 5, 4, 6, 4, 3, 8, 9, 10, 11, 10, 8}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//O
 	Shape(
 		8,
@@ -162,21 +262,101 @@ const Shape Text::symbols[] ={
 		0
 	),
 	//P
-	Shape(),
+	Shape(
+		10,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5, 4, 2, 4, 1, 0, 2.f + 1.f / 4.f, 5, 2.f + 3.f / 4.f, 7, 4.f + 3.f / 4.f, 7, 4.f + 1.f / 4.f, 5}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		24,
+		(uint*)std::begin(std::initializer_list<uint> {1, 7, 0, 0, 7, 5, 1, 7, 8, 1, 2, 8, 8, 2, 3, 8, 9, 3, 6, 9, 3, 4, 6, 3}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//Q
-	Shape(),
+	Shape(
+		12,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 4.f + 1.f / 2.f, 2, 3.f + 3.f / 4.f, 3, 4.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1.f + 1.f / 4.f, 1, 3.f + 1.f / 4.f, 1, 3.f + 1.f / 2.f, 2, 4.f + 1.f / 4.f, 1, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		30,
+		(uint*)std::begin(std::initializer_list<uint> {1, 6, 0, 0, 6, 7, 1, 6, 2, 6, 5, 2, 4, 5, 2, 4, 2, 3, 9, 10, 11, 7, 8, 11, 7, 11, 0, 8, 11, 9}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//R
-	Shape(),
+	Shape(
+		14,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 6, 8, 5, 4, 4, 4, 3.f + 1.f / 4.f, 5, 4.f + 1.f / 4.f, 5, 4.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 1, 0, 2.f + 3.f / 4.f, 3, 3, 4, 6, 0, 5, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		30,
+		(uint*)std::begin(std::initializer_list<uint> {1, 8, 0, 0, 8, 9, 1, 8, 2, 8, 7, 2, 6, 7, 2, 6, 2, 3, 5, 6, 3, 5, 4, 3, 10, 11, 12, 10, 13, 12}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//S
-	Shape(),
+	Shape(
+		14,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 1.f / 4.f, 1, 3.f + 1.f / 4.f, 1, 4, 4, 3, 4, 3.f + 1.f / 4.f, 5, 5.f + 1.f / 4.f, 5, 4, 0, 1, 4, 2, 8, 6, 8, 5.f + 3.f / 4.f, 7, 2.f + 3.f / 4.f, 7, 2, 4}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		33,
+		(uint*)std::begin(std::initializer_list<uint> {1, 2, 0, 0, 2, 7, 2, 7, 3, 3, 6, 7, 4, 3, 6, 5, 6, 3, 8, 9, 12, 8, 12, 13, 10, 12, 9, 12, 11, 10, 4, 5, 3}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//T
-	Shape(),
+	Shape(
+		8,
+		(float*)std::begin(std::initializer_list<float> {2, 0, 3.f + 1.f / 2.f, 6, 4.f + 1.f / 2.f, 6, 3, 0, 1.f + 3.f / 4.f, 7, 2, 8, 7, 8, 6.f + 3.f / 4.f, 7}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		12,
+		(uint*)std::begin(std::initializer_list<uint> {1, 2, 0, 0, 2, 3, 4, 5, 6, 4, 6, 7}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//U
-	Shape(),
+	Shape(
+		8,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1.f + 1.f / 4.f, 1, 3.f + 1.f / 4.f, 1, 5, 8, 6, 8, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {1, 2, 0, 0, 2, 3, 0, 3, 4, 4, 0, 7, 7, 4, 5, 5, 6, 7}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//V
-	Shape(),
+	Shape(
+		8,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1.f + 1.f / 4.f, 1, 2.f + 1.f / 2.f, 2, 3, 4, 6, 8, 7, 8}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		12,
+		(uint*)std::begin(std::initializer_list<uint> {1, 2, 0, 0, 2, 3, 4, 5, 6, 4, 6, 7}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//W
-	Shape(),
+	Shape(
+		11,
+		(float*)std::begin(std::initializer_list<float> {0, 0, 2, 8, 3, 8, 1, 0, 2.f + 1.f / 2.f, 2, 2.f + 3.f / 4.f, 3, 4.f + 1.f / 4.f, 1, 6, 8, 7, 8, 5, 0, 4, 0}),
+		(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
+		18,
+		(uint*)std::begin(std::initializer_list<uint> {1, 2, 0, 0, 2, 3, 4, 5, 6, 4, 6, 10, 10, 7, 8, 10, 8, 9}),
+		1.f,
+		0.f,
+		0.f,
+		0
+	),
 	//X
 	Shape(),
 	//Y
@@ -420,27 +600,27 @@ const float Text::symbolLengths[] {
 
 	6, //A
 	4, //B
-	0, //C
-	0, //D
-	0, //E
-	0, //F
-	0, //G
-	0, //H
-	0, //I
-	0, //J
-	0, //K
-	0, //L
-	0, //M
-	0, //N
+	4, //C
+	4, //D
+	4, //E
+	4, //F
+	4, //G
+	4, //H
+	4, //I
+	4, //J
+	6, //K
+	4, //L
+	4, //M
+	4, //N
 	4, //O
-	0, //P
-	0, //Q
-	0, //R
-	0, //S
-	0, //T
-	0, //U
-	0, //V
-	0, //W
+	4, //P
+	4, //Q
+	6, //R
+	4, //S
+	5, //T
+	4, //U
+	5, //V
+	5, //W
 	0, //X
 	0, //Y
 	0, //Z

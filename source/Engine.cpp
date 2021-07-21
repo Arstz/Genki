@@ -91,7 +91,7 @@ void Engine::init() {
 	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
 	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
 	Text::setScale(Vector2f(0.3, 0.3));
-	GUIobject(Text::makeText("ABOBA", Vector2f(-5, -4)), GUIcanvas::shapeController);
+	GUIobject(Text::makeText("IMPOSTER", Vector2f(-5, -4)), GUIcanvas::shapeController);
 }
 
 void Engine::pollEvents() {
