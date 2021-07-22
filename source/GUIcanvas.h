@@ -44,4 +44,9 @@ public:
 		Vector2f min,
 		Vector2f max
 	);
+	static void addCheckBox(
+		Vector2f position,
+		Vector2f size,
+		bool* value
+	);
 };

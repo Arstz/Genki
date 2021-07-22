@@ -110,7 +110,8 @@ bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 	return true;
 }
 
-ButtonSex::ButtonSex(Vector2f position, 
+ButtonSex::ButtonSex(
+	Vector2f position, 
 	Vector2f size, 
 	ShapeController* shapeController
 ) : GUIinteractiveObject(
@@ -161,8 +162,8 @@ Slider::Slider(
 	)),
 	shapeController, 
 	0
-	) {
-	cursor = GUIinteractiveObject(shapeGroup, shapeController, 1);
+) {
+	this->cursor = GUIinteractiveObject(shapeGroup, shapeController, 1);
 	this->size = Vector2f(std::max(size.x, cursorSize), std::max(size.y, cursorSize));
 	this->valueX = valueX;
 	this->valueY = valueY;
@@ -170,6 +171,30 @@ Slider::Slider(
 	this->max = max;
 	this->cursorSize = cursorSize;
 	this->position = position;
+}
+
+CheckBox::CheckBox(
+	Vector2f position,
+	Vector2f size,
+	ShapeController* shapeController,
+	bool* value
+) : GUIinteractiveObject(
+	std::move(ShapeGroup(
+		2,
+		+
+		(Shape*)std::begin(std::initializer_list<Shape> {
+			std::move(Shape::makeRectangle(Vector2f(0, 0), Vector2f(size.x, size.y), Vector2f(0, 0), Color(0, 0, 0, 1.f), 0)),
+			std::move(Shape::makeRectangle(Vector2f(-size.x / 3, -size.y / 3), Vector2f(size.x / 3, size.y / 3), Vector2f(size.x / 2, size.y / 2), Color(1, 0, 0, 1), 1))
+		}),
+		1.f,
+		position.x,
+		position.y,
+		0
+	)),
+	shapeController,
+	0
+) {
+	this->state = value;
 }
 
 bool Slider::interact(bool mouseButtonStates[3], float x, float y) {
@@ -245,4 +270,30 @@ void GUIinteractiveObject::InteractionData::reset() {
 	lastMousePositionY = 0;
 	lastCollisionCheckResult = false;
 	isActive = false;
+}
+
+bool CheckBox::interact(bool mouseButtonStates[3], float x, float y) {
+	if (checkCollision(x, y)) {
+		shapeGroup->getShapesPointer()[0].setColor(Color(0.5, 0.5, 0.5, 1));
+		if (mouseButtonStates[0]) {	
+			if (!interactionData.isActive) {
+				interactionData.isActive = true;
+				*state = !*state;
+			}			
+			if (*state) {
+				shapeGroup->getShapesPointer()[1].setColor(Color(1, 0, 0, 1));				
+			}
+			else {
+				shapeGroup->getShapesPointer()[1].setColor(Color(1, 0, 0, 0));
+			}
+		}
+		else {
+			interactionData.isActive = false;
+		}
+		return true;
+	}
+	else {
+		shapeGroup->getShapesPointer()[0].setColor(Color(0, 0, 0, 1));
+		return false;
+	}
 }

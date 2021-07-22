@@ -73,6 +73,8 @@ public:
 class CheckBox : public GUIinteractiveObject {
 public:
 	bool* state;
+	CheckBox(Vector2f position, Vector2f size, ShapeController* shapeController, bool* value);
+	bool interact(bool mouseButtonStates[3], float x, float y);
 };
 
 class Slider : public GUIinteractiveObject {
@@ -100,4 +102,3 @@ public:
 	);  
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
-
