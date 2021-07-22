@@ -9,13 +9,9 @@ typedef unsigned int uint;
 class Window {
 	static GLFWwindow* window;
 	static float backgroundColor[4];
-	static GLuint currentBufferID;
-	static GLuint currentAttribArrayID;
 	static int width;
 	static int height;
 public:
-	static GLuint generateBufferID();
-	static GLuint generateAttribArray();
 	static void init(int width, int height);
 	static GLFWwindow* getWindow();
 	static float* getBackgroundColorValuePointer(uint valueNum);

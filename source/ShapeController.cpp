@@ -108,8 +108,9 @@ void ShapeController::reallocateBuffers() {
 	uint vertexCounter = 0;
 
 	writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
-	glBindVertexArray(VAO);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(VAO);
 	
 	glVertexAttribPointer(
 		VERTEX_ATTRIB_ARRAY_2,
@@ -148,7 +149,8 @@ void ShapeController::initBuffers() {
 	glGenVertexArrays(1, &VAO);
 	
 	glBindVertexArray(VAO);
-
+	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
+	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
 	glVertexAttribPointer(
 		VERTEX_ATTRIB_ARRAY_1,
 		2,
@@ -158,8 +160,17 @@ void ShapeController::initBuffers() {
 		(GLvoid*)0
 
 	);
-
-	
+	glVertexAttribPointer(
+		VERTEX_ATTRIB_ARRAY_2,
+		4,
+		GL_FLOAT,
+		GL_FALSE,
+		4 * sizeof(GLfloat),
+		(GLvoid*)0
+	);
+	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
+	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -201,6 +212,10 @@ void ShapeController::initShader() {
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+	glUseProgram(shader);
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void ShapeController::destroy()
@@ -214,10 +229,14 @@ float* ShapeController::getCameraValuePointer(uint valueNum) {
 
 void ShapeController::draw() {
 	updateBuffers();
-	glBindVertexArray(VAO);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);//suka
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindVertexArray(VAO);
+
 	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
 	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
 
@@ -235,12 +254,11 @@ void ShapeController::draw() {
 		GL_STATIC_DRAW
 	);
 
-	glUseProgram(shader);
-
-	
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
+
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glBindVertexArray(0);
@@ -313,8 +331,6 @@ ShapeController::ShapeController() {
 	this->vertexCount = 0;
 	this->vertexBuffer = (float*)malloc(0);
 
-	this->bufferID = 0;
-
 	this->EBOsize = 0;
 	this->EBObuffer = (uint*)malloc(0);
 
@@ -328,63 +344,8 @@ ShapeController::ShapeController() {
 	if (window) {
 		initBuffers();
 	}
-//  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 }
-/*
-ShapeController& ShapeController::operator=(const ShapeController& shapeController) {
-	free(EBObuffer);
-	free(vertexBuffer);
-
-	this->shapeGroup = shapeController.shapeGroup;
-
-	this->vertexCount = shapeController.vertexCount;
-	this->vertexBuffer = (float*)malloc(vertexCount * 6);
-
-	this->bufferID = shapeController.bufferID;
-
-	this->EBOsize = shapeController.EBOsize;
-	this->EBObuffer = (uint*)malloc(EBOsize);
-
-	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
-	this->cameraDataBuffer[1] = 0.1f;
-
-	this->VBO = shapeController.VBO;
-	this->VAO = shapeController.VAO;
-	this->EBO = shapeController.EBO;
-	this->CDB = shapeController.CDB;
-	
-	if (window) {
-		initBuffers();
-	}
-	return *this;
-}
-
-ShapeController::ShapeController(const ShapeController& shapeController) {
-	this->shapeGroup = shapeController.shapeGroup;
-
-	this->vertexCount = shapeController.vertexCount;
-	this->vertexBuffer = (float*)malloc(vertexCount*6);
-
-	this->bufferID = shapeController.bufferID;
-
-	this->EBOsize = shapeController.EBOsize;
-	this->EBObuffer = (uint*)malloc(EBOsize);
-
-	this->cameraDataBuffer[0] = 0.f;
-	this->cameraDataBuffer[1] = 0.f;
-	this->cameraDataBuffer[2] = 0.1f / 16.f * 9.f;
-	this->cameraDataBuffer[3] = 0.1f;
-
-	this->VBO = shapeController.VBO;
-	this->VAO = shapeController.VAO;
-	this->EBO = shapeController.EBO;
-	this->CDB = shapeController.CDB;
-
-	this->shader = shapeController.shader;
-}
-*/
 
 ShapeController::~ShapeController() {
 	free(EBObuffer);

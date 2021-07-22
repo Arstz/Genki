@@ -14,7 +14,6 @@ class ShapeController {
 private:
 	static int shader;
 
-	GLuint bufferID;
 	GLuint VBO;
 	GLuint VAO;
 	GLuint EBO;
@@ -75,8 +74,8 @@ public:
 	Vector2f valueToPx(Vector2f value);
 
 	ShapeController();
-//	ShapeController& operator=(const ShapeController& shapeController);
-//	ShapeController(const ShapeController& shapeController);
+	ShapeController& operator=(const ShapeController& shapeController) = delete;
+	ShapeController(const ShapeController& shapeController) = delete;
 	~ShapeController();
 };
 

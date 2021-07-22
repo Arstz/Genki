@@ -8,8 +8,6 @@
 #endif
 
 float Window::backgroundColor[4] = { 1.f, 1.f, 1.f, 1.f };
-GLuint Window::currentBufferID = 1;
-GLuint Window::currentAttribArrayID = 0;
 GLFWwindow* Window::window = nullptr;
 int Window::width = 0;
 int Window::height = 0;
@@ -18,6 +16,8 @@ void Window::init(int width, int height) {
 	Window::width = width;
 	Window::height = height;
 	glfwInit();
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glEnable(GL_MULTISAMPLE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -62,12 +62,4 @@ int Window::getWidth() {
 
 int Window::getHeight() {
 	return height;
-}
-
-GLuint Window::generateBufferID() {
-	return currentBufferID++;
-}
-
-GLuint Window::generateAttribArray() {
-	return currentAttribArrayID++;
 }

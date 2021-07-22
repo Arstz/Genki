@@ -52,8 +52,9 @@ void Engine::init() {
 
 	ShapeController::setWindow(window);
 	ShapeController::initShader();
-//	levelShapeController = new ShapeController();
 	GUIcanvas::init();
+	levelShapeController = new ShapeController();
+
 
 	start = std::chrono::system_clock::now();
 	player = Player();
@@ -63,26 +64,12 @@ void Engine::init() {
 
 	EventController::currentTime = &currentTime;
 
-//	LevelEvent::setShapeGroupsSize(10);
-//	LevelEvent::setShapeController(levelShapeController);
-//	EventController::loadLevel("a");
+	LevelEvent::setShapeGroupsSize(10);
+	LevelEvent::setShapeController(levelShapeController);
+
+	EventController::loadLevel("a");
 
 //	EventController::saveLevel("a", EventController::level);
-
-	float vertexCoords[] = {0.f, 0.f, 0.f, 10.f, 10.f, 0.f, 10.f, 10.f};
-	float vertexCoords1[] = { 0.f, 0.f, 0.f, 2.f, 2.f, 0.f, 2.f, 2.f };
-	float vertexColors[] = {1.f, 0.f, 0.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f};
-	uint vertexIDs[] = {0, 1, 2, 1, 2, 3};
-	Shape shape(4, vertexCoords, vertexColors, 6, vertexIDs, 1, 0, 0, 0);
-
-	ShapeGroup ass(shape);
-
-	Shape shps[] = {
-		Shape(4, vertexCoords, vertexColors, 6, vertexIDs, 0.5, 0, 0, 0),
-		Shape(4, vertexCoords1, vertexColors, 6, vertexIDs, 0.5, 0, 0, 0),
-	};
-
-	ShapeGroup a(2, shps, 1, 0, 0, 1);
 
 	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
 	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
@@ -104,15 +91,18 @@ void Engine::update() {
 	auto end = std::chrono::system_clock::now();
 	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-//	EventController::update();
-	AnimationController::update();
 	GUIcanvas::update();
+	EventController::update();
+	AnimationController::update();
+
 }
 
 void Engine::render() {
 	Window::clear();
-//	levelShapeController->draw();
+	
 	GUIcanvas::draw();
+	levelShapeController->draw();
+	
 	glfwSwapBuffers(window);
 }
 
