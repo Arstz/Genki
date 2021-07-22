@@ -64,6 +64,10 @@ void GUIcanvas::addSlider(
 	objects.push_back(new Slider(position, size, x, y, min, max, shapeController));
 }
 
+void GUIcanvas::addCheckBox(Vector2f position, Vector2f size, bool* value) {
+	objects.push_back(new CheckBox(position, size, shapeController, value));
+}
+
 void GUIcanvas::setWindow() {
 	GUIcanvas::window = Window::getWindow();
 	GUIcanvas::windowWidth = Window::getWidth();
