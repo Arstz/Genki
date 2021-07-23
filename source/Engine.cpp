@@ -102,9 +102,9 @@ void Engine::update() {
 
 void Engine::render() {
 	Window::clear();
-	
-	GUIcanvas::draw();
 	levelShapeController->draw();
+	GUIcanvas::draw();
+	
 	
 	glfwSwapBuffers(window);
 }
