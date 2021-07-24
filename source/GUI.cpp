@@ -5,6 +5,9 @@
 #include "GUI.h"
 #include "Window.h"
 #include <initializer_list>
+#include "Text.h"
+#include <random>
+#define AAA (float)rand()/(float)RAND_MAX
 
 #ifdef _DEBUG
 #define new MYDEBUG_NEW
@@ -100,6 +103,9 @@ std::list<ShapeGroup>::iterator GUIobject::getShapeGroup() {
 bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 	if (!state && checkCollision(x, y) && mouseButtonStates[0]) {
 		std::cout << "sex\n";
+			Text::setColor(Color(AAA, AAA, AAA, AAA));
+			Text::setScale(Vector2f(AAA / 5, AAA / 5));
+			this->shapeController->addShapeGroup(Text::makeText("SECKS", Vector2f((AAA - 0.5f) * 20 * 16 / 9, (AAA - 0.5f) * 20)));
 		this->state = true;
 	}
 	if (!mouseButtonStates[0]) {

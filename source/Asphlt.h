@@ -563,7 +563,8 @@ const float Text::symbolLengths[] {
 	0,
 	0,
 	0,
-	0,
+	//^32
+	4,
 	0,
 	0,
 	0,
