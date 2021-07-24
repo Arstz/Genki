@@ -14,7 +14,7 @@
 class EventController;
 
 enum class LevelEventType {
-	EMPTY,
+	NONE,
 	BACKGROUND_COLOR_ANIMATION,
 	CAMERA_ANIMATION,
 	SHAPE_SPAWN,

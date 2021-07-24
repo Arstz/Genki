@@ -2,6 +2,12 @@
 #include "ShapeGroup.h"
 #include "ShapeController.h"
 #include "Color.h"
+#define REQUEST_DATA_SIZE 17
+
+enum class RequestType {
+	NONE,
+	RESIZE
+};
 
 class GUIobject {
 protected:
@@ -101,4 +107,19 @@ public:
 		float cursorSize = 0.5
 	);  
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
+};
+
+class GUIinteractiveObjectWithRequestHandler : public GUIinteractiveObject {
+public:
+	void virtual processRequest(RequestType request, char data[REQUEST_DATA_SIZE]);
+};
+
+class GUIcontainer : public GUIinteractiveObjectWithRequestHandler {
+private:
+	Slider slider;
+	int objectCount;
+	float* objectHeights;
+	GUIinteractiveObject* objects; 
+public:
+	void virtual processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) override;
 };
