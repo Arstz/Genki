@@ -59,14 +59,14 @@ void EventController::loadLevel(std::string path) {
 	fin.close();
 	level.resize(size);
 	for (unsigned int i = 0; i < size; i++) {
-		LevelEventType type = LevelEventType::EMPTY;
+		LevelEventType type = LevelEventType::NONE;
 		float initTime;
 		unsigned int blockSize;
 
 		*byteLevel >> type >> initTime >> blockSize;
 
 		switch (type) {
-		case LevelEventType::EMPTY:
+		case LevelEventType::NONE:
 			break;
 		case LevelEventType::BACKGROUND_COLOR_ANIMATION:
 			level[i] = BackgroundColorAnimationEvent::CREATE_EVENT;

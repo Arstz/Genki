@@ -18,14 +18,14 @@ void LevelEvent::setShapeGroupsSize(unsigned int size) {
 
 LevelEvent::LevelEvent(){
 	this->initTime = 0;
-	this->type = LevelEventType::EMPTY;
+	this->type = LevelEventType::NONE;
 }
 
 LevelEvent::~LevelEvent() {}
 
 LevelEvent::LevelEvent(float initTime) {
 	this->initTime = initTime;
-	this->type = LevelEventType::EMPTY;
+	this->type = LevelEventType::NONE;
 }
 
 LevelEventType LevelEvent::getType() {

@@ -50,9 +50,7 @@ void GUIinteractiveObject::resetInteratiocData() {
 	interactionData.reset();
 }
 
-GUIinteractiveObject::GUIinteractiveObject() {
-
-}
+GUIinteractiveObject::GUIinteractiveObject() {}
 
 GUIinteractiveObject::GUIinteractiveObject(
 	ShapeGroup& shapeGroup,
@@ -303,5 +301,14 @@ bool CheckBox::interact(bool mouseButtonStates[3], float x, float y) {
 	else {
 		shapeGroup->getShapesPointer()[0].setColor(Color(0, 0, 0, 1));
 		return false;
+	}
+}
+
+void GUIinteractiveObjectWithRequestHandler::processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) {}
+
+void GUIcontainer::processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) {
+	switch (request) {
+	case RequestType::RESIZE: 
+		break;
 	}
 }
