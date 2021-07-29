@@ -34,13 +34,13 @@ Shape::Shape(
 	this->vertexCoords = new float[static_cast<long long>(vertexCount) * 2];
 	this->vertexColors = new float[static_cast<long long>(vertexCount) * 4];
 
-	for (uint i = 0; i < vertexCount * 2; i++) this->vertexCoords[i] = vertexCoords[i];
-	for (uint i = 0; i < vertexCount * 4; i++) this->vertexColors[i] = vertexColors[i];
+	memcpy(this->vertexCoords, vertexCoords, vertexCount * sizeof(*vertexCoords) * 2);
+	memcpy(this->vertexColors, vertexColors, vertexCount * sizeof(*vertexColors) * 4);
 
 	this->EBOsize = EBOsize;
-
 	this->vertexIDs = new uint[EBOsize];
-	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = vertexIDs[i];
+
+	memcpy(this->vertexIDs, vertexIDs, EBOsize * sizeof(*vertexIDs));
 
 	this->alphaChannel = alphaChannel;
 	this->positionX = positionX;
@@ -55,13 +55,13 @@ Shape::Shape(const Shape& shape) {
 	this->vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
 	this->vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 
-	for (uint i = 0; i < shape.vertexCount * 2; i++) this->vertexCoords[i] = shape.vertexCoords[i];
-	for (uint i = 0; i < shape.vertexCount * 4; i++) this->vertexColors[i] = shape.vertexColors[i];
+	memcpy(this->vertexCoords, shape.vertexCoords, vertexCount * sizeof(*vertexCoords) * 2);
+	memcpy(this->vertexColors, shape.vertexColors, vertexCount * sizeof(*vertexColors) * 4);
 
 	this->EBOsize = shape.EBOsize;
 
 	this->vertexIDs = new uint[shape.EBOsize];
-	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = shape.vertexIDs[i];
+	memcpy(this->vertexIDs, shape.vertexIDs, EBOsize * sizeof(*vertexIDs));
 
 	this->alphaChannel = shape.alphaChannel;
 	this->positionX = shape.positionX;
@@ -141,13 +141,14 @@ Shape& Shape::operator=(const Shape& shape) {
 	this->vertexCoords = new float[static_cast<size_t>(vertexCount) * 2];
 	this->vertexColors = new float[static_cast<size_t>(vertexCount) * 4];
 
-	for (uint i = 0; i < shape.vertexCount * 2; i++) this->vertexCoords[i] = shape.vertexCoords[i];
-	for (uint i = 0; i < shape.vertexCount * 4; i++) this->vertexColors[i] = shape.vertexColors[i];
+	memcpy(this->vertexCoords, shape.vertexCoords, vertexCount * sizeof(*vertexCoords) * 2);
+	memcpy(this->vertexColors, shape.vertexColors, vertexCount * sizeof(*vertexColors) * 4);
 
 	this->EBOsize = shape.EBOsize;
 
 	this->vertexIDs = new uint[shape.EBOsize];
-	for (uint i = 0; i < EBOsize; i++) this->vertexIDs[i] = shape.vertexIDs[i];
+
+	memcpy(this->vertexIDs, shape.vertexIDs, EBOsize * sizeof(*vertexIDs));
 
 	this->alphaChannel = shape.alphaChannel;
 	this->positionX = shape.positionX;
