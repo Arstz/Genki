@@ -81,7 +81,7 @@ void Engine::init() {
 	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
 	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
 	Text::setScale(Vector2f(0.3, 0.3));
-	GUIobject(Text::makeText("AMO S", Vector2f(-5, -4)), GUIcanvas::shapeController);
+	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
 }
 
 void Engine::pollEvents() {

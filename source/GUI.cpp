@@ -103,9 +103,11 @@ std::list<ShapeGroup>::iterator GUIobject::getShapeGroup() {
 bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 	if (!state && checkCollision(x, y) && mouseButtonStates[0]) {
 		std::cout << "sex\n";
+		for (int i = 0; i < 100; i++) {
 			Text::setColor(Color(AAA, AAA, AAA, AAA));
 			Text::setScale(Vector2f(AAA / 5, AAA / 5));
 			this->shapeController->addShapeGroup(Text::makeText("SECKS", Vector2f((AAA - 0.5f) * 20 * 16 / 9, (AAA - 0.5f) * 20)));
+		}
 		this->state = true;
 	}
 	if (!mouseButtonStates[0]) {

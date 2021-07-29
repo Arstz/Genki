@@ -48,6 +48,6 @@ public:
 	uint getShapeCount() const;
 
 	Shape* getShapesPointer();
-	std::list<ShapeGroup> getShapeGroups();
+	std::list<ShapeGroup>* getShapeGroups();
 	ByteArray getByteArray();
 };

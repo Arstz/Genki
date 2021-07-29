@@ -54,7 +54,7 @@ void ShapeController::writeToVertexbuffer(
 	positionY += *shapeGroup.getPositionYpointer();
 
 	Shape* shapes = shapeGroup.getShapesPointer();
-	std::list<ShapeGroup> shapeGroups = shapeGroup.getShapeGroups();
+	std::list<ShapeGroup>* shapeGroups = shapeGroup.getShapeGroups();
 
 	for (int i = 0; i < shapeGroup.getShapeCount(); i++) {
 		float* shapeVertexCoords = shapes[i].getVertexCoordsPointer();
@@ -67,16 +67,13 @@ void ShapeController::writeToVertexbuffer(
 			vertexBuffer[positionOffsetCounter + j + 1] = shapeVertexCoords[j + 1] + positionY + *shapes[i].getPositionYpointer();
 		}
 		positionOffsetCounter += shapeVertexCount * 2;
-
-		for (int j = 0; j < shapeVertexCount * 4; j += 4) {
-			vertexBuffer[colorOffsetCounter + j] = shapeVertexColors[j];
-			vertexBuffer[colorOffsetCounter + j + 1] = shapeVertexColors[j + 1];
-			vertexBuffer[colorOffsetCounter + j + 2] = shapeVertexColors[j + 2];
-			vertexBuffer[colorOffsetCounter + j + 3] = shapeVertexColors[j + 3] * (*shapes[i].getAlphaChannelPointer()) * alphaChannel;
+		memcpy(&vertexBuffer[colorOffsetCounter], shapeVertexColors, sizeof(*vertexBuffer) * shapeVertexCount * 4);
+		for (int j = 3; j < shapeVertexCount * 4; j += 4) {
+			vertexBuffer[colorOffsetCounter + j] = shapeVertexColors[j] * (*shapes[i].getAlphaChannelPointer()) * alphaChannel;
 		}
 		colorOffsetCounter += shapeVertexCount * 4;
 	}
-	for (auto &shapeGroup : shapeGroups) {
+	for (auto &shapeGroup : *shapeGroups) {
 		writeToVertexbuffer(shapeGroup, positionOffsetCounter, colorOffsetCounter, alphaChannel, positionX, positionY);
 	}
 }
@@ -93,7 +90,7 @@ void ShapeController::writeToEBObuffer(
 		EBOoffsetCounter += shapeGroup.getShapesPointer()[i].getEBOsize();
 		vertexCounter += shapeGroup.getShapesPointer()[i].getVertexCount();
 	}
-	for (auto& shapeGroup : shapeGroup.getShapeGroups()) {
+	for (auto& shapeGroup : *shapeGroup.getShapeGroups()) {
 		writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
 	}
 }

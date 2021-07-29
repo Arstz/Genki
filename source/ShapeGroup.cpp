@@ -120,6 +120,7 @@ ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
 	this->shapeGroups = shapeGroups;
 
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
+//	memcpy(this->shapes, shapeGroup.shapes, shapeCount * sizeof(*shapes));
 
 	return *this;
 }
@@ -189,8 +190,8 @@ Shape* ShapeGroup::getShapesPointer() {
 	return shapes;
 }
 
-std::list<ShapeGroup> ShapeGroup::getShapeGroups() {
-	return shapeGroups;
+std::list<ShapeGroup>* ShapeGroup::getShapeGroups() {
+	return &shapeGroups;
 }
 
 float* ShapeGroup::getAlphaChannelPointer() {
