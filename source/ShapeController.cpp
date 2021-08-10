@@ -43,7 +43,6 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 GLFWwindow* ShapeController::window = nullptr;
 int ShapeController::shader = 0;
-int ShapeController::i = 0;
 
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
@@ -139,11 +138,11 @@ void ShapeController::reallocateBuffers() {
 void ShapeController::initBuffers() {
 	glGenBuffers(1, &CDB);
 	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
-	glBindBufferBase(GL_UNIFORM_BUFFER, j + 1, CDB);
+
 	glUniformBlockBinding(
 		shader,
 		glGetUniformBlockIndex(shader, "Camera"),
-		j + 1
+		1
 	);
 	
 	
@@ -155,10 +154,8 @@ void ShapeController::initBuffers() {
 	glUniformBlockBinding(
 		shader,
 		glGetUniformBlockIndex(shader, "Borders"),
-		j + 2
+		2
 	);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, j + 2, bordersBuffer);
 
 	glBufferData(
 		GL_UNIFORM_BUFFER,
@@ -259,9 +256,9 @@ void ShapeController::draw() {
 	updateBuffers();
 
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, j + 1, CDB);//suka
+	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);//suka
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, j + 2, bordersBuffer);//suka
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, bordersBuffer);//suka
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
@@ -381,13 +378,8 @@ ShapeController::ShapeController() {
 	this->bordersBuffer = 0;
 		
 	if (window) {
-		j = i;
 		initBuffers();
-		i += 2;
 	}
-
-	
-
 }
 
 ShapeController::~ShapeController() {

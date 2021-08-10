@@ -13,8 +13,7 @@
 class ShapeController {
 private:
 	static int shader;
-	static int i;
-	int j;
+
 	GLuint VBO;
 	GLuint VAO;
 	GLuint EBO;
