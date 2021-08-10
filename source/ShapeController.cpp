@@ -26,10 +26,20 @@ const char* vertexShaderSource = "#version 330 core\n"
 const char* fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "in vec4 vertexColor;\n"
+"layout(std140) uniform Borders\n"
+"{"
+"	vec2 min;\n"
+"	vec2 max;\n"
+"};"
 "void main()\n"
 "{\n"
-"   FragColor = vertexColor;\n"
-"}\n\0";
+"	vec4 temp = vertexColor;\n"
+"if(gl_FragCoord.y < 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y > 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"FragColor = temp;\n"
+"}\0";
 
 GLFWwindow* ShapeController::window = nullptr;
 int ShapeController::shader = 0;
