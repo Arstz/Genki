@@ -28,8 +28,6 @@ ShapeGroup::ShapeGroup(
 	this->shapes = new Shape[shapeCount];
 	for (int i = 0; i < shapeCount; i++) this->shapes[i] = shapes[i];
 
-	this->shapeGroups = shapeGroups;
-
 	this->alphaChannel = alphaChannel;
 	this->positionX = positionX;
 	this->positionY = positionY;
@@ -56,7 +54,6 @@ ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
 	this->shapeCount = shapeGroup.shapeCount;
 
 	this->shapes = new Shape[shapeGroup.shapeCount];
-	this->shapeGroups = shapeGroups;
 
 	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
 }

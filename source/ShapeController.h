@@ -13,15 +13,20 @@
 class ShapeController {
 private:
 	static int shader;
+	static int i;
+	int j;
 	GLuint VBO;
 	GLuint VAO;
 	GLuint EBO;
 	GLuint CDB;
+	GLuint bordersBuffer;
 
 	uint EBOsize;
 	uint vertexCount;
 
 	uint* EBObuffer;
+
+	float borders[4];
 
 	float cameraDataBuffer[2];
 

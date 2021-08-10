@@ -34,8 +34,8 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "void main()\n"
 "{\n"
 "	vec4 temp = vertexColor;\n"
-"if(gl_FragCoord.y < 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.y > 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y > 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y < 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "FragColor = temp;\n"
@@ -43,6 +43,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 GLFWwindow* ShapeController::window = nullptr;
 int ShapeController::shader = 0;
+int ShapeController::i = 0;
 
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
@@ -136,16 +137,36 @@ void ShapeController::reallocateBuffers() {
 }
 
 void ShapeController::initBuffers() {
-	
 	glGenBuffers(1, &CDB);
 	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
-		
+	glBindBufferBase(GL_UNIFORM_BUFFER, j + 1, CDB);
 	glUniformBlockBinding(
 		shader,
 		glGetUniformBlockIndex(shader, "Camera"),
-		1
+		j + 1
 	);
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);
+	
+	
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glGenBuffers(1, &bordersBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, bordersBuffer);
+
+	glUniformBlockBinding(
+		shader,
+		glGetUniformBlockIndex(shader, "Borders"),
+		j + 2
+	);
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, j + 2, bordersBuffer);
+
+	glBufferData(
+		GL_UNIFORM_BUFFER,
+		sizeof(float) * 4,
+		borders,
+		GL_STATIC_DRAW
+	);
+
 	
 
 	glGenBuffers(1, &VBO);
@@ -237,7 +258,11 @@ float* ShapeController::getCameraValuePointer(uint valueNum) {
 void ShapeController::draw() {
 	updateBuffers();
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);//suka
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, j + 1, CDB);//suka
+
+	glBindBufferBase(GL_UNIFORM_BUFFER, j + 2, bordersBuffer);//suka
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 
@@ -245,7 +270,7 @@ void ShapeController::draw() {
 	glEnableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
+
 
 	glBufferData(
 		GL_ARRAY_BUFFER,
@@ -253,7 +278,7 @@ void ShapeController::draw() {
 		vertexBuffer,
 		GL_STREAM_DRAW
 	);
-
+	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
 	glBufferData(
 		GL_UNIFORM_BUFFER,
 		sizeof(float) * CAMERA_DATA_SIZE,
@@ -344,13 +369,24 @@ ShapeController::ShapeController() {
 	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
 	this->cameraDataBuffer[1] = 0.1f;
 
+	this->borders[0] = 960 -300;
+	this->borders[1] = 540 -300;
+	this->borders[2] = 960 + 300;
+	this->borders[3] = 540 + 300;
+
 	this->VBO = 0;
 	this->VAO = 0;
 	this->EBO = 0;
 	this->CDB = 0;
+	this->bordersBuffer = 0;
+		
 	if (window) {
+		j = i;
 		initBuffers();
+		i += 2;
 	}
+
+	
 
 }
 
@@ -364,6 +400,7 @@ ShapeController::~ShapeController() {
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
 		glDeleteBuffers(1, &CDB);
+		glDeleteBuffers(1, &bordersBuffer);
 	}
 }
 
