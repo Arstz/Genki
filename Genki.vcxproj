@@ -183,6 +183,7 @@
     <ClCompile Include="source\LevelEvent\ShapeSpawnEvent.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="source\Shape.cpp" />
     <ClCompile Include="source\ShapeController.cpp" />
     <ClCompile Include="source\ShapeGroup.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="source\GUIcanvas.h" />
     <ClInclude Include="source\LevelEvent\LevelEvent.h" />
     <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\Shader.h" />
     <ClInclude Include="source\Shape.h" />
     <ClInclude Include="source\ShapeController.h" />
     <ClInclude Include="source\ShapeGroup.h" />
