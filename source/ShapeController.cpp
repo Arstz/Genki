@@ -181,7 +181,11 @@ void ShapeController::draw() {
 			additionalBuffers[i]
 		);
 	}
-
+	glBindBufferBase(
+		GL_UNIFORM_BUFFER,
+		1,
+		CDB
+	);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 
@@ -190,6 +194,12 @@ void ShapeController::draw() {
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
+	glBufferData(
+		GL_UNIFORM_BUFFER,
+		sizeof(float) * CAMERA_DATA_SIZE,
+		cameraDataBuffer,
+		GL_STREAM_DRAW
+	);
 
 	glBufferData(
 		GL_ARRAY_BUFFER,
@@ -280,16 +290,10 @@ ShapeController::ShapeController(Shader* shader, void** buffersData) {
 	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
 	this->cameraDataBuffer[1] = 0.1f;
 
-	this->borders[0] = 960 -300;
-	this->borders[1] = 540 -300;
-	this->borders[2] = 960 + 300;
-	this->borders[3] = 540 + 300;
-
 	this->VBO = 0;
 	this->VAO = 0;
 	this->EBO = 0;
 	this->CDB = 0;
-	this->bordersBuffer = 0;
 		
 	if (window) {
 		initBuffers(buffersData);
@@ -307,7 +311,6 @@ ShapeController::~ShapeController() {
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
 		glDeleteBuffers(1, &CDB);
-		glDeleteBuffers(1, &bordersBuffer);
 		for (int i = 0; i < bufferCount; i++) {
 			free(additionalBuffersData[i]);
 			additionalBuffersData[i] = nullptr;

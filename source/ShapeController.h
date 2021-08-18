@@ -24,17 +24,12 @@ private:
 	GLuint VAO;
 	GLuint EBO;
 	GLuint CDB;
-	GLuint bordersBuffer;
 
 	uint EBOsize;
 	uint vertexCount;
 
 	uint* EBObuffer;
-
-	float borders[4];
-
 	float cameraDataBuffer[2];
-
 	float* vertexBuffer;	
 
 	ShapeGroup shapeGroup;

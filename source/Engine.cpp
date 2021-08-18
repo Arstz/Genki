@@ -11,6 +11,7 @@
 #include "GUI.h"
 #include "Text.h"
 #include "Shader.h"
+#include <initializer_list>
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -59,6 +60,14 @@ const char* fragmentShaderSource1 = "#version 330 core\n"
 "FragColor = temp;\n"
 "}\0";
 
+const char* fragmentShaderSource0 = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"in vec4 vertexColor;\n"
+"void main()\n"
+"{\n"
+"FragColor = vertexColor;\n"
+"}\0";
+
 float Engine::currentTime = 0;
 float Engine::frameTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
@@ -96,20 +105,27 @@ void Engine::init() {
 
 	char* const* sources = (char* const*)sourcess;
 
-	Shader shader(types, sources, 2, bufferProperties);
+	Shader* shader = new Shader(types, sources, 2, bufferProperties);
 
-	float cameraBufferData[] {0.1f / 16.f * 9.f, 0.1f};
-	float bordersBufferData[]
-	{960 - 300, 540 - 300, 960 + 300, 540 + 300};
-//	{0, 0, 0, 0};
-	void* datassss[] {(void*)cameraBufferData, (void*)bordersBufferData};
+	void** data = (void**)std::begin(std::initializer_list<void*> {
+		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
+		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 960 + 300, 540 + 300}), //borders data buffer
+	});
 
-	void** data = (void**)datassss;
+	std::vector<BufferProperties> bufferProperties1{
+	BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
+	};
+
+	const char* sourcess1[] ={vertexShaderSource1, fragmentShaderSource0};
+
+	char* const* sources1 = (char* const*)sourcess1;
+
+	Shader* shader1 = new Shader(types, sources1, 2, std::vector<BufferProperties>(0));
 
 	ShapeController::setWindow(window);
-	GUIshapeController = new ShapeController(&shader, data);
+	GUIshapeController = new ShapeController(shader1, data);
 	GUIcanvas::init(GUIshapeController);
-	levelShapeController = new ShapeController(&shader, data);
+	levelShapeController = new ShapeController(shader1, data);
 
 
 	start = std::chrono::system_clock::now();
