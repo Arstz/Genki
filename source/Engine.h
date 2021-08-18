@@ -15,6 +15,7 @@ private:
 	static std::chrono::system_clock::time_point start;
 	static GLFWwindow* window;
 	static ShapeController* levelShapeController;
+	static ShapeController* GUIshapeController;
 	static Player player;
 
 

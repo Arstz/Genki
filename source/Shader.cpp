@@ -4,6 +4,24 @@
 std::vector<int> Shader::shaderIDs(0);
 int Shader::lastShaderVariableID = 1;
 
+BufferProperties::BufferProperties(
+	int type,
+	size_t bufferSize,
+	const char* variableName
+) {
+	this->type = type;
+	this->shaderVariableID = 0;
+	this->bufferSize = bufferSize;
+	this->variableName = variableName;
+}
+
+BufferProperties::BufferProperties() {
+	this->type = 0;
+	this->shaderVariableID = 0;
+	this->bufferSize = 0;
+	this->variableName = 0;
+}
+
 void log(int shaderID, int statusType) {
 	int success;
 	char infoLog[512];
@@ -34,7 +52,7 @@ Shader& Shader::operator=(Shader&& other) noexcept {
 
 Shader::Shader(
 	int* types, 
-	char** const* sources,
+	char* const* sources,
 	int count, 
 	const std::vector<BufferProperties>& bufferProperties
 ) {
@@ -47,7 +65,7 @@ Shader::Shader(
 	for (int i = 0; i < count; i++) {
 		shaders[i] = glCreateShader(types[i]);
 
-		glShaderSource(shaders[i], 1, sources[i], NULL);
+		glShaderSource(shaders[i], 1, &sources[i], NULL);
 		glCompileShader(shaders[i]);
 
 		log(shaders[i], GL_COMPILE_STATUS);
@@ -81,3 +99,8 @@ Shader::~Shader() { //does opengl create shader with id zero if(glShaderID != 0)
 const std::vector<BufferProperties>& Shader::getBufferProperties() {
 	return bufferProperties;
 }
+
+int Shader::getGLshaderID() {
+	return glShaderID;
+}
+

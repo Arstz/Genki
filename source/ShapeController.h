@@ -3,6 +3,7 @@
 #include "Shape.h"
 #include "ShapeGroup.h"
 #include "Vector2f.h"
+#include "Shader.h"
 #include <list>
 
 #define VERTEX_SIZE 6ul
@@ -12,7 +13,13 @@
 
 class ShapeController {
 private:
-	static int shader;
+	static int shader_id_kogda_to_ia_ego_uberu;
+	Shader* shader;
+
+	GLuint* additionalBuffers;
+	void** additionalBuffersData;
+	std::vector<BufferProperties> bufferProperties;
+	int bufferCount;
 
 	GLuint VBO;
 	GLuint VAO;
@@ -37,7 +44,7 @@ private:
 
 	void updateBuffers();
 	void reallocateBuffers();
-	void initBuffers();
+	void initBuffers(void** buffersData);
 		
 
 	void writeToVertexbuffer(
@@ -76,7 +83,7 @@ public:
 	Vector2f pxToValue(Vector2f px);
 	Vector2f valueToPx(Vector2f value);
 
-	ShapeController();
+	ShapeController(Shader* shader, void** BuffersData);
 	ShapeController& operator=(const ShapeController& shapeController) = delete;
 	ShapeController(const ShapeController& shapeController) = delete;
 	~ShapeController();

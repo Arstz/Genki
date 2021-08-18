@@ -10,6 +10,7 @@
 #include "Vector2f.h"
 #include "GUI.h"
 #include "Text.h"
+#include "Shader.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -25,11 +26,45 @@
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 #define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 
+const char* vertexShaderSource1 = "#version 330 core\n"
+"layout (location = 0) in vec2 pos;\n"
+"layout (location = 1) in vec4 color;\n"
+
+"layout(std140) uniform Camera"
+"{"
+"	vec2 scale;"
+"};"
+"out vec4 vertexColor;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4(pos*scale, 0.f, 1.f);\n"
+"   vertexColor = color;\n"
+"}\0";
+
+const char* fragmentShaderSource1 = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"in vec4 vertexColor;\n"
+"layout(std140) uniform Borders\n"
+"{"
+"	vec2 min;\n"
+"	vec2 max;\n"
+"};"
+"void main()\n"
+"{\n"
+"	vec4 temp = vertexColor;\n"
+"if(gl_FragCoord.y > 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y < 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"FragColor = temp;\n"
+"}\0";
+
 float Engine::currentTime = 0;
 float Engine::frameTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
 GLFWwindow* Engine::window = nullptr;
 ShapeController* Engine::levelShapeController = nullptr;
+ShapeController* Engine::GUIshapeController = nullptr;
 Player Engine::player = Player();
 
 void Engine::destroy()
@@ -47,13 +82,35 @@ void Engine::init() {
 
 	Window::init(1920, 1080);
 	window = Window::getWindow();
-	GUIcanvas::setWindow();
+//	GUIcanvas::setWindow();
 
+	std::vector<BufferProperties> bufferProperties{
+		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
+		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Borders"),
+	};
+
+	int types1[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
+	int* types = (int*)types1;
+
+	const char* sourcess[] = {vertexShaderSource1, fragmentShaderSource1};
+
+	char* const* sources = (char* const*)sourcess;
+
+	Shader shader(types, sources, 2, bufferProperties);
+
+	float cameraBufferData[] {0.1f / 16.f * 9.f, 0.1f};
+	float bordersBufferData[]
+	{960 - 300, 540 - 300, 960 + 300, 540 + 300};
+//	{0, 0, 0, 0};
+	void* datassss[] {(void*)cameraBufferData, (void*)bordersBufferData};
+
+	void** data = (void**)datassss;
 
 	ShapeController::setWindow(window);
 	ShapeController::initShader();
-	GUIcanvas::init();
-	levelShapeController = new ShapeController();
+//	GUIshapeController = new ShapeController(&shader, data);
+//	GUIcanvas::init(GUIshapeController);
+	levelShapeController = new ShapeController(&shader, data);
 
 
 	start = std::chrono::system_clock::now();
@@ -71,17 +128,17 @@ void Engine::init() {
 
 //	EventController::saveLevel("a", EventController::level);
 
-	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
-	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
-	float* x = new float(0);
-	float* y = new float(0);
-	bool* z = new bool(0);
-	*z = false;
-	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
-	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
-	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
-	Text::setScale(Vector2f(0.3, 0.3));
-	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
+//	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
+//	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
+//	float* x = new float(0);
+//	float* y = new float(0);
+//	bool* z = new bool(0);
+//	*z = false;
+//	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
+//	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
+//	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
+//	Text::setScale(Vector2f(0.3, 0.3));
+//	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
 }
 
 void Engine::pollEvents() {
@@ -94,7 +151,7 @@ void Engine::update() {
 	auto end = std::chrono::system_clock::now();
 	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	GUIcanvas::update();
+//	GUIcanvas::update();
 	EventController::update();
 	AnimationController::update();
 
@@ -103,7 +160,7 @@ void Engine::update() {
 void Engine::render() {
 	Window::clear();
 	levelShapeController->draw();
-	GUIcanvas::draw();
+//	GUIcanvas::draw();
 	
 	
 	glfwSwapBuffers(window);

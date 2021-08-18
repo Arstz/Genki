@@ -29,7 +29,7 @@ private:
 public:
 	static ShapeController* shapeController;
 	static void setWindow();
-	static void init();
+	static void init(ShapeController* shapeController);
 	static void update();
 	static void draw();
 	static void addSex(

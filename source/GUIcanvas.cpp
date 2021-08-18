@@ -74,7 +74,7 @@ void GUIcanvas::setWindow() {
 	GUIcanvas::windowHeight = Window::getHeight();
 }
 
-void GUIcanvas::init() {
-	GUIcanvas::shapeController = new ShapeController();
+void GUIcanvas::init(ShapeController* shapeController) {
+	GUIcanvas::shapeController = shapeController;
 	GUIinteractiveObject::resetInteratiocData();
 }

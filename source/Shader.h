@@ -16,6 +16,13 @@ struct BufferProperties {
 	int shaderVariableID;
 	size_t bufferSize;
 	const char* variableName;
+
+	BufferProperties(
+		int type,
+		size_t bufferSize,
+		const char* variableName
+	);
+	BufferProperties();
 };
 
 void log(int shaderID, int statusType);
@@ -38,12 +45,13 @@ public:
 
 	Shader(
 		int* types, 
-		char** const * sources,
+		char* const * sources,
 		int count, 
 		const std::vector<BufferProperties>& bufferProperties
 	);
 	~Shader();
 
 	const std::vector<BufferProperties>& getBufferProperties();
+	int getGLshaderID();
 };
 
