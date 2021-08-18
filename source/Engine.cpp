@@ -82,7 +82,7 @@ void Engine::init() {
 
 	Window::init(1920, 1080);
 	window = Window::getWindow();
-//	GUIcanvas::setWindow();
+	GUIcanvas::setWindow();
 
 	std::vector<BufferProperties> bufferProperties{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
@@ -107,9 +107,8 @@ void Engine::init() {
 	void** data = (void**)datassss;
 
 	ShapeController::setWindow(window);
-	ShapeController::initShader();
-//	GUIshapeController = new ShapeController(&shader, data);
-//	GUIcanvas::init(GUIshapeController);
+	GUIshapeController = new ShapeController(&shader, data);
+	GUIcanvas::init(GUIshapeController);
 	levelShapeController = new ShapeController(&shader, data);
 
 
@@ -128,17 +127,17 @@ void Engine::init() {
 
 //	EventController::saveLevel("a", EventController::level);
 
-//	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
-//	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
-//	float* x = new float(0);
-//	float* y = new float(0);
-//	bool* z = new bool(0);
-//	*z = false;
-//	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
-//	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
-//	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
-//	Text::setScale(Vector2f(0.3, 0.3));
-//	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
+	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
+	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
+	float* x = new float(0);
+	float* y = new float(0);
+	bool* z = new bool(0);
+	*z = false;
+	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
+	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
+	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
+	Text::setScale(Vector2f(0.3, 0.3));
+	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
 }
 
 void Engine::pollEvents() {
@@ -151,7 +150,7 @@ void Engine::update() {
 	auto end = std::chrono::system_clock::now();
 	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-//	GUIcanvas::update();
+	GUIcanvas::update();
 	EventController::update();
 	AnimationController::update();
 
@@ -160,7 +159,7 @@ void Engine::update() {
 void Engine::render() {
 	Window::clear();
 	levelShapeController->draw();
-//	GUIcanvas::draw();
+	GUIcanvas::draw();
 	
 	
 	glfwSwapBuffers(window);

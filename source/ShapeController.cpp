@@ -7,42 +7,7 @@
 #define new MYDEBUG_NEW
 #endif
 
-
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec2 pos;\n"
-"layout (location = 1) in vec4 color;\n"
-
-"layout(std140) uniform Camera"
-"{"
-"	vec2 scale;"
-"};"
-"out vec4 vertexColor;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(pos*scale, 0.f, 1.f);\n"
-"   vertexColor = color;\n"
-"}\0";
-
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec4 vertexColor;\n"
-"layout(std140) uniform Borders\n"
-"{"
-"	vec2 min;\n"
-"	vec2 max;\n"
-"};"
-"void main()\n"
-"{\n"
-"	vec4 temp = vertexColor;\n"
-"if(gl_FragCoord.y > 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.y < 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"FragColor = temp;\n"
-"}\0";
-
 GLFWwindow* ShapeController::window = nullptr;
-int ShapeController::shader_id_kogda_to_ia_ego_uberu = 0;
 
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
@@ -106,6 +71,8 @@ void ShapeController::writeToEBObuffer(
 }
 
 void ShapeController::reallocateBuffers() {
+	glUseProgram(shader->getGLshaderID());
+
 	free(vertexBuffer);
 	vertexBuffer = (float*)malloc(vertexCount * VERTEX_SIZE * sizeof(*vertexBuffer));
 
@@ -158,35 +125,7 @@ void ShapeController::initBuffers(void** buffersData) {
 			GL_STATIC_DRAW
 		);
 	}
-	/*
-	glGenBuffers(1, &CDB);
-	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
 
-	glUniformBlockBinding(
-		shader_id_kogda_to_ia_ego_uberu,
-		glGetUniformBlockIndex(shader_id_kogda_to_ia_ego_uberu, "Camera"),
-		1
-	);
-	
-	
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glGenBuffers(1, &bordersBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, bordersBuffer);
-
-	glUniformBlockBinding(
-		shader_id_kogda_to_ia_ego_uberu,
-		glGetUniformBlockIndex(shader_id_kogda_to_ia_ego_uberu, "Borders"),
-		2
-	);
-
-	glBufferData(
-		GL_UNIFORM_BUFFER,
-		sizeof(float) * 4,
-		borders,
-		GL_STATIC_DRAW
-	);
-	*/
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
@@ -222,50 +161,6 @@ void ShapeController::initBuffers(void** buffersData) {
 	glBindVertexArray(0);
 }
 
-void ShapeController::initShader() {
-	/*
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	shader_id_kogda_to_ia_ego_uberu = glCreateProgram();
-	glAttachShader(shader_id_kogda_to_ia_ego_uberu, vertexShader);
-	glAttachShader(shader_id_kogda_to_ia_ego_uberu, fragmentShader);
-	glLinkProgram(shader_id_kogda_to_ia_ego_uberu);
-
-	glGetProgramiv(shader_id_kogda_to_ia_ego_uberu, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shader_id_kogda_to_ia_ego_uberu, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	glUseProgram(shader_id_kogda_to_ia_ego_uberu);
-	*/
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
 void ShapeController::destroy()
 {
 	shapeGroup.~ShapeGroup();
@@ -276,6 +171,7 @@ float* ShapeController::getCameraValuePointer(uint valueNum) {
 }
 
 void ShapeController::draw() {
+	glUseProgram(shader->getGLshaderID());
 	updateBuffers();
 
 	for (int i = 0; i < bufferCount; i++) {
@@ -285,11 +181,7 @@ void ShapeController::draw() {
 			additionalBuffers[i]
 		);
 	}
-	/*
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, CDB);//suka
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 2, bordersBuffer);//suka
-	*/
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 
@@ -305,16 +197,7 @@ void ShapeController::draw() {
 		vertexBuffer,
 		GL_STREAM_DRAW
 	);
-	/*
-	glBindBuffer(GL_UNIFORM_BUFFER, CDB);
-	glBufferData(
-		GL_UNIFORM_BUFFER,
-		sizeof(float) * CAMERA_DATA_SIZE,
-		cameraDataBuffer,
-		GL_STATIC_DRAW
-	);
-	*/
-	glUseProgram(shader->getGLshaderID());
+	
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
@@ -391,6 +274,8 @@ ShapeController::ShapeController(Shader* shader, void** buffersData) {
 	this->shader = shader;
 	this->bufferProperties = shader->getBufferProperties();
 	this->bufferCount = bufferProperties.size();
+
+	glUseProgram(shader->getGLshaderID());
 
 	this->cameraDataBuffer[0] = 0.1f / 16.f * 9.f;
 	this->cameraDataBuffer[1] = 0.1f;

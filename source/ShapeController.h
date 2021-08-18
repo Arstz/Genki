@@ -13,7 +13,6 @@
 
 class ShapeController {
 private:
-	static int shader_id_kogda_to_ia_ego_uberu;
 	Shader* shader;
 
 	GLuint* additionalBuffers;
@@ -62,7 +61,6 @@ private:
 	);
 
 public:
-	static void initShader();
 	void destroy();
 	void draw();
 	
