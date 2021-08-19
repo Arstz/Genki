@@ -178,6 +178,8 @@ void ShapeController::draw() {
 	glUseProgram(shader->getGLshaderID());
 	updateBuffers();
 
+
+
 	for (int i = 0; i < bufferCount; i++) {
 		glBindBufferBase(
 			bufferProperties[i].type, 
@@ -185,11 +187,7 @@ void ShapeController::draw() {
 			additionalBuffers[i]
 		);
 	}
-	glBindBufferBase(
-		GL_UNIFORM_BUFFER,
-		1,
-		additionalBuffers[0]
-	);
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindVertexArray(VAO);
 
@@ -199,19 +197,21 @@ void ShapeController::draw() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
 	glBufferData(
-		GL_UNIFORM_BUFFER,
-		sizeof(float) * CAMERA_DATA_SIZE,
-		CAMERA_BUFFER_DATA,
-		GL_STREAM_DRAW
-	);
-
-	glBufferData(
 		GL_ARRAY_BUFFER,
 		sizeof(float) * vertexCount * VERTEX_SIZE,
 		vertexBuffer,
 		GL_STREAM_DRAW
 	);
 	
+	glBindBuffer(GL_UNIFORM_BUFFER, CAMERA_BUFFER);
+
+	glBufferData(
+		GL_UNIFORM_BUFFER,
+		sizeof(float) * CAMERA_DATA_SIZE,
+		CAMERA_BUFFER_DATA,
+		GL_STREAM_DRAW
+	);
+
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);

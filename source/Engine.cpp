@@ -107,10 +107,25 @@ void Engine::init() {
 
 	Shader* shader = new Shader(types, sources, 2, bufferProperties);
 
-	void** data = (void**)std::begin(std::initializer_list<void*> {
-		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
-		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 960 + 300, 540 + 300}), //borders data buffer
-	});
+//	void** data = (void**)std::begin(std::initializer_list<void*> {
+//		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
+//		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 960 + 300, 540 + 300}), //borders data buffer
+//	});
+
+
+	void* data1[1];
+
+	float cdb[2]{0.1f / 16.f * 9.f, 0.1f};
+
+
+
+//	void** data = new void* [1];
+
+	void** data = data1;
+
+	data[1] = cdb;
+
+	data[0] = (void*)new float[2]{0.1f / 16.f * 9.f, 0.1f};
 
 	std::vector<BufferProperties> bufferProperties1{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
@@ -121,6 +136,8 @@ void Engine::init() {
 	char* const* sources1 = (char* const*)sourcess1;
 
 	Shader* shader1 = new Shader(types, sources1, 2, bufferProperties1);
+
+	std::cout << ((float*)data[0])[0] << "\t" << ((float*)data[0])[1] << "\n";
 
 	ShapeController::setWindow(window);
 	GUIshapeController = new ShapeController(shader1, data);
