@@ -11,6 +11,9 @@
 #define VERTEX_ATTRIB_ARRAY_1 0
 #define VERTEX_ATTRIB_ARRAY_2 1
 
+#define CAMERA_BUFFER_DATA ((float*)(additionalBuffersData[0])) //first element
+#define CAMERA_BUFFER additionalBuffers[0]
+
 class ShapeController {
 private:
 	Shader* shader;
@@ -23,13 +26,11 @@ private:
 	GLuint VBO;
 	GLuint VAO;
 	GLuint EBO;
-	GLuint CDB;
 
 	uint EBOsize;
 	uint vertexCount;
 
 	uint* EBObuffer;
-	float cameraDataBuffer[2];
 	float* vertexBuffer;	
 
 	ShapeGroup shapeGroup;
@@ -75,6 +76,8 @@ public:
 
 	Vector2f pxToValue(Vector2f px);
 	Vector2f valueToPx(Vector2f value);
+
+	bool checkCameraDataBuffer();
 
 	ShapeController(Shader* shader, void** BuffersData);
 	ShapeController& operator=(const ShapeController& shapeController) = delete;

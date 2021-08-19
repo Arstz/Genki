@@ -113,14 +113,14 @@ void Engine::init() {
 	});
 
 	std::vector<BufferProperties> bufferProperties1{
-	BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
+		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
 	};
 
 	const char* sourcess1[] ={vertexShaderSource1, fragmentShaderSource0};
 
 	char* const* sources1 = (char* const*)sourcess1;
 
-	Shader* shader1 = new Shader(types, sources1, 2, std::vector<BufferProperties>(0));
+	Shader* shader1 = new Shader(types, sources1, 2, bufferProperties1);
 
 	ShapeController::setWindow(window);
 	GUIshapeController = new ShapeController(shader1, data);

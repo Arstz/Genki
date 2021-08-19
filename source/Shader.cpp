@@ -2,7 +2,7 @@
 #include <iostream>
 
 std::vector<int> Shader::shaderIDs(0);
-int Shader::lastShaderVariableID = 1;
+int Shader::lastShaderVariableID = 0;
 
 BufferProperties::BufferProperties(
 	int type,
