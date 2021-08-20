@@ -53,8 +53,8 @@ const char* fragmentShaderSource1 = "#version 330 core\n"
 "void main()\n"
 "{\n"
 "	vec4 temp = vertexColor;\n"
-"if(gl_FragCoord.y > 1080 - min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.y < 1080 - max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y > min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
+"if(gl_FragCoord.y < max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
 "FragColor = temp;\n"
@@ -109,29 +109,20 @@ void Engine::init() {
 
 //	void** data = (void**)std::begin(std::initializer_list<void*> {
 //		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
-//		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 960 + 300, 540 + 300}), //borders data buffer
+//		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 1080 - (960 + 300), 1080 - (540 + 300)}), //borders data buffer
 //	});
 
+//	float cdb[2]{0.1f / 16.f * 9.f, 0.1f};
 
-	void* data1[1];
+	void** data = new void*[1];
 
-	float cdb[2]{0.1f / 16.f * 9.f, 0.1f};
-
-
-
-//	void** data = new void* [1];
-
-	void** data = data1;
-
-	data[1] = cdb;
-
-	data[0] = (void*)new float[2]{0.1f / 16.f * 9.f, 0.1f};
+	data[0] = (void*)new float[]{0.1f / 16.f * 9.f, 0.1f};
 
 	std::vector<BufferProperties> bufferProperties1{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
 	};
 
-	const char* sourcess1[] ={vertexShaderSource1, fragmentShaderSource0};
+	const char* sourcess1[] = {vertexShaderSource1, fragmentShaderSource0};
 
 	char* const* sources1 = (char* const*)sourcess1;
 
@@ -193,7 +184,6 @@ void Engine::render() {
 	Window::clear();
 	levelShapeController->draw();
 	GUIcanvas::draw();
-	
 	
 	glfwSwapBuffers(window);
 }

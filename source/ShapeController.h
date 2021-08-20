@@ -7,12 +7,8 @@
 #include <list>
 
 #define VERTEX_SIZE 6ul
-#define CAMERA_DATA_SIZE 2u
 #define VERTEX_ATTRIB_ARRAY_1 0
 #define VERTEX_ATTRIB_ARRAY_2 1
-
-#define CAMERA_BUFFER_DATA ((float*)(additionalBuffersData[0])) //first element
-#define CAMERA_BUFFER additionalBuffers[0]
 
 class ShapeController {
 private:
@@ -22,6 +18,8 @@ private:
 	void** additionalBuffersData;
 	std::vector<BufferProperties> bufferProperties;
 	int bufferCount;
+
+	float* cameraBufferData;
 
 	GLuint VBO;
 	GLuint VAO;
@@ -77,7 +75,7 @@ public:
 	Vector2f pxToValue(Vector2f px);
 	Vector2f valueToPx(Vector2f value);
 
-	bool checkCameraDataBuffer();
+	int checkCameraBufferData();
 
 	ShapeController(Shader* shader, void** BuffersData);
 	ShapeController& operator=(const ShapeController& shapeController) = delete;

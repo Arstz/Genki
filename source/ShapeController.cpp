@@ -103,7 +103,6 @@ void ShapeController::reallocateBuffers() {
 }
 
 void ShapeController::initBuffers(void** buffersData) {
-	glUseProgram(shader->getGLshaderID());
 	vertexCount = 0;
 	vertexBuffer = (float*)malloc(0);
 
@@ -129,6 +128,10 @@ void ShapeController::initBuffers(void** buffersData) {
 			GL_STATIC_DRAW
 		);
 	}
+
+	int index = checkCameraBufferData();
+
+	cameraBufferData = (index >= 0) ? (float*)additionalBuffersData[index] : new float[] {1, 1};
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -171,14 +174,12 @@ void ShapeController::destroy()
 }
 
 float* ShapeController::getCameraValuePointer(uint valueNum) {
-	return &CAMERA_BUFFER_DATA[valueNum];
+	return &cameraBufferData[valueNum];
 }
 
 void ShapeController::draw() {
 	glUseProgram(shader->getGLshaderID());
 	updateBuffers();
-
-
 
 	for (int i = 0; i < bufferCount; i++) {
 		glBindBufferBase(
@@ -202,15 +203,16 @@ void ShapeController::draw() {
 		vertexBuffer,
 		GL_STREAM_DRAW
 	);
-	
-	glBindBuffer(GL_UNIFORM_BUFFER, CAMERA_BUFFER);
 
-	glBufferData(
-		GL_UNIFORM_BUFFER,
-		sizeof(float) * CAMERA_DATA_SIZE,
-		CAMERA_BUFFER_DATA,
-		GL_STREAM_DRAW
-	);
+	for (int i = 0; i < bufferCount; i++) {
+		glBindBuffer(GL_UNIFORM_BUFFER, additionalBuffers[i]);
+		glBufferData(
+			bufferProperties[i].type,
+			bufferProperties[i].bufferSize,
+			additionalBuffersData[i],
+			GL_STREAM_DRAW
+		);
+	}
 
 	glDrawElements(GL_TRIANGLES, EBOsize, GL_UNSIGNED_INT, 0);
 
@@ -244,30 +246,30 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 
 Vector2f ShapeController::screenCoordsToEngineCoords(Vector2f vector) {
 	return Vector2f(
-		(vector.x * 2 / Window::getWidth() - 1) / CAMERA_BUFFER_DATA[0],
-		-(vector.y * 2 / Window::getHeight() - 1) / CAMERA_BUFFER_DATA[1]
+		(vector.x * 2 / Window::getWidth() - 1) / cameraBufferData[0],
+		-(vector.y * 2 / Window::getHeight() - 1) / cameraBufferData[1]
 	);
 }
 
 Vector2f ShapeController::engineCoordsToScreenCoords(Vector2f vector)
 {
 	return Vector2f(
-		Window::getWidth() / 2  * (1 + vector.x * CAMERA_BUFFER_DATA[0]),
-		Window::getHeight() / 2  * (1 - vector.y * CAMERA_BUFFER_DATA[1])
+		Window::getWidth() / 2  * (1 + vector.x * cameraBufferData[0]),
+		Window::getHeight() / 2  * (1 - vector.y * cameraBufferData[1])
 	);
 }
 
 Vector2f ShapeController::pxToValue(Vector2f px) {
 	return Vector2f(
-		px.x * 2 / Window::getWidth() / CAMERA_BUFFER_DATA[0],
-		px.y * 2 / Window::getHeight() / CAMERA_BUFFER_DATA[1]
+		px.x * 2 / Window::getWidth() / cameraBufferData[0],
+		px.y * 2 / Window::getHeight() / cameraBufferData[1]
 	);
 }
  
 Vector2f ShapeController::valueToPx(Vector2f value) {
 	return Vector2f(
-		Window::getWidth() / 2 * value.x * CAMERA_BUFFER_DATA[0],
-		Window::getHeight() / 2 * value.y * CAMERA_BUFFER_DATA[1]
+		Window::getWidth() / 2 * value.x * cameraBufferData[0],
+		Window::getHeight() / 2 * value.y * cameraBufferData[1]
 	);
 }
 
@@ -275,14 +277,13 @@ void ShapeController::setWindow(GLFWwindow* window) {
 	ShapeController::window = window;
 }
 
-bool ShapeController::checkCameraDataBuffer() {
+int ShapeController::checkCameraBufferData() {
 	for (int i = 0; i < bufferCount; i++) {
 		if (bufferProperties[i].variableName == "Camera") {
-			std::swap(bufferProperties[i], bufferProperties[0]);
-			return true;
+			return i;
 		}
 	}
-	return false;
+	return -1;
 }
 
 void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGroupIterator) {
@@ -298,8 +299,6 @@ ShapeController::ShapeController(Shader* shader, void** buffersData) {
 	this->shader = shader;
 	this->bufferProperties = shader->getBufferProperties();
 	this->bufferCount = bufferProperties.size();
-
-	if (!checkCameraDataBuffer()) throw std::exception("CAMERA_DATA_BUFFER_MISSING");
 
 	glUseProgram(shader->getGLshaderID());
 
@@ -322,7 +321,11 @@ ShapeController::~ShapeController() {
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 		glDeleteBuffers(1, &EBO);
-		glDeleteBuffers(1, &CAMERA_BUFFER);
+
+		if (!checkCameraBufferData()) {
+			delete[] cameraBufferData;
+		}
+
 		for (int i = 0; i < bufferCount; i++) {
 			free(additionalBuffersData[i]);
 			additionalBuffersData[i] = nullptr;
