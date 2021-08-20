@@ -112,8 +112,6 @@ void Engine::init() {
 //		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 1080 - (960 + 300), 1080 - (540 + 300)}), //borders data buffer
 //	});
 
-//	float cdb[2]{0.1f / 16.f * 9.f, 0.1f};
-
 	void** data = new void*[1];
 
 	data[0] = (void*)new float[]{0.1f / 16.f * 9.f, 0.1f};
@@ -161,7 +159,7 @@ void Engine::init() {
 	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
 	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
 	Text::setScale(Vector2f(0.3, 0.3));
-	GUIobject(Text::makeText("AMOGUS", Vector2f(-5, -4)), GUIcanvas::shapeController);
+	GUIobject(Text::makeText("228AUE1337", Vector2f(-5, -4)), GUIcanvas::shapeController);
 }
 
 void Engine::pollEvents() {
