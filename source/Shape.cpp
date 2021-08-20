@@ -24,10 +24,10 @@ Shape::Shape(
 	float* vertexColors,
 	uint EBOsize,
 	uint* vertexIDs,
-	float alphaChannel,
-	float positionX,
-	float positionY,
-	int layer
+	float alphaChannel = 0,
+	float positionX = 0,
+	float positionY = 0,
+	int layer = 0
 ) {
 	this->vertexCount = vertexCount;
 
@@ -48,6 +48,43 @@ Shape::Shape(
 
 	this->layer = layer;
 }
+
+Shape::Shape(
+	uint vertexCount,
+	float* vertexCoords,
+	Color color,
+	uint EBOsize,
+	uint* vertexIDs,
+	float alphaChannel = 0,
+	float positionX = 0,
+	float positionY = 0,
+	int layer = 0
+) {
+	this->vertexCount = vertexCount;
+
+	this->vertexCoords = new float[static_cast<long long>(vertexCount) * 2];
+	this->vertexColors = new float[static_cast<long long>(vertexCount) * 4];
+
+	memcpy(this->vertexCoords, vertexCoords, vertexCount * sizeof(*vertexCoords) * 2);
+
+	Color* tempColors = (Color*)this->vertexColors;
+	for (int i = 0; i < vertexCount; i++) {
+		tempColors[i] = color;
+	}
+	tempColors = nullptr;
+
+	this->EBOsize = EBOsize;
+	this->vertexIDs = new uint[EBOsize];
+
+	memcpy(this->vertexIDs, vertexIDs, EBOsize * sizeof(*vertexIDs));
+
+	this->alphaChannel = alphaChannel;
+	this->positionX = positionX;
+	this->positionY = positionY;
+
+	this->layer = layer;
+}
+
 
 Shape::Shape(const Shape& shape) {
 	this->vertexCount = shape.vertexCount;

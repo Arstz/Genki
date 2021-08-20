@@ -35,6 +35,17 @@ public:
 		float positionY,
 		int layer
 	);
+	Shape(
+		uint vertexCount,
+		float* vertexCoords,
+		Color color,
+		uint EBOsize,
+		uint* vertexIDs,
+		float alphaChannel,
+		float positionX,
+		float positionY,
+		int layer
+	);
 	~Shape();
 	Shape(const Shape& shape);
 	Shape& operator=(const Shape& shape);

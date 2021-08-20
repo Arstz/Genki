@@ -112,9 +112,6 @@ void ShapeController::initBuffers(void** buffersData) {
 	additionalBuffers = new GLuint[bufferCount];
 	additionalBuffersData = new void* [bufferCount];
 
-	//eto pizdets
-	//zapomni suka, pervii index zaniat moim bratom i zovut camerDataBuffer
-
 	for (int i = 0; i < bufferCount; i++) {
 		additionalBuffers[i] = 0;
 		additionalBuffersData[i] = malloc(bufferProperties[i].bufferSize);
@@ -131,7 +128,7 @@ void ShapeController::initBuffers(void** buffersData) {
 
 	int index = checkCameraBufferData();
 
-	cameraBufferData = (index >= 0) ? (float*)additionalBuffersData[index] : new float[] {0.1f / 16.f * 9.f, 0.1f};
+	cameraBufferData = (index >= 0) ? (float*)additionalBuffersData[index] : new float[] {1.f / Window::getWidth() * Window::getHeight(), 1.f};
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -275,6 +272,7 @@ Vector2f ShapeController::valueToPx(Vector2f value) {
 
 void ShapeController::setWindow(GLFWwindow* window) {
 	ShapeController::window = window;
+
 }
 
 int ShapeController::checkCameraBufferData() {

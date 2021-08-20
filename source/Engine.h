@@ -17,7 +17,11 @@ private:
 	static ShapeController* levelShapeController;
 	static ShapeController* GUIshapeController;
 	static Player player;
+	static void createShaders();
+	static void initGUI();
 
+	static int width;
+	static int height;
 
 public:
 	static void init();

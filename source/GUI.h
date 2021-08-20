@@ -104,7 +104,7 @@ public:
 		Vector2f min,
 		Vector2f max,
 		ShapeController* shapeController,
-		float cursorSize = 0.5
+		float cursorSize = 0.05
 	);  
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };

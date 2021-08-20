@@ -23,19 +23,27 @@
 
 #define AAAA (static_cast <float> (rand()) / static_cast <float> (RAND_MAX))
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
+#define SCREEN_RATIO (float)height/(float)width
 
-#define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-#define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+#define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 #define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+#define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 
-float Engine::currentTime = 0;
 float Engine::frameTime = 0;
-std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
-GLFWwindow* Engine::window = nullptr;
-ShapeController* Engine::levelShapeController = nullptr;
-ShapeController* Engine::GUIshapeController = nullptr;
+float Engine::currentTime = 0;
+
+int Engine::height = 1000;
+int Engine::width = 1500;
+
 Player Engine::player = Player();
+
+GLFWwindow* Engine::window = nullptr;
+
+ShapeController* Engine::GUIshapeController = nullptr;
+ShapeController* Engine::levelShapeController = nullptr;
+
+std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
 
 void Engine::destroy()
 {
@@ -48,52 +56,61 @@ void Engine::terminate() {
 	glfwTerminate();
 }
 
-void Engine::init() {
+void Engine::createShaders() {
+	int bufferTypes[]{ GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
 
-	Window::init(1920, 1080);
-	window = Window::getWindow();
-	GUIcanvas::setWindow();
-
-	std::vector<BufferProperties> bufferProperties{
+	std::vector<BufferProperties> GUIshaderBufferProperties{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Borders"),
 	};
+	void* GUIshaderData[1];
+	float borderBufferData[]{ width/2 - 300, height - (height / 2 - 300), width / 2 + 300, height - (height/2 + 300) };
+	GUIshaderData[0] = (void*)borderBufferData;
+	std::string GUIshaderSource = ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X"}, std::vector<std::string>{std::to_string(SCREEN_RATIO)});
+	const char* GUIshaderSources[] = { &GUIshaderSource[0], &GUICanvasShader_glslf[0] };
+	Shader* GUIshader = new Shader(bufferTypes, (char* const*)GUIshaderSources, 2, GUIshaderBufferProperties);
 
-	std::vector<BufferProperties> bufferProperties1{
+	GUIshapeController = new ShapeController(GUIshader, GUIshaderData);
+
+	std::vector<BufferProperties> levelShaderBufferProperties{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
-	};
+	};	
+	void* levelShaderData[1];	
+	float cameraBufferData[]{ 0.1f * SCREEN_RATIO, 0.1f };
+	levelShaderData[0] = (void*)cameraBufferData;
+	const char* levelShaderSources[] = { &LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0] };
+	Shader* levelShader = new Shader(bufferTypes, (char* const*)levelShaderSources, 2, levelShaderBufferProperties);	
 
+	levelShapeController = new ShapeController(levelShader, levelShaderData);
+}
 
-	int types1[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
-	int* types = (int*)types1;
+void Engine::initGUI() {
+	float* x = new float(0);
+	float* y = new float(0);
+	bool* z = new bool(0);
+	*z = false;
 
-//	void** data = (void**)std::begin(std::initializer_list<void*> {
-//		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
-//		(void*)std::begin(std::initializer_list<float> {960 - 300, 540 - 300, 1080 - (960 + 300), 1080 - (540 + 300)}), //borders data buffer
-//	});
+	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(0.1f, 0.3f));
+	GUIcanvas::addSex(Vector2f(-1, -1), Vector2f(0.5f, 0.5f));
 
-	void** data = new void*[1];
-	void** otherData = new void* [1];
+	GUIcanvas::addSlider(Vector2f(-0.7f, -0.3f), Vector2f(0, 1), x, y, Vector2f(200, 200), Vector2f(500, 500));
+	GUIcanvas::addSlider(Vector2f(-0.5f, -0.5f), Vector2f(0.8f, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
 
-	data[0] = (void*)new float[]{0.1f / 16.f * 9.f, 0.1f};
-	otherData[0] = (void*)new float[] {960 - 300, 1080 - (540 - 300), 960 + 300, 1080 - (540 + 300)};
+	GUIcanvas::addCheckBox(Vector2f(0.3f, 0.3f), Vector2f(0.1f, 0.1f), z);
+
+	Text::setScale(Vector2f(0.03f, 0.03f));
+	GUIobject sampleText = GUIobject(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
+}
+
+void Engine::init() {
+	Window::init(width, height);
+	window = Window::getWindow();
+	GUIcanvas::setWindow();		
 	
-	const char* sourcess[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
-
-	std::string shshsh = ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X", "SCALE_Y"}, std::vector<std::string>{"0.1f/16.f*9.f", "0.1f"});
-	std::string shshsh2 = ShaderSource(GUICanvasShader_glslf).getSource(std::vector<std::string>{"HEIGHT"}, std::vector<std::string>{"1080"});
-	const char* otherSourcess[] = {&shshsh[0], &GUICanvasShader_glslf[0]};
-
-	char* const* sources = (char* const*)sourcess;
-	char* const* otherSources = (char* const*)otherSourcess;
-
-	Shader* shader1 = new Shader(types, sources, 2, bufferProperties1);
-	Shader* shader2 = new Shader(types, otherSources, 2, bufferProperties);
-
 	ShapeController::setWindow(window);
-	GUIshapeController = new ShapeController(shader2, otherData);
-	GUIcanvas::init(GUIshapeController);
-	levelShapeController = new ShapeController(shader1, data);
 
+	createShaders();
+
+	GUIcanvas::init(GUIshapeController);		
 
 	start = std::chrono::system_clock::now();
 	player = Player();
@@ -108,19 +125,9 @@ void Engine::init() {
 
 	EventController::loadLevel("a");
 
-//	EventController::saveLevel("a", EventController::level);
+//	EventController::saveLevel("a", EventController::level);	
 
-	GUIcanvas::addSex(Vector2f(0, 0), Vector2f(1, 3));
-	GUIcanvas::addSex(Vector2f(-10, -10), Vector2f(5, 5));
-	float* x = new float(0);
-	float* y = new float(0);
-	bool* z = new bool(0);
-	*z = false;
-	GUIcanvas::addSlider(Vector2f(-7, -3), Vector2f(0, 10), x, y, Vector2f(200, 200), Vector2f(500, 500));
-	GUIcanvas::addSlider(Vector2f(-5, -5), Vector2f(8, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
-	GUIcanvas::addCheckBox(Vector2f(7, 7), Vector2f(1, 1), z);
-	Text::setScale(Vector2f(0.3, 0.3));
-	GUIobject(Text::makeText("228AUE1337", Vector2f(-5, -4)), GUIcanvas::shapeController);
+	initGUI();
 }
 
 void Engine::pollEvents() {
