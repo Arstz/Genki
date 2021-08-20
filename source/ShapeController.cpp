@@ -131,7 +131,7 @@ void ShapeController::initBuffers(void** buffersData) {
 
 	int index = checkCameraBufferData();
 
-	cameraBufferData = (index >= 0) ? (float*)additionalBuffersData[index] : new float[] {1, 1};
+	cameraBufferData = (index >= 0) ? (float*)additionalBuffersData[index] : new float[] {0.1f / 16.f * 9.f, 0.1f};
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);

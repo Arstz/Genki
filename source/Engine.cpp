@@ -75,11 +75,13 @@ void Engine::init() {
 	void** otherData = new void* [1];
 
 	data[0] = (void*)new float[]{0.1f / 16.f * 9.f, 0.1f};
-	otherData[0] = (void*)new float[] {960 - 300, 540 - 300, 1080 - (960 + 300), 1080 - (540 + 300)};
+	otherData[0] = (void*)new float[] {960 - 300, 1080 - (540 - 300), 960 + 300, 1080 - (540 + 300)};
 	
 	const char* sourcess[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
-	const char* otherSourcess[] = { &ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X","SCALE_Y"},std::vector<std::string>{"0.1f/16.f*9.f","0.1f"})[0],& GUICanvasShader_glslf[0] };
-	std::cout<< ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X", "SCALE_Y"}, std::vector<std::string>{"0.1f/16.f*9.f", "0.1f"});
+
+	std::string shshsh = ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X", "SCALE_Y"}, std::vector<std::string>{"0.1f/16.f*9.f", "0.1f"});
+	std::string shshsh2 = ShaderSource(GUICanvasShader_glslf).getSource(std::vector<std::string>{"HEIGHT"}, std::vector<std::string>{"1080"});
+	const char* otherSourcess[] = {&shshsh[0], &GUICanvasShader_glslf[0]};
 
 	char* const* sources = (char* const*)sourcess;
 	char* const* otherSources = (char* const*)otherSourcess;
