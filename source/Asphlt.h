@@ -148,7 +148,7 @@ const Shape Text::symbols[] ={
 			14,
 			(float*)std::begin(std::initializer_list<float> {3,0,4,4,2,4,2+1.f/4.f,5,4+1.f/4.f,5,4+3.f/4.f,7,1+3.f/4.f,7,2,8,6,8,5+1.f/4.f,5,6,5,5+3.f/4.f,4,5,4,4,0}),
 			(float*)std::begin(std::initializer_list<float> {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1}),
-			24,
+			18,
 			(uint*)std::begin(std::initializer_list<uint> {0,5,8,8,13,0,5,6,7,7,5,8,2,3,10,2,11,10}),
 			1.f,
 			0.f,
