@@ -19,6 +19,9 @@
     <Filter Include="Source Files\headers">
       <UniqueIdentifier>{50cd52ed-54bf-46b7-8d33-af077501a091}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{1a0d6657-a8b5-4fd9-a6ef-1268c46d342e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\level.txt">
@@ -110,6 +113,9 @@
     <ClCompile Include="source\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\ShaderSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AnimationController.h">
@@ -169,6 +175,12 @@
     <ClInclude Include="source\Shader.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
+    <ClInclude Include="source\ShaderSource.h">
+      <Filter>Source Files\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Shaders\shaders.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\main.py">
@@ -176,6 +188,18 @@
     </None>
     <None Include="raid_na_derevene.lvl">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="source\Shaders\LevelShapeControllerShader.glslf">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="source\Shaders\LevelShapeControllerShader.glslv">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="source\Shaders\GUICanvasShader.glslf">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="source\Shaders\GUICanvasShader.glslv">
+      <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

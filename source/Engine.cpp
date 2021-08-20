@@ -12,6 +12,8 @@
 #include "Text.h"
 #include "Shader.h"
 #include <initializer_list>
+#include "ShaderSource.h"
+#include "Shaders/shaders.h"
 
 #include "crtdbg.h"
 #include "..\include\CRTDBG\mydbgnew.h"
@@ -89,6 +91,16 @@ void Engine::terminate() {
 
 void Engine::init() {
 
+
+	std::string a("agaga PONIALladnoPONIALlaffff");
+
+	ShaderSource source(a);
+
+
+	std::cout << source.getSource(std::vector<std::string>{"PONIAL"}, std::vector<std::string>{"123"});
+
+
+
 	Window::init(1920, 1080);
 	window = Window::getWindow();
 	GUIcanvas::setWindow();
@@ -122,13 +134,11 @@ void Engine::init() {
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
 	};
 
-	const char* sourcess1[] = {vertexShaderSource1, fragmentShaderSource0};
+	const char* sourcess1[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
 
 	char* const* sources1 = (char* const*)sourcess1;
 
 	Shader* shader1 = new Shader(types, sources1, 2, bufferProperties1);
-
-	std::cout << ((float*)data[0])[0] << "\t" << ((float*)data[0])[1] << "\n";
 
 	ShapeController::setWindow(window);
 	GUIshapeController = new ShapeController(shader1, data);

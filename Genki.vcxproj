@@ -184,6 +184,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Shader.cpp" />
+    <ClCompile Include="source\ShaderSource.cpp" />
     <ClCompile Include="source\Shape.cpp" />
     <ClCompile Include="source\ShapeController.cpp" />
     <ClCompile Include="source\ShapeGroup.cpp" />
@@ -205,6 +206,8 @@
     <ClInclude Include="source\LevelEvent\LevelEvent.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Shader.h" />
+    <ClInclude Include="source\ShaderSource.h" />
+    <ClInclude Include="source\Shaders\shaders.h" />
     <ClInclude Include="source\Shape.h" />
     <ClInclude Include="source\ShapeController.h" />
     <ClInclude Include="source\ShapeGroup.h" />
@@ -215,6 +218,10 @@
   <ItemGroup>
     <None Include="raid_na_derevene.lvl" />
     <None Include="resources\main.py" />
+    <None Include="source\Shaders\GUICanvasShader.glslf" />
+    <None Include="source\Shaders\GUICanvasShader.glslv" />
+    <None Include="source\Shaders\LevelShapeControllerShader.glslf" />
+    <None Include="source\Shaders\LevelShapeControllerShader.glslv" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\n0lbborfz0hhdzjfjpor.jfif" />
