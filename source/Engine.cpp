@@ -55,9 +55,13 @@ void Engine::init() {
 	GUIcanvas::setWindow();
 
 	std::vector<BufferProperties> bufferProperties{
-		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Borders"),
 	};
+
+	std::vector<BufferProperties> bufferProperties1{
+		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
+	};
+
 
 	int types1[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
 	int* types = (int*)types1;
@@ -68,21 +72,23 @@ void Engine::init() {
 //	});
 
 	void** data = new void*[1];
+	void** otherData = new void* [1];
 
 	data[0] = (void*)new float[]{0.1f / 16.f * 9.f, 0.1f};
-
-	std::vector<BufferProperties> bufferProperties1{
-		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
-	};
-
+	otherData[0] = (void*)new float[] {960 - 300, 540 - 300, 1080 - (960 + 300), 1080 - (540 + 300)};
+	
 	const char* sourcess[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
+	const char* otherSourcess[] = { &ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X","SCALE_Y"},std::vector<std::string>{"0.1f/16.f*9.f","0.1f"})[0],& GUICanvasShader_glslf[0] };
+	std::cout<< ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X", "SCALE_Y"}, std::vector<std::string>{"0.1f/16.f*9.f", "0.1f"});
 
 	char* const* sources = (char* const*)sourcess;
+	char* const* otherSources = (char* const*)otherSourcess;
 
 	Shader* shader1 = new Shader(types, sources, 2, bufferProperties1);
+	Shader* shader2 = new Shader(types, otherSources, 2, bufferProperties);
 
 	ShapeController::setWindow(window);
-	GUIshapeController = new ShapeController(shader1, data);
+	GUIshapeController = new ShapeController(shader2, otherData);
 	GUIcanvas::init(GUIshapeController);
 	levelShapeController = new ShapeController(shader1, data);
 
