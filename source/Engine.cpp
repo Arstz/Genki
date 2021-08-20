@@ -29,47 +29,6 @@
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 #define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 
-const char* vertexShaderSource1 = "#version 330 core\n"
-"layout (location = 0) in vec2 pos;\n"
-"layout (location = 1) in vec4 color;\n"
-
-"layout(std140) uniform Camera"
-"{"
-"	vec2 scale;"
-"};"
-"out vec4 vertexColor;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(pos*scale, 0.f, 1.f);\n"
-"   vertexColor = color;\n"
-"}\0";
-
-const char* fragmentShaderSource1 = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec4 vertexColor;\n"
-"layout(std140) uniform Borders\n"
-"{"
-"	vec2 min;\n"
-"	vec2 max;\n"
-"};"
-"void main()\n"
-"{\n"
-"	vec4 temp = vertexColor;\n"
-"if(gl_FragCoord.y > min.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.y < max.y) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.x < min.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"if(gl_FragCoord.x > max.x) temp = vec4(0.f,0.f,0.f,0.f);\n"
-"FragColor = temp;\n"
-"}\0";
-
-const char* fragmentShaderSource0 = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec4 vertexColor;\n"
-"void main()\n"
-"{\n"
-"FragColor = vertexColor;\n"
-"}\0";
-
 float Engine::currentTime = 0;
 float Engine::frameTime = 0;
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
@@ -91,16 +50,6 @@ void Engine::terminate() {
 
 void Engine::init() {
 
-
-	std::string a("agaga PONIALladnoPONIALlaffff");
-
-	ShaderSource source(a);
-
-
-	std::cout << source.getSource(std::vector<std::string>{"PONIAL"}, std::vector<std::string>{"123"});
-
-
-
 	Window::init(1920, 1080);
 	window = Window::getWindow();
 	GUIcanvas::setWindow();
@@ -112,12 +61,6 @@ void Engine::init() {
 
 	int types1[] = {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
 	int* types = (int*)types1;
-
-	const char* sourcess[] = {vertexShaderSource1, fragmentShaderSource1};
-
-	char* const* sources = (char* const*)sourcess;
-
-	Shader* shader = new Shader(types, sources, 2, bufferProperties);
 
 //	void** data = (void**)std::begin(std::initializer_list<void*> {
 //		(void*)std::begin(std::initializer_list<float> {0.1f / 16.f * 9.f, 0.1f}), //camera data buffer
@@ -132,11 +75,11 @@ void Engine::init() {
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
 	};
 
-	const char* sourcess1[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
+	const char* sourcess[] = {&LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0]};
 
-	char* const* sources1 = (char* const*)sourcess1;
+	char* const* sources = (char* const*)sourcess;
 
-	Shader* shader1 = new Shader(types, sources1, 2, bufferProperties1);
+	Shader* shader1 = new Shader(types, sources, 2, bufferProperties1);
 
 	ShapeController::setWindow(window);
 	GUIshapeController = new ShapeController(shader1, data);
