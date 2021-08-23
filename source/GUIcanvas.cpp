@@ -83,9 +83,11 @@ std::list<GUIinteractiveObject*>::iterator GUIcanvas::addCheckBox(Vector2f posit
 std::list<GUIinteractiveObject*>::iterator GUIcanvas::addActionButton(
 	Vector2f position,
 	Vector2f size, 
-	int buttonIndex
+	int buttonIndex,
+	Color activeColor,
+	Color passiveColor 
 ) {
-	objects.push_back(new ActionButton(position, size, shapeController, buttonIndex, &activatedButtonIndexes, Color(1, 0, 0, 1), Color(0, 0, 0, 1)));
+	objects.push_back(new ActionButton(position, size, shapeController, buttonIndex, &activatedButtonIndexes, activeColor, passiveColor));
 	return --objects.end();
 }
 

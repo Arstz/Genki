@@ -64,7 +64,7 @@ void Engine::createShaders() {
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Borders"),
 	};
 	void* GUIshaderData[1];
-	float borderBufferData[]{ width/2 - 300, height - (height / 2 - 300), width / 2 + 300, height - (height/2 + 300) };
+	float borderBufferData[]{ width/2 - 3000, height - (height / 2 - 3000), width / 2 + 3000, height - (height/2 + 3000) };
 	GUIshaderData[0] = (void*)borderBufferData;
 	std::string GUIshaderSource = ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X"}, std::vector<std::string>{std::to_string(SCREEN_RATIO)});
 	const char* GUIshaderSources[] = { &GUIshaderSource[0], &GUICanvasShader_glslf[0] };
@@ -98,7 +98,8 @@ void Engine::initGUI() {
 
 	zhertva = GUIcanvas::addCheckBox(Vector2f(0.3f, 0.3f), Vector2f(0.1f, 0.1f), z);
 
-	GUIcanvas::addActionButton(Vector2f(0.5f, 0.5f), Vector2f(0.1f, 0.1f), 3);
+	GUIcanvas::addActionButton(Vector2f(-0.5f, 0.f), Vector2f(0.2f, 0.2f), 3,Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 1.f, 1.f, 1.f));
+	GUIcanvas::addActionButton(Vector2f(0.5f, 0.f), Vector2f(0.2f, 0.2f), 4);
 
 	Text::setScale(Vector2f(0.03f, 0.03f));
 	GUIobject sampleText = GUIobject(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
@@ -147,10 +148,12 @@ void Engine::update() {
 	EventController::update();
 	AnimationController::update();
 	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
-		std::cout << "sexSEXSEX\n";
+		std::cout << "Ya vas vseh poreshayu!\n";
 		GUIcanvas::clear();
 	}
-
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 4) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		std::cout << "Ya spokoinyi chel!\n";
+	}
 }
 
 void Engine::render() {

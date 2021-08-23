@@ -323,7 +323,7 @@ ActionButton::ActionButton(
 			Vector2f(0, 0),
 			size,
 			Vector2f(0, 0),
-			Color(1.f, 1.f, 0.f, 1.f)
+			passiveColor
 		)),
 
 		}),

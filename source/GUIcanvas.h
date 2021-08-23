@@ -56,7 +56,9 @@ public:
 	static std::list<GUIinteractiveObject*>::iterator addActionButton(
 		Vector2f position,
 		Vector2f size,
-		int buttonIndex
+		int buttonIndex,
+		Color activeColor = Color(0.f, 0.f, 0.f, 1.f),
+		Color passiveColor = Color(0.f, 0.f, 0.f, 1.f)
 	);
 	static void removeObject(std::list<GUIinteractiveObject*>::iterator objectID);
 	static void clear();
