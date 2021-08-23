@@ -152,8 +152,6 @@ std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(const ShapeGroup &shap
 
 void ShapeGroup::removeShapeGroup(const std::list<ShapeGroup>::iterator &shapeGroupIterator) {
 	shapeGroups.erase(shapeGroupIterator);
-	delete[] (*shapeGroupIterator).shapes;
-	(*shapeGroupIterator).shapes = nullptr;
 }
 
 ShapeGroup::~ShapeGroup() {
