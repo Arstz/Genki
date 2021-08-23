@@ -14,13 +14,16 @@ double GUIcanvas::mousePositionX = 0;
 double GUIcanvas::mousePositionY = 0;
 GLFWwindow* GUIcanvas::window = nullptr;
 ShapeController* GUIcanvas::shapeController = nullptr;
-std::vector<GUIinteractiveObject*> GUIcanvas::objects(0);
+std::list<GUIinteractiveObject*> GUIcanvas::objects;
+std::list<GUIinteractiveObject*>::iterator GUIcanvas::currentInteractiveObject;
 int GUIcanvas::windowWidth = 0;
 int GUIcanvas::windowHeight = 0;
-int GUIcanvas::currentButtonID = -1;
+bool GUIcanvas::isButtonActive = false;
+std::vector<int> GUIcanvas::activatedButtonIndexes(0);
+
 
 void GUIcanvas::update() {
-
+	activatedButtonIndexes.clear();
 	glfwGetCursorPos(window, &mousePositionX,  &mousePositionY);
 	for (int i = 0; i < sizeof(mouseButtonStates); i++) {
 		mouseButtonStates[i] = glfwGetMouseButton(window, i);
@@ -29,31 +32,38 @@ void GUIcanvas::update() {
 }
 
 void GUIcanvas::interact() {
-	if (currentButtonID >= 0) {
-		if (!objects[currentButtonID]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
+	if (isButtonActive) {
+		if (!(*currentInteractiveObject)->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
 			GUIinteractiveObject::resetInteratiocData();
-			currentButtonID = -1;
-		}
-	} else for (int i = 0; i < objects.size(); i++) {
-		objects[i]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY);
-		if (objects[i]->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
-			currentButtonID = i;
+			isButtonActive = false;
 		}
 	}
+	else for (auto it = objects.begin(); it != objects.end(); it++) {
+		(*it)->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY);
+		if ((*it)->interact(mouseButtonStates, (float)mousePositionX, (float)mousePositionY)) {
+			isButtonActive = true;
+			currentInteractiveObject = it;
+		}
+	}
+}
+
+std::vector<int> GUIcanvas::getActivatedButtonIndexes() {
+	return activatedButtonIndexes;
 }
 
 void GUIcanvas::draw() {
 	shapeController->draw();
 }
 
-void GUIcanvas::addSex(
+std::list<GUIinteractiveObject*>::iterator GUIcanvas::addSex(
 	Vector2f position,
 	Vector2f size
 ) {
 	objects.push_back(new ButtonSex(position, size, shapeController));
+	return --objects.end();
 }
 
-void GUIcanvas::addSlider(
+std::list<GUIinteractiveObject*>::iterator GUIcanvas::addSlider(
 	Vector2f position,
 	Vector2f size,
 	float* x,
@@ -62,10 +72,44 @@ void GUIcanvas::addSlider(
 	Vector2f max
 ) {
 	objects.push_back(new Slider(position, size, x, y, min, max, shapeController));
+	return --objects.end();
 }
 
-void GUIcanvas::addCheckBox(Vector2f position, Vector2f size, bool* value) {
+std::list<GUIinteractiveObject*>::iterator GUIcanvas::addCheckBox(Vector2f position, Vector2f size, bool* value) {
 	objects.push_back(new CheckBox(position, size, shapeController, value));
+	return --objects.end();
+}
+
+std::list<GUIinteractiveObject*>::iterator GUIcanvas::addActionButton(
+	Vector2f position,
+	Vector2f size, 
+	int buttonIndex
+) {
+	objects.push_back(new ActionButton(position, size, shapeController, buttonIndex, &activatedButtonIndexes, Color(1, 0, 0, 1), Color(0, 0, 0, 1)));
+	return --objects.end();
+}
+
+void GUIcanvas::removeObject(std::list<GUIinteractiveObject*>::iterator objectID) {
+	bool isIteratorValid = false;
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		if (it == objectID) {
+			isIteratorValid = true;
+			break;
+		}
+	}
+	if (isIteratorValid) {
+		shapeController->removeShapeGroup((*objectID)->getShapeGroup());
+		objects.erase(objectID);
+	} else {
+		throw std::logic_error("ti soisvolil udolit udalennuiu knopku, ZHIVOTNOE");
+	}
+}
+
+void GUIcanvas::clear() {
+	for (auto& object : objects) {
+		shapeController->removeShapeGroup(object->getShapeGroup());
+	}
+	objects.clear();
 }
 
 void GUIcanvas::setWindow() {

@@ -284,7 +284,7 @@ int ShapeController::checkCameraBufferData() {
 	return -1;
 }
 
-void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator& shapeGroupIterator) {
+void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator shapeGroupIterator) {
 	vertexCount -= (*shapeGroupIterator).getVertexCount();
 	EBOsize -= (*shapeGroupIterator).getEBOsize();
 

@@ -16,15 +16,18 @@ private:
 	static double mousePositionX;
 	static double mousePositionY;
 	static bool mouseButtonStates[3];
-	static int currentButtonID;
+	static std::list<GUIinteractiveObject*>::iterator currentInteractiveObject;
+	static bool isButtonActive;
 
 	static int windowWidth;
 	static int windowHeight;
 
 	static GLFWwindow* window;
-	static std::vector<GUIinteractiveObject*> objects;
+	static std::list<GUIinteractiveObject*> objects;
 	
 	static void interact();
+	static std::vector<int> activatedButtonIndexes;
+	
 
 public:
 	static ShapeController* shapeController;
@@ -32,11 +35,12 @@ public:
 	static void init(ShapeController* shapeController);
 	static void update();
 	static void draw();
-	static void addSex(
+	static std::vector<int> getActivatedButtonIndexes();
+	static std::list<GUIinteractiveObject*>::iterator addSex(
 		Vector2f position,
 		Vector2f size
 	);
-	static void addSlider(
+	static std::list<GUIinteractiveObject*>::iterator addSlider(
 		Vector2f position,
 		Vector2f size,
 		float* x,
@@ -44,9 +48,16 @@ public:
 		Vector2f min,
 		Vector2f max
 	);
-	static void addCheckBox(
+	static std::list<GUIinteractiveObject*>::iterator addCheckBox(
 		Vector2f position,
 		Vector2f size,
 		bool* value
 	);
+	static std::list<GUIinteractiveObject*>::iterator addActionButton(
+		Vector2f position,
+		Vector2f size,
+		int buttonIndex
+	);
+	static void removeObject(std::list<GUIinteractiveObject*>::iterator objectID);
+	static void clear();
 };

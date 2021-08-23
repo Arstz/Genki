@@ -3,6 +3,7 @@
 #include "ShapeController.h"
 #include <chrono>
 #include <iostream>
+#include "GUIcanvas.h"
 #include "..\include\GLFW\glfw3.h"
 
 class Engine {
@@ -19,6 +20,7 @@ private:
 	static Player player;
 	static void createShaders();
 	static void initGUI();
+	static std::list<GUIinteractiveObject*>::iterator zhertva;
 
 	static int width;
 	static int height;

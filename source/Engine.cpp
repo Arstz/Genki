@@ -44,6 +44,7 @@ ShapeController* Engine::GUIshapeController = nullptr;
 ShapeController* Engine::levelShapeController = nullptr;
 
 std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
+std::list<GUIinteractiveObject*>::iterator Engine::zhertva;
 
 void Engine::destroy()
 {
@@ -95,7 +96,9 @@ void Engine::initGUI() {
 	GUIcanvas::addSlider(Vector2f(-0.7f, -0.3f), Vector2f(0, 1), x, y, Vector2f(200, 200), Vector2f(500, 500));
 	GUIcanvas::addSlider(Vector2f(-0.5f, -0.5f), Vector2f(0.8f, 0), x, y, Vector2f(200, 200), Vector2f(500, 500));
 
-	GUIcanvas::addCheckBox(Vector2f(0.3f, 0.3f), Vector2f(0.1f, 0.1f), z);
+	zhertva = GUIcanvas::addCheckBox(Vector2f(0.3f, 0.3f), Vector2f(0.1f, 0.1f), z);
+
+	GUIcanvas::addActionButton(Vector2f(0.5f, 0.5f), Vector2f(0.1f, 0.1f), 3);
 
 	Text::setScale(Vector2f(0.03f, 0.03f));
 	GUIobject sampleText = GUIobject(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
@@ -143,6 +146,11 @@ void Engine::update() {
 	GUIcanvas::update();
 	EventController::update();
 	AnimationController::update();
+
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		std::cout << "sexSEXSEX\n";
+		GUIcanvas::clear();
+	}
 
 }
 

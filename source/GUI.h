@@ -13,6 +13,7 @@ class GUIobject {
 protected:
 	ShapeController* shapeController;
 	std::list<ShapeGroup>::iterator shapeGroup;
+	void virtual processRequest(RequestType request, char data[REQUEST_DATA_SIZE]);
 
 public:
 	std::list<ShapeGroup>::iterator getShapeGroup();
@@ -70,17 +71,11 @@ public:
 	ButtonSex(Vector2f position, Vector2f size, ShapeController* shapeController);
 };
 
-class Button : public GUIinteractiveObject {
-public:
-	bool state;
-	Button(ShapeGroup& shapeGroup, ShapeController* shapeController);
-};
-
 class CheckBox : public GUIinteractiveObject {
 public:
 	bool* state;
 	CheckBox(Vector2f position, Vector2f size, ShapeController* shapeController, bool* value);
-	bool interact(bool mouseButtonStates[3], float x, float y);
+	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 
 class Slider : public GUIinteractiveObject {
@@ -109,12 +104,7 @@ public:
 	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };
 
-class GUIinteractiveObjectWithRequestHandler : public GUIinteractiveObject {
-public:
-	void virtual processRequest(RequestType request, char data[REQUEST_DATA_SIZE]);
-};
-
-class GUIcontainer : public GUIinteractiveObjectWithRequestHandler {
+class GUIcontainer : public GUIinteractiveObject {
 private:
 	Slider slider;
 	int objectCount;
@@ -122,4 +112,24 @@ private:
 	GUIinteractiveObject* objects; 
 public:
 	void virtual processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) override;
+};
+
+class ActionButton : public GUIinteractiveObject {
+	int buttonIndex;
+	Vector2f position;
+	Vector2f size;
+	Color activeColor;
+	Color passiveColor;
+	std::vector<int>* activatedButtonIndexes;
+public:
+	ActionButton(
+		Vector2f position,
+		Vector2f size,
+		ShapeController* shapeController,
+		int buttonIndex,
+		std::vector<int>* activatedButtonIndexes,
+		Color activeColor,
+		Color passiveColor
+	);
+	bool interact(bool mouseButtonStates[3], float x, float y) override;
 };

@@ -94,6 +94,8 @@ bool GUIinteractiveObject::interact(bool mouseButtonStates[3], float x, float y)
 }
 
 
+void GUIobject::processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) {}
+
 std::list<ShapeGroup>::iterator GUIobject::getShapeGroup() {
 	return shapeGroup;
 }
@@ -138,10 +140,6 @@ ButtonSex::ButtonSex(
 	shapeController,
 	0
 ) {
-	this->state = false;
-}
-
-Button::Button(ShapeGroup& shapeGroup, ShapeController* shapeController) : GUIinteractiveObject(shapeGroup, shapeController) {
 	this->state = false;
 }
 
@@ -304,11 +302,68 @@ bool CheckBox::interact(bool mouseButtonStates[3], float x, float y) {
 	}
 }
 
-void GUIinteractiveObjectWithRequestHandler::processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) {}
-
 void GUIcontainer::processRequest(RequestType request, char data[REQUEST_DATA_SIZE]) {
 	switch (request) {
 	case RequestType::RESIZE: 
 		break;
+	}
+}
+
+ActionButton::ActionButton(
+	Vector2f position,
+	Vector2f size,
+	ShapeController* shapeController, 
+	int buttonIndex,
+	std::vector<int>* activatedButtonIndexes,
+	Color activeColor,
+	Color passiveColor
+) : GUIinteractiveObject(
+		ShapeGroup(1, (Shape*)std::begin(std::initializer_list<Shape> {
+		std::move(Shape::makeRectangle(
+			Vector2f(0, 0),
+			size,
+			Vector2f(0, 0),
+			Color(1.f, 1.f, 0.f, 1.f)
+		)),
+
+		}),
+		1.f,
+		position.x,
+		position.y,
+		0
+		),
+		shapeController,
+		0
+	) {
+	this->buttonIndex = buttonIndex;
+	this->position = position;
+	this->size = size;
+	this->activeColor = activeColor;
+	this->passiveColor = passiveColor;
+	this->activatedButtonIndexes = activatedButtonIndexes;
+}
+
+bool ActionButton::interact(bool mouseButtonStates[3], float x, float y) {
+	if (checkCollision(x, y)) {
+		if (mouseButtonStates[0]) {
+			if (!interactionData.isActive) {
+				interactionData.isActive = true;
+				shapeGroup->getShapesPointer()[0].setColor(activeColor);
+			}
+		}
+		else {
+			if (interactionData.isActive) {
+				activatedButtonIndexes->push_back(buttonIndex);
+				shapeGroup->getShapesPointer()[0].setColor(passiveColor);
+				return false;
+			}
+			interactionData.isActive = false;
+			shapeGroup->getShapesPointer()[0].setColor(passiveColor);
+		}
+		return true;
+	}
+	else {
+		shapeGroup->getShapesPointer()[0].setColor(passiveColor);
+		return false;
 	}
 }

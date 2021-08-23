@@ -59,7 +59,7 @@ public:
 	void draw();
 	
 	static void setWindow(GLFWwindow* window);
-	void removeShapeGroup(std::list<ShapeGroup>::iterator& shapeIterator);
+	void removeShapeGroup(std::list<ShapeGroup>::iterator shapeIterator);
 
 	float* getCameraValuePointer(uint valueNum);
 
