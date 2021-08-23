@@ -35,7 +35,7 @@ public:
 	static void init(ShapeController* shapeController);
 	static void update();
 	static void draw();
-	static std::vector<int> getActivatedButtonIndexes();
+	static const std::vector<int>& getActivatedButtonIndexes();
 	static std::list<GUIinteractiveObject*>::iterator addSex(
 		Vector2f position,
 		Vector2f size

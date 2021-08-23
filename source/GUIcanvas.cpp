@@ -47,7 +47,7 @@ void GUIcanvas::interact() {
 	}
 }
 
-std::vector<int> GUIcanvas::getActivatedButtonIndexes() {
+const std::vector<int>& GUIcanvas::getActivatedButtonIndexes() {
 	return activatedButtonIndexes;
 }
 

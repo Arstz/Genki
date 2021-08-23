@@ -146,7 +146,6 @@ void Engine::update() {
 	GUIcanvas::update();
 	EventController::update();
 	AnimationController::update();
-
 	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
 		std::cout << "sexSEXSEX\n";
 		GUIcanvas::clear();
