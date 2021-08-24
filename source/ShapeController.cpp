@@ -31,19 +31,19 @@ void ShapeController::writeToVertexbuffer(
 	Shape* shapes = shapeGroup.getShapesPointer();
 	std::list<ShapeGroup>* shapeGroups = shapeGroup.getShapeGroups();
 
-	for (int i = 0; i < shapeGroup.getShapeCount(); i++) {
+	for (unsigned int i = 0; i < shapeGroup.getShapeCount(); i++) {
 		float* shapeVertexCoords = shapes[i].getVertexCoordsPointer();
 		float* shapeVertexColors = shapes[i].getVertexColorsPointer();
 
 		uint shapeVertexCount = shapes[i].getVertexCount();
 		
-		for (int j = 0; j < shapeVertexCount * 2; j += 2) {
+		for (unsigned int j = 0; j < shapeVertexCount * 2; j += 2) {
 			vertexBuffer[positionOffsetCounter + j] = shapeVertexCoords[j] + positionX + *shapes[i].getPositionXpointer();
 			vertexBuffer[positionOffsetCounter + j + 1] = shapeVertexCoords[j + 1] + positionY + *shapes[i].getPositionYpointer();
 		}
 		positionOffsetCounter += shapeVertexCount * 2;
 		memcpy(&vertexBuffer[colorOffsetCounter], shapeVertexColors, sizeof(*vertexBuffer) * shapeVertexCount * 4);
-		for (int j = 3; j < shapeVertexCount * 4; j += 4) {
+		for (unsigned int j = 3; j < shapeVertexCount * 4; j += 4) {
 			vertexBuffer[colorOffsetCounter + j] = shapeVertexColors[j] * (*shapes[i].getAlphaChannelPointer()) * alphaChannel;
 		}
 		colorOffsetCounter += shapeVertexCount * 4;
@@ -58,8 +58,8 @@ void ShapeController::writeToEBObuffer(
 	uint &EBOoffsetCounter, 
 	uint& vertexCounter
 ) {
-	for (int i = 0; i < shapeGroup.getShapeCount(); i++) {
-		for (int j = 0; j < shapeGroup.getShapesPointer()[i].getEBOsize(); j++) {
+	for (unsigned int i = 0; i < shapeGroup.getShapeCount(); i++) {
+		for (unsigned int j = 0; j < shapeGroup.getShapesPointer()[i].getEBOsize(); j++) {
 			EBObuffer[EBOoffsetCounter + j] = shapeGroup.getShapesPointer()[i].getVertexIDsPointer()[j] + vertexCounter;
 		}
 		EBOoffsetCounter += shapeGroup.getShapesPointer()[i].getEBOsize();
@@ -74,7 +74,7 @@ void ShapeController::reallocateBuffers() {
 	glUseProgram(shader->getGLshaderID());
 
 	free(vertexBuffer);
-	vertexBuffer = (float*)malloc(vertexCount * VERTEX_SIZE * sizeof(*vertexBuffer));
+	vertexBuffer = (float*)malloc(static_cast<long long>(vertexCount) * VERTEX_SIZE * sizeof(*vertexBuffer));
 
 	delete[] EBObuffer;
 	EBObuffer = (uint*)malloc(sizeof(*EBObuffer) * EBOsize);
@@ -92,7 +92,7 @@ void ShapeController::reallocateBuffers() {
 		GL_FLOAT,
 		GL_FALSE,
 		4 * sizeof(GLfloat),
-		(GLvoid*)(2 * vertexCount * sizeof(*vertexBuffer))
+		(GLvoid*)(2 * static_cast<long long>(vertexCount) * sizeof(*vertexBuffer))
 	);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(*EBObuffer) * EBOsize, EBObuffer, GL_STATIC_DRAW);
@@ -115,7 +115,9 @@ void ShapeController::initBuffers(void** buffersData) {
 	for (int i = 0; i < bufferCount; i++) {
 		additionalBuffers[i] = 0;
 		additionalBuffersData[i] = malloc(bufferProperties[i].bufferSize);
-		memcpy(additionalBuffersData[i], buffersData[i], bufferProperties[i].bufferSize);
+		if (additionalBuffersData[i] != 0) {
+			memcpy(additionalBuffersData[i], buffersData[i], bufferProperties[i].bufferSize);
+		}
 		glGenBuffers(1, &additionalBuffers[i]);
 		glBindBuffer(bufferProperties[i].type, additionalBuffers[i]);
 		glBufferData(

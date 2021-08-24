@@ -208,7 +208,7 @@ void Engine::initTest() {
 	shapeControllers = std::vector<ShapeController*>(1);
 
 	void* GUIshaderData[1];
-	float borderBufferData[]{width / 2 - 300, height - (height / 2 - 300), width / 2 + 300, height - (height / 2 + 300)};
+	float borderBufferData[]{width / 2.f - 300.f, height - (height / 2.f - 300.f), width / 2.f + 300.f, height - (height / 2.f + 300.f)};
 	GUIshaderData[0] = (void*)borderBufferData;
 
 	ShapeController* GUIshapeController = new ShapeController(shaders[TRIANGLE_DRAW_BORDERS_INDEX], GUIshaderData);
