@@ -222,6 +222,13 @@ void ShapeController::draw() {
 
 }
 
+void ShapeController::reset() {
+	shapeGroup = ShapeGroup();
+	vertexCount = 0;
+	EBOsize = 0;
+	reallocateBuffers();
+}
+
 std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(const ShapeGroup& shapeGroup) {
 	vertexCount += shapeGroup.getVertexCount();
 	EBOsize += shapeGroup.getEBOsize();

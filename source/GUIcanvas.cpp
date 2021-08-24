@@ -139,14 +139,10 @@ void GUIcanvas::removeObject(std::list<GUIobject*>::iterator objectID) {
 
 void GUIcanvas::clear() {
 	isButtonActive = false;
-	for (auto& object : GUIinteractiveObjects) {
-		shapeController->removeShapeGroup(object->getShapeGroup());
-	}
-	GUIinteractiveObjects.clear();
-	for (auto& object : GUIobjects) {
-		shapeController->removeShapeGroup(object->getShapeGroup());
-	}
+	shapeController->reset();
+
 	GUIobjects.clear();
+	GUIinteractiveObjects.clear();
 }
 
 void GUIcanvas::reset() {

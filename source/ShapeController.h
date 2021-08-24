@@ -57,6 +57,7 @@ private:
 public:
 	void destroy();
 	void draw();
+	void reset();
 	
 	static void setWindow(GLFWwindow* window);
 	void removeShapeGroup(std::list<ShapeGroup>::iterator shapeIterator);
