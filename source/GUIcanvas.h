@@ -13,31 +13,37 @@
 
 class GUIcanvas {
 private:
+	static bool isButtonActive;
+	static bool mouseButtonStates[3];
+
 	static double mousePositionX;
 	static double mousePositionY;
-	static bool mouseButtonStates[3];
-	static std::list<GUIinteractiveObject*>::iterator currentInteractiveObject;
-	static bool isButtonActive;
 
 	static int windowWidth;
 	static int windowHeight;
 
 	static GLFWwindow* window;
+	static ShapeController* shapeController;
+
 	static std::list<GUIobject*> GUIobjects;
 	static std::list<GUIinteractiveObject*> GUIinteractiveObjects;
+	static std::list<GUIinteractiveObject*>::iterator currentInteractiveObject;		
 
-	
-	static void interact();
 	static std::vector<int> activatedButtonIndexes;
-	
 
-public:
-	static ShapeController* shapeController;
+	static void interact();	
+public:	
+	static void draw();
+	static void clear();
+	static void reset();
+	static void update();
 	static void setWindow();
 	static void init(ShapeController* shapeController);
-	static void update();
-	static void draw();
+	static void removeObject(std::list<GUIobject*>::iterator objectID);
+	static void removeObject(std::list<GUIinteractiveObject*>::iterator objectID);	
+
 	static const std::vector<int>& getActivatedButtonIndexes();
+
 	static std::list<GUIinteractiveObject*>::iterator addSex(
 		Vector2f position,
 		Vector2f size
@@ -62,9 +68,5 @@ public:
 		Color activeColor = Color(0.f, 0.f, 0.f, 1.f),
 		Color passiveColor = Color(0.f, 0.f, 0.f, 1.f)
 	);
-	static std::list<GUIobject*>::iterator addGUIobject(ShapeGroup shapeGroup);
-	static void removeObject(std::list<GUIinteractiveObject*>::iterator objectID);
-	static void removeObject(std::list<GUIobject*>::iterator objectID);
-	static void clear();
-	static void reset();
+	static std::list<GUIobject*>::iterator addGUIobject(ShapeGroup shapeGroup);	
 };
