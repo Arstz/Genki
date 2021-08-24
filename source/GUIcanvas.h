@@ -23,7 +23,9 @@ private:
 	static int windowHeight;
 
 	static GLFWwindow* window;
-	static std::list<GUIinteractiveObject*> objects;
+	static std::list<GUIobject*> GUIobjects;
+	static std::list<GUIinteractiveObject*> GUIinteractiveObjects;
+
 	
 	static void interact();
 	static std::vector<int> activatedButtonIndexes;
@@ -60,6 +62,9 @@ public:
 		Color activeColor = Color(0.f, 0.f, 0.f, 1.f),
 		Color passiveColor = Color(0.f, 0.f, 0.f, 1.f)
 	);
+	static std::list<GUIobject*>::iterator addGUIobject(ShapeGroup shapeGroup);
 	static void removeObject(std::list<GUIinteractiveObject*>::iterator objectID);
+	static void removeObject(std::list<GUIobject*>::iterator objectID);
 	static void clear();
+	static void reset();
 };

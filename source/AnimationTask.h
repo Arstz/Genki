@@ -36,5 +36,5 @@ public:
 	AnimationTask(const Animation& animation, float** targets, unsigned int targetCount);
 
 	//void animateLoop(float& frameTime);
-	bool animate(float& frameTime);
+	bool animate(float frameTime);
 };

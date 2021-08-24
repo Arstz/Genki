@@ -1,5 +1,6 @@
 #pragma once
 #include "ShapeGroup.h"
+
 #include "ShapeController.h"
 #include "Color.h"
 #define REQUEST_DATA_SIZE 17
@@ -38,7 +39,7 @@ class GUIinteractiveObject : public GUIobject {
 	};
 public:	
 	void setBorders(int shapeID);
-	static void resetInteratiocData();
+	static void resetInterationData();
 	static InteractionData interactionData;
 	GUIinteractiveObject();
 	GUIinteractiveObject(

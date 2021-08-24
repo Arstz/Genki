@@ -7,20 +7,15 @@
 #endif
 
 std::list<AnimationTask> AnimationController::animationTasks = std::list<AnimationTask>();
-float* AnimationController::frameTime = nullptr;
 
 void AnimationController::destroy(){
 	animationTasks.~list();
 }
 
-void AnimationController::setTimePointer(float* frameTime) {
-	AnimationController::frameTime = frameTime;
-}
-
-void AnimationController::update() {
+void AnimationController::update(float frameTime) {
 	std::list<AnimationTask>::iterator i = animationTasks.begin();
 	while (i != animationTasks.end()) {
-		if (i->animate(*frameTime)) {
+		if (i->animate(frameTime)) {
 			i = animationTasks.erase(i);
 		}
 		else i++;

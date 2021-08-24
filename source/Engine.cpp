@@ -45,7 +45,6 @@ void Engine::init() {
 	initShaders();
 
 	Engine::initMainMenu();
-//	Engine::initTest();
 }
 
 constexpr int TRIANGLE_DRAW_INDEX = 0;
@@ -113,11 +112,14 @@ void Engine::sex() {
 
 //main menu data
 
+constexpr int GAME_START_BUTTON_INDEX = 0;
+
 void Engine::initMainMenu() {
 	ShapeController* GUIshapeController = new ShapeController(shaders[TRIANGLE_DRAW_INDEX], nullptr);
 	GUIcanvas::init(GUIshapeController);
 	GUIshapeController = nullptr;
 	GUIcanvas::addActionButton(Vector2f(0.5f, 0.f), Vector2f(0.2f, 0.2f), 4, Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 0.f, 0.f, 1.f));
+	GUIcanvas::addActionButton(Vector2f(-0.5f, 0.f), Vector2f(0.2f, 0.2f), 5, Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 0.f, 0.f, 1.f));
 	currentFunction = Engine::updateMainMenu;
 	updateMainMenu();
 }
@@ -126,12 +128,68 @@ void Engine::updateMainMenu() {
 	pollEvents();
 	GUIcanvas::update();
 	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 4) != GUIcanvas::getActivatedButtonIndexes().end()) {
-		std::cout << "Ya spokoinyi chel!\n";
+		GUIcanvas::clear();
+		initGame();
+	}
+
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 5) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		GUIcanvas::reset();
+		initTest();
+		return;
 	}
 
 	Window::clear();
 	GUIcanvas::draw();
 	glfwSwapBuffers(window);
+}
+
+//game data
+
+void Engine::initGame() {
+	shapeControllers = std::vector<ShapeController*>(1);
+	void* levelShaderData[1];
+	float cameraBufferData[]{0, 0, 0.1f * SCREEN_RATIO, 0.1f};
+	levelShaderData[0] = (void*)cameraBufferData;
+
+	shapeControllers[0] = new ShapeController(shaders[TRIANGLE_DRAW_CAMERA_INDEX], levelShaderData);
+
+	start = std::chrono::system_clock::now();
+	player = Player();
+	PlayerBindingEvent::player = &player;
+
+	LevelEvent::setShapeGroupsSize(10);
+	LevelEvent::setShapeController(shapeControllers[0]);
+
+	EventController::loadLevel("a");
+	currentFunction = Engine::updateGame;
+	updateGame();
+}
+
+void Engine::updateGame() {
+	pollEvents();
+	pollKeyEvents();
+
+	auto end = std::chrono::system_clock::now();
+	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
+	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+	EventController::update(currentTime);
+	AnimationController::update(frameTime);
+
+	Window::clear();
+	shapeControllers[0]->draw();
+
+	glfwSwapBuffers(window);
+}
+
+//editor data
+
+void Engine::initEditor() {
+	currentFunction = Engine::updateEditor;
+}
+
+void Engine::updateEditor() {
+	pollEvents();
 }
 
 //test data
@@ -144,16 +202,13 @@ Player Engine::player = Player();
 
 std::list<GUIinteractiveObject*>::iterator Engine::zhertva;
 
-Shader* Engine::GUIshader = nullptr;
-Shader* Engine::levelShader = nullptr;
+constexpr int LEVEL_SHAPECONTROLLER_INDEX = 0;
 
 void Engine::initTest() {
 	shapeControllers = std::vector<ShapeController*>(1);
 
-	constexpr int levelShaderIndex = 0;
-
 	void* GUIshaderData[1];
-	float borderBufferData[]{width / 2 - 3000, height - (height / 2 - 3000), width / 2 + 3000, height - (height / 2 + 3000)};
+	float borderBufferData[]{width / 2 - 300, height - (height / 2 - 300), width / 2 + 300, height - (height / 2 + 300)};
 	GUIshaderData[0] = (void*)borderBufferData;
 
 	ShapeController* GUIshapeController = new ShapeController(shaders[TRIANGLE_DRAW_BORDERS_INDEX], GUIshaderData);
@@ -164,15 +219,11 @@ void Engine::initTest() {
 	float cameraBufferData[]{10.f, 0, 0.1f * SCREEN_RATIO, 0.1f};
 	levelShaderData[0] = (void*)cameraBufferData;
 
-	shapeControllers[levelShaderIndex] = new ShapeController(shaders[TRIANGLE_DRAW_CAMERA_INDEX], levelShaderData);
+	shapeControllers[LEVEL_SHAPECONTROLLER_INDEX] = new ShapeController(shaders[TRIANGLE_DRAW_CAMERA_INDEX], levelShaderData);
 
 	start = std::chrono::system_clock::now();
 	player = Player();
 	PlayerBindingEvent::player = &player;
-
-	AnimationController::setTimePointer(&frameTime);
-
-	EventController::currentTime = &currentTime;
 
 	LevelEvent::setShapeGroupsSize(10);
 	LevelEvent::setShapeController(shapeControllers[0]);
@@ -192,8 +243,8 @@ void Engine::updateTest() {
 	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
 	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	GUIcanvas::update();
-	EventController::update();
-	AnimationController::update();
+	EventController::update(currentTime);
+	AnimationController::update(frameTime);
 	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
 		std::cout << "Ya vas vseh poreshayu!\n";
 		GUIcanvas::clear();
@@ -203,7 +254,7 @@ void Engine::updateTest() {
 	}
 	
 	Window::clear();
-	shapeControllers[0]->draw();
+	shapeControllers[LEVEL_SHAPECONTROLLER_INDEX]->draw();
 	GUIcanvas::draw();
 
 	glfwSwapBuffers(window);

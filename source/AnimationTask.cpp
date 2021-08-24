@@ -132,7 +132,7 @@ float AnimationTask::calculatePosition(
 */ 
 //potom peredelaem
 
-bool AnimationTask::animate(float& frameTime) {
+bool AnimationTask::animate(float frameTime) {
 	timer += frameTime;
 	while (timer > animation.getTimeKeysPointer()[counter + 1]) {
 		counter ++;

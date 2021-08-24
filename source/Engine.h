@@ -33,6 +33,16 @@ private:
 	static void initMainMenu();
 	static void updateMainMenu();
 
+	//game data
+
+	static void initGame();
+	static void updateGame();
+
+	//editor data
+
+	static void initEditor();
+	static void updateEditor();
+
 	//test data
 
 	static float currentTime;
@@ -42,9 +52,6 @@ private:
 	static Player player;
 
 	static std::list<GUIinteractiveObject*>::iterator zhertva;
-
-	static Shader* GUIshader;
-	static Shader* levelShader;
 
 	static void initTest();
 	static void updateTest();

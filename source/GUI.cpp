@@ -7,6 +7,7 @@
 #include <initializer_list>
 #include "Text.h"
 #include <random>
+#include "GUIcanvas.h"
 #define AAA (float)rand()/(float)RAND_MAX
 
 #ifdef _DEBUG
@@ -46,7 +47,7 @@ void GUIinteractiveObject::setBorders(int shapeID) {
 	this->BottomBorderY = bordersY.y;
 }
 
-void GUIinteractiveObject::resetInteratiocData() {
+void GUIinteractiveObject::resetInterationData() {
 	interactionData.reset();
 }
 
@@ -106,7 +107,8 @@ bool ButtonSex::interact(bool mouseButtonStates[3], float x, float y) {
 		for (int i = 0; i < 100; i++) {
 			Text::setColor(Color(AAA, AAA, AAA, AAA));
 			Text::setScale(Vector2f(AAA / 50, AAA / 50));
-			this->shapeController->addShapeGroup(Text::makeText("SECKS", Vector2f((AAA - 0.5f) * 2, (AAA - 0.5f) * 2)));
+//			this->shapeController->addShapeGroup(Text::makeText("SECKS", Vector2f((AAA - 0.5f) * 2, (AAA - 0.5f) * 2)));
+			std::list<GUIobject*>::iterator ok = GUIcanvas::addGUIobject(Text::makeText("SECKS", Vector2f((AAA - 0.5f) * 2, (AAA - 0.5f) * 2)));
 		}
 		this->state = true;
 	}
