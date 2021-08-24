@@ -218,10 +218,6 @@
   <ItemGroup>
     <None Include="raid_na_derevene.lvl" />
     <None Include="resources\main.py" />
-    <None Include="source\Shaders\GUICanvasShader.glslf" />
-    <None Include="source\Shaders\GUICanvasShader.glslv" />
-    <None Include="source\Shaders\LevelShapeControllerShader.glslf" />
-    <None Include="source\Shaders\LevelShapeControllerShader.glslv" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\n0lbborfz0hhdzjfjpor.jfif" />

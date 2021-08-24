@@ -6,32 +6,59 @@
 #include "GUIcanvas.h"
 #include "..\include\GLFW\glfw3.h"
 
-class Engine {
+typedef void (*EngineFunction)();
 
+class Engine {
 private:
+
+	//engine data
+
+	static GLFWwindow* window;
+	static int width;
+	static int height;
+
+	static EngineFunction currentFunction;
+
+	static std::vector<ShapeController*> shapeControllers;
+	static std::vector<Shader*> shaders;
+
+	static void init();
+	static void initShaders();
 	static void pollEvents();
+
+	static void sex();
+
+	//main menu data
+
+	static void initMainMenu();
+	static void updateMainMenu();
+
+	//test data
 
 	static float currentTime;
 	static float frameTime;
 	static std::chrono::system_clock::time_point start;
-	static GLFWwindow* window;
-	static ShapeController* levelShapeController;
-	static ShapeController* GUIshapeController;
+
 	static Player player;
-	static void createShaders();
-	static void initGUI();
+
 	static std::list<GUIinteractiveObject*>::iterator zhertva;
 
-	static int width;
-	static int height;
+	static Shader* GUIshader;
+	static Shader* levelShader;
+
+	static void initTest();
+	static void updateTest();
+	static void initGUI();
+	static void pollKeyEvents();
 
 public:
-	static void init();
-	static void update();
-	static void render();
+
+	//engine data
+
+	static void callUpdate();
+	static bool running();
 	static void destroy();
 	static void terminate();
-	static bool running();
-	static void pollKeyEvents();
+
 };
 

@@ -189,18 +189,6 @@
     <None Include="raid_na_derevene.lvl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="source\Shaders\LevelShapeControllerShader.glslf">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="source\Shaders\LevelShapeControllerShader.glslv">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="source\Shaders\GUICanvasShader.glslf">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="source\Shaders\GUICanvasShader.glslv">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\n0lbborfz0hhdzjfjpor.jfif">

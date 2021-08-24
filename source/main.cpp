@@ -9,23 +9,15 @@
 #define new MYDEBUG_NEW
 #endif
 
-void sex()
-{
-	std::cout << "$3cks" << "\n";
-}
 
-int main()
-{
-//	Engine engine = Engine();
 
-	Engine::init();
-	while (Engine::running()) {
-
-		Engine::update();
-		Engine::render();
-	}
+int main() {
+	do {
+		Engine::callUpdate();
+	} while (Engine::running());
 
 	Engine::terminate();
+
 //	Engine::destroy();
 //	_CrtMemDumpAllObjectsSince(NULL);
 	return 0;

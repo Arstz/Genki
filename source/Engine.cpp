@@ -25,63 +25,188 @@
 #define BBBB (2.f*static_cast <float> (rand()) / static_cast <float> (RAND_MAX) - 1)/2
 #define SCREEN_RATIO (float)height/(float)width
 
-#define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-#define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-#define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-#define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+//engine data
 
-float Engine::frameTime = 0;
-float Engine::currentTime = 0;
-
+GLFWwindow* Engine::window = nullptr;
 int Engine::height = 1000;
 int Engine::width = 1500;
 
-Player Engine::player = Player();
+EngineFunction Engine::currentFunction = Engine::init;
 
-GLFWwindow* Engine::window = nullptr;
+std::vector<ShapeController*> Engine::shapeControllers;
+std::vector<Shader*> Engine::shaders;
 
-ShapeController* Engine::GUIshapeController = nullptr;
-ShapeController* Engine::levelShapeController = nullptr;
+void Engine::init() {
+	Window::init(width, height);
+	window = Window::getWindow();
+	GUIcanvas::setWindow();
 
-std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
-std::list<GUIinteractiveObject*>::iterator Engine::zhertva;
+	ShapeController::setWindow(window);
+	initShaders();
 
-void Engine::destroy()
-{
-	AnimationController::destroy();
-	levelShapeController->destroy();
-	EventController::destroy();
+	Engine::initMainMenu();
+//	Engine::initTest();
 }
 
-void Engine::terminate() {
-	glfwTerminate();
-}
+constexpr int TRIANGLE_DRAW_INDEX = 0;
+constexpr int TRIANGLE_DRAW_BORDERS_INDEX = 1;
+constexpr int TRIANGLE_DRAW_CAMERA_INDEX = 2;
 
-void Engine::createShaders() {
-	int bufferTypes[]{ GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
+void Engine::initShaders() {
+	shaders = std::vector<Shader*>(3, nullptr);
 
-	std::vector<BufferProperties> GUIshaderBufferProperties{
+	//triangleDraw
+
+	std::string TriangleDrawVertexShaderSource = ShaderSource(TriangleDraw_glslv).getSource(std::vector<std::string>{"SCALE_X"}, std::vector<std::string>{std::to_string(SCREEN_RATIO)});
+
+	const char* triangleDrawSources[] {
+		&TriangleDrawVertexShaderSource[0],
+		&TriangleDraw_glslf[0]
+	};
+
+	int triangleDrawShaderTypes[] {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
+
+	std::vector<BufferProperties> triangleDrawProperties {};
+
+	shaders[TRIANGLE_DRAW_INDEX] = new Shader(triangleDrawShaderTypes, (char* const*)triangleDrawSources, 2, triangleDrawProperties);
+
+	//triangleDrawBorders
+
+	std::string TriangleDrawBordersVertexShaderSource = ShaderSource(TriangleDrawBorders_glslv).getSource(std::vector<std::string>{"SCALE_X"}, std::vector<std::string>{std::to_string(SCREEN_RATIO)});
+
+	const char* triangleDrawBordersSources[] {
+		&TriangleDrawBordersVertexShaderSource[0],
+		&TriangleDrawBorders_glslf[0]
+	};
+
+	int triangleDrawBordersShaderTypes[]{GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
+
+	std::vector<BufferProperties> triangleDrawBordersProperties{
 		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Borders"),
 	};
+
+	shaders[TRIANGLE_DRAW_BORDERS_INDEX] = new Shader(triangleDrawBordersShaderTypes, (char* const*)triangleDrawBordersSources, 2, triangleDrawBordersProperties);
+
+	//triangleDrawCamera
+
+	const char* triangleDrawCameraSources[] {
+		&TriangleDrawCamera_glslv[0],
+		&TriangleDrawCamera_glslf[0]
+	};
+
+	int triangleDrawCameraShaderTypes[]{GL_VERTEX_SHADER, GL_FRAGMENT_SHADER};
+
+	std::vector<BufferProperties> triangleDrawCameraProperties{
+		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 4, "Camera"),
+	};
+
+	shaders[TRIANGLE_DRAW_CAMERA_INDEX] = new Shader(triangleDrawCameraShaderTypes, (char* const*)triangleDrawCameraSources, 2, triangleDrawCameraProperties);
+}
+
+void Engine::pollEvents() {
+	glfwPollEvents();
+}
+
+void Engine::sex() {
+	std::cout << "$3cks" << "\n";
+}
+
+//main menu data
+
+void Engine::initMainMenu() {
+	ShapeController* GUIshapeController = new ShapeController(shaders[TRIANGLE_DRAW_INDEX], nullptr);
+	GUIcanvas::init(GUIshapeController);
+	GUIshapeController = nullptr;
+	GUIcanvas::addActionButton(Vector2f(0.5f, 0.f), Vector2f(0.2f, 0.2f), 4, Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 0.f, 0.f, 1.f));
+	currentFunction = Engine::updateMainMenu;
+	updateMainMenu();
+}
+
+void Engine::updateMainMenu() {
+	pollEvents();
+	GUIcanvas::update();
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 4) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		std::cout << "Ya spokoinyi chel!\n";
+	}
+
+	Window::clear();
+	GUIcanvas::draw();
+	glfwSwapBuffers(window);
+}
+
+//test data
+
+float Engine::frameTime = 0;
+float Engine::currentTime = 0;
+std::chrono::system_clock::time_point Engine::start = std::chrono::system_clock::now();
+
+Player Engine::player = Player();
+
+std::list<GUIinteractiveObject*>::iterator Engine::zhertva;
+
+Shader* Engine::GUIshader = nullptr;
+Shader* Engine::levelShader = nullptr;
+
+void Engine::initTest() {
+	shapeControllers = std::vector<ShapeController*>(1);
+
+	constexpr int levelShaderIndex = 0;
+
 	void* GUIshaderData[1];
-	float borderBufferData[]{ width/2 - 3000, height - (height / 2 - 3000), width / 2 + 3000, height - (height/2 + 3000) };
+	float borderBufferData[]{width / 2 - 3000, height - (height / 2 - 3000), width / 2 + 3000, height - (height / 2 + 3000)};
 	GUIshaderData[0] = (void*)borderBufferData;
-	std::string GUIshaderSource = ShaderSource(GUICanvasShader_glslv).getSource(std::vector<std::string>{"SCALE_X"}, std::vector<std::string>{std::to_string(SCREEN_RATIO)});
-	const char* GUIshaderSources[] = { &GUIshaderSource[0], &GUICanvasShader_glslf[0] };
-	Shader* GUIshader = new Shader(bufferTypes, (char* const*)GUIshaderSources, 2, GUIshaderBufferProperties);
 
-	GUIshapeController = new ShapeController(GUIshader, GUIshaderData);
+	ShapeController* GUIshapeController = new ShapeController(shaders[TRIANGLE_DRAW_BORDERS_INDEX], GUIshaderData);
+	GUIcanvas::init(GUIshapeController);
+	GUIshapeController = nullptr;
 
-	std::vector<BufferProperties> levelShaderBufferProperties{
-		BufferProperties(GL_UNIFORM_BUFFER, sizeof(float) * 2, "Camera"),
-	};	
-	void* levelShaderData[1];	
-	float cameraBufferData[]{ 0.1f * SCREEN_RATIO, 0.1f };
+	void* levelShaderData[1];
+	float cameraBufferData[]{10.f, 0, 0.1f * SCREEN_RATIO, 0.1f};
 	levelShaderData[0] = (void*)cameraBufferData;
-	const char* levelShaderSources[] = { &LevelShapeControllerShader_glslv[0], &LevelShapeControllerShader_glslf[0] };
-	Shader* levelShader = new Shader(bufferTypes, (char* const*)levelShaderSources, 2, levelShaderBufferProperties);	
 
-	levelShapeController = new ShapeController(levelShader, levelShaderData);
+	shapeControllers[levelShaderIndex] = new ShapeController(shaders[TRIANGLE_DRAW_CAMERA_INDEX], levelShaderData);
+
+	start = std::chrono::system_clock::now();
+	player = Player();
+	PlayerBindingEvent::player = &player;
+
+	AnimationController::setTimePointer(&frameTime);
+
+	EventController::currentTime = &currentTime;
+
+	LevelEvent::setShapeGroupsSize(10);
+	LevelEvent::setShapeController(shapeControllers[0]);
+
+	EventController::loadLevel("a");
+
+//	EventController::saveLevel("a", EventController::level);	
+
+	initGUI();
+	currentFunction = Engine::updateTest;
+}
+
+void Engine::updateTest() {
+	pollEvents();
+	pollKeyEvents();
+	auto end = std::chrono::system_clock::now();
+	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
+	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+	GUIcanvas::update();
+	EventController::update();
+	AnimationController::update();
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		std::cout << "Ya vas vseh poreshayu!\n";
+		GUIcanvas::clear();
+	}
+	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 4) != GUIcanvas::getActivatedButtonIndexes().end()) {
+		std::cout << "Ya spokoinyi chel!\n";
+	}
+	
+	Window::clear();
+	shapeControllers[0]->draw();
+	GUIcanvas::draw();
+
+	glfwSwapBuffers(window);
 }
 
 void Engine::initGUI() {
@@ -98,81 +223,24 @@ void Engine::initGUI() {
 
 	zhertva = GUIcanvas::addCheckBox(Vector2f(0.3f, 0.3f), Vector2f(0.1f, 0.1f), z);
 
-	GUIcanvas::addActionButton(Vector2f(-0.5f, 0.f), Vector2f(0.2f, 0.2f), 3,Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 1.f, 1.f, 1.f));
+	GUIcanvas::addActionButton(Vector2f(-0.5f, 0.f), Vector2f(0.2f, 0.2f), 3, Color(1.f, 0.f, 0.f, 1.f), Color(0.f, 1.f, 1.f, 1.f));
 	GUIcanvas::addActionButton(Vector2f(0.5f, 0.f), Vector2f(0.2f, 0.2f), 4);
 
 	Text::setScale(Vector2f(0.03f, 0.03f));
 	GUIobject sampleText = GUIobject(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
 }
 
-void Engine::init() {
-	Window::init(width, height);
-	window = Window::getWindow();
-	GUIcanvas::setWindow();		
-	
-	ShapeController::setWindow(window);
-
-	createShaders();
-
-	GUIcanvas::init(GUIshapeController);		
-
-	start = std::chrono::system_clock::now();
-	player = Player();
-	PlayerBindingEvent::player = &player;
-
-	AnimationController::setTimePointer(&frameTime);
-
-	EventController::currentTime = &currentTime;
-
-	LevelEvent::setShapeGroupsSize(10);
-	LevelEvent::setShapeController(levelShapeController);
-
-	EventController::loadLevel("a");
-
-//	EventController::saveLevel("a", EventController::level);	
-
-	initGUI();
-}
-
-void Engine::pollEvents() {
-	glfwPollEvents();
-}
-
-void Engine::update() {
-	pollEvents();
-	pollKeyEvents();
-	auto end = std::chrono::system_clock::now();
-	frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() - currentTime;
-	currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	GUIcanvas::update();
-	EventController::update();
-	AnimationController::update();
-	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 3) != GUIcanvas::getActivatedButtonIndexes().end()) {
-		std::cout << "Ya vas vseh poreshayu!\n";
-		GUIcanvas::clear();
-	}
-	if (std::find(GUIcanvas::getActivatedButtonIndexes().begin(), GUIcanvas::getActivatedButtonIndexes().end(), 4) != GUIcanvas::getActivatedButtonIndexes().end()) {
-		std::cout << "Ya spokoinyi chel!\n";
-	}
-}
-
-void Engine::render() {
-	Window::clear();
-	levelShapeController->draw();
-	GUIcanvas::draw();
-	
-	glfwSwapBuffers(window);
-}
-
-bool Engine::running() {
-	return Window::running();
-}
+#define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+#define IS_LEFT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+#define IS_DOWN_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+#define IS_RIGHT_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 
 void Engine::pollKeyEvents() {
 	if (IS_RIGHT_KEY_PRESSED && IS_LEFT_KEY_PRESSED) {
 		if (player.lastDirectionX == 1) {
 			player.move(-1.f, 0.f);
-		} else player.move(1.f, 0.f);
+		}
+		else player.move(1.f, 0.f);
 	}
 	else if (IS_LEFT_KEY_PRESSED) {
 		player.move(-1.f, 0.f);
@@ -196,4 +264,24 @@ void Engine::pollKeyEvents() {
 		player.move(0.f, 1.f);
 		player.lastDirectionY = 1;
 	}
+}
+
+//engine data
+
+void Engine::callUpdate() {
+	currentFunction();
+}
+
+bool Engine::running() {
+	return Window::running();
+}
+
+void Engine::destroy() {
+	AnimationController::destroy();
+	shapeControllers[0]->destroy();
+	EventController::destroy();
+}
+
+void Engine::terminate() {
+	glfwTerminate();
 }
