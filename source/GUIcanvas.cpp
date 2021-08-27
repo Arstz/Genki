@@ -9,9 +9,14 @@
 #define new MYDEBUG_NEW
 #endif
 
+bool GUIcanvas::isButtonActive = false;
 bool GUIcanvas::mouseButtonStates[] = {false, false, false};
+
 double GUIcanvas::mousePositionX = 0;
 double GUIcanvas::mousePositionY = 0;
+
+int GUIcanvas::windowWidth = 0;
+int GUIcanvas::windowHeight = 0;
 
 GLFWwindow* GUIcanvas::window = nullptr;
 ShapeController* GUIcanvas::shapeController = nullptr;
@@ -21,9 +26,6 @@ std::list<GUIinteractiveObject*> GUIcanvas::GUIinteractiveObjects;
 
 std::list<GUIinteractiveObject*>::iterator GUIcanvas::currentInteractiveObject;
 
-int GUIcanvas::windowWidth = 0;
-int GUIcanvas::windowHeight = 0;
-bool GUIcanvas::isButtonActive = false;
 std::vector<int> GUIcanvas::activatedButtonIndexes(0);
 
 
