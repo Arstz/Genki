@@ -6,7 +6,7 @@
 
 #include "Window.h"
 #include <vector>
-#include "GUI.h"
+#include "GUI/GUI.h"
 #include "Vector2f.h"
 #include "ShapeController.h"
 #include "AnimationController.h"

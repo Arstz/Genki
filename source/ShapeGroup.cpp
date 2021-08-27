@@ -7,58 +7,93 @@
 #define new MYDEBUG_NEW
 #endif
 
-ShapeGroup::ShapeGroup() {
-	this->shapeCount = 0;
-	this->shapes = nullptr;
-	this->alphaChannel = 1.f;
-	this->positionX = 0.f;
-	this->positionY = 0.f;
-	this->layer = 0;
-	this->shapeGroups = std::list<ShapeGroup>();
-}
-
 ShapeGroup::ShapeGroup(
-	uint shapeCount,
-	Shape* shapes,
-	float alphaChannel,
-	float positionX,
-	float positionY,
-	int layer
-) {
-	this->shapeCount = shapeCount;
-
-	this->shapes = new Shape[shapeCount];
-	for (int i = 0; i < shapeCount; i++) this->shapes[i] = shapes[i];
-	this->shapeGroups = std::list<ShapeGroup>();
-	this->alphaChannel = alphaChannel;
-	this->positionX = positionX;
-	this->positionY = positionY;
-	this->layer = layer;
+	uint	shapeCount,
+	Shape*	shapes,
+	float	alphaChannel,
+	float	positionX,
+	float	positionY,
+	int		layer
+) :
+	shapeCount		{shapeCount},
+	shapes			{new Shape[shapeCount]},
+	positionX		{positionX},
+	positionY		{positionY},
+	alphaChannel	{alphaChannel},
+	layer			{layer}
+{
+	for (uint i = 0; i < shapeCount; i++) {
+		this->shapes[i] = shapes[i];
+	}
 }
 
-ShapeGroup::ShapeGroup(const Shape& shape) {
-	this->shapeCount = 1;
+ShapeGroup::ShapeGroup(const Shape& shape) :
+	shapeCount {1},
+	shapes {new Shape[1] {shape}}
+{}
 
-	this->layer = shape.getLayer();
-	this->shapes = new Shape[1] {shape};
-	this->shapeGroups = std::list<ShapeGroup>();
-	this->alphaChannel = 1.f;
-	this->positionX = 0.f;
-	this->positionY = 0.f;
+ShapeGroup::ShapeGroup(const ShapeGroup& other) :
+	shapeGroups		{other.shapeGroups},
+	shapeCount		{other.shapeCount},
+	shapes			{new Shape[shapeCount]},
+	positionX		{other.positionX},
+	positionY		{other.positionY},
+	alphaChannel	{other.alphaChannel},
+	layer			{other.layer}
+{
+	for (uint i = 0; i < other.shapeCount; i++) {
+		this->shapes[i] = other.shapes[i];
+	}
 }
 
-ShapeGroup::ShapeGroup(const ShapeGroup& shapeGroup) {
-	this->layer = shapeGroup.layer;
-	this->alphaChannel = shapeGroup.alphaChannel;
-	this->positionX = shapeGroup.positionX;
-	this->positionY = shapeGroup.positionY;
+ShapeGroup& ShapeGroup::operator=(const ShapeGroup& other) {
+	shapeGroups		= other.shapeGroups;
+	shapeCount		= other.shapeCount;
+	positionX		= other.positionX;
+	positionY		= other.positionY;
+	alphaChannel	= other.alphaChannel;
+	layer			= other.layer;
 
-	this->shapeCount = shapeGroup.shapeCount;
+	Shape* newShapes = new Shape[shapeCount];
 
-	this->shapes = new Shape[shapeGroup.shapeCount];
-	this->shapeGroups = shapeGroup.shapeGroups;
+	for (uint i = 0; i < shapeCount; i++) {
+		newShapes[i] = other.shapes[i];
+	}
 
-	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
+	delete[] shapes;
+
+	shapes = newShapes;
+	newShapes = nullptr;
+
+	return *this;
+}
+
+ShapeGroup::ShapeGroup(ShapeGroup&& other) noexcept :
+	shapeGroups		{other.shapeGroups},
+	shapeCount		{other.shapeCount},
+	shapes			{other.shapes},
+	positionX		{other.positionX},
+	positionY		{other.positionY},
+	alphaChannel	{other.alphaChannel},
+	layer			{other.layer}
+{
+	other.shapes = nullptr;
+}
+
+ShapeGroup& ShapeGroup::operator=(ShapeGroup&& other) noexcept {
+	delete[] shapes;
+
+	shapeGroups		= other.shapeGroups;
+	shapeCount		= other.shapeCount;
+	shapes			= other.shapes;
+	positionX		= other.positionX;
+	positionY		= other.positionY;
+	alphaChannel	= other.alphaChannel;
+	layer			= other.layer;
+
+	other.shapes	= nullptr;
+
+	return *this;
 }
 
 ShapeGroup::ShapeGroup(ByteArray* byteArray) {
@@ -66,13 +101,13 @@ ShapeGroup::ShapeGroup(ByteArray* byteArray) {
 	shapeGroups = std::list<ShapeGroup>();
 	*byteArray >> shapeCount >> shapeGroupCount >> layer >> alphaChannel >> positionX >> positionY;
 	shapes = new Shape[shapeCount];
-	for (int i = 0; i < shapeCount; i++)
+	for (uint i = 0; i < shapeCount; i++)
 		shapes[i] = Shape(byteArray);
-	for (int i = 0; i < shapeGroupCount; i++)
+	for (uint i = 0; i < shapeGroupCount; i++)
 		shapeGroups.push_back(ShapeGroup(byteArray));
 }
 
-ByteArray ShapeGroup::getByteArray() {
+ByteArray ShapeGroup::getByteArray() const {
 	unsigned int shapeGroupCount = shapeGroups.size();
 	std::vector<ByteArray> byteShapes(shapeCount);
 	std::vector<ByteArray> byteShapeGroups(shapeGroupCount);
@@ -84,12 +119,12 @@ ByteArray ShapeGroup::getByteArray() {
 		sizeof(positionX) +
 		sizeof(positionY);
 
-	for (int i = 0; i < shapeCount; i++) {
+	for (uint i = 0; i < shapeCount; i++) {
 		byteShapes[i] = shapes[i].getByteArray();
 		byteArraySize += byteShapes[i].getSize();
 	}
 	if (shapeGroupCount) {
-		int i = 0;
+		uint i = 0;
 		for (auto& shapeGroup : shapeGroups) {
 			byteShapeGroups[i] = shapeGroup.getByteArray();
 			byteArraySize += byteShapeGroups[i].getSize();
@@ -98,56 +133,15 @@ ByteArray ShapeGroup::getByteArray() {
 	}
 	ByteArray byteArray(byteArraySize);
 	byteArray << shapeCount << shapeGroupCount << layer << alphaChannel << positionX << positionY;
-	for (int i = 0; i < byteShapes.size(); i++)
+	for (uint i = 0; i < byteShapes.size(); i++)
 		byteArray.add(byteShapes[i]);
 	if (shapeGroupCount)
-		for (int i = 0; i < byteShapeGroups.size(); i++)
+		for (uint i = 0; i < byteShapeGroups.size(); i++)
 			byteArray.add(byteShapeGroups[i]);
 	return byteArray;
 }
 
-ShapeGroup& ShapeGroup::operator=(const ShapeGroup& shapeGroup) {
-	delete[] shapes;
 
-	this->layer = shapeGroup.layer;
-	this->alphaChannel = shapeGroup.alphaChannel;
-	this->positionX = shapeGroup.positionX;
-	this->positionY = shapeGroup.positionY;
-
-	this->shapeCount = shapeGroup.shapeCount;
-
-	this->shapes = new Shape[shapeGroup.shapeCount];
-	this->shapeGroups = shapeGroup.shapeGroups;
-
-	for (int i = 0; i < shapeGroup.shapeCount; i++) this->shapes[i] = shapeGroup.shapes[i];
-//	memcpy(this->shapes, shapeGroup.shapes, shapeCount * sizeof(*shapes));
-
-	return *this;
-}
-
-ShapeGroup::ShapeGroup(ShapeGroup&& shapeGroup) noexcept {
-	this->shapes = shapeGroup.shapes;
-	this->layer = shapeGroup.layer;
-	this->alphaChannel = shapeGroup.alphaChannel;
-	this->positionX = shapeGroup.positionX;
-	this->positionY = shapeGroup.positionY;
-	this->shapeCount = shapeGroup.shapeCount;
-	this->shapeGroups = shapeGroup.shapeGroups;
-	shapeGroup.shapes = nullptr;
-}
-
-ShapeGroup& ShapeGroup::operator=(ShapeGroup&& shapeGroup) noexcept {
-	delete[] shapes;
-	this->shapes = shapeGroup.shapes;
-	this->layer = shapeGroup.layer;
-	this->alphaChannel = shapeGroup.alphaChannel;
-	this->positionX = shapeGroup.positionX;
-	this->positionY = shapeGroup.positionY;
-	this->shapeCount = shapeGroup.shapeCount;
-	this->shapeGroups = shapeGroup.shapeGroups;
-	shapeGroup.shapes = nullptr;
-	return *this;
-}
 
 std::list<ShapeGroup>::iterator ShapeGroup::addShapeGroup(const ShapeGroup &shapeGroup) {
 	std::list<ShapeGroup>::iterator i = shapeGroups.begin();
@@ -164,49 +158,68 @@ ShapeGroup::~ShapeGroup() {
 	shapes = nullptr;
 }
 
-uint ShapeGroup::getEBOsize() const {
+uint ShapeGroup::getShapeCount() const noexcept {
+	return shapeCount;
+}
+
+uint ShapeGroup::getEBOsize() const noexcept {
 	uint size = 0;
 
-	for (int i = 0; i < shapeCount; i++) size += shapes[i].getEBOsize();
+	for (uint i = 0; i < shapeCount; i++) size += shapes[i].getEBOsize();
 	for (auto &shapeGroup : shapeGroups) size += shapeGroup.getEBOsize();
 
 	return size;
 }
 
-uint ShapeGroup::getVertexCount() const {
+uint ShapeGroup::getVertexCount() const noexcept {
 	uint size = 0;
 
-	for (int i = 0; i < shapeCount; i++) size += shapes[i].getVertexCount();
+	for (uint i = 0; i < shapeCount; i++) size += shapes[i].getVertexCount();
 	for (auto &shapeGroup : shapeGroups) size += shapeGroup.getVertexCount();
 
 	return size;
 }
 
-uint ShapeGroup::getShapeCount() const {
-	return shapeCount;
-}
-
-Shape* ShapeGroup::getShapesPointer() {
+Shape* ShapeGroup::getShapesPointer() noexcept {
 	return shapes;
 }
 
-std::list<ShapeGroup>* ShapeGroup::getShapeGroups() {
-	return &shapeGroups;
+std::list<ShapeGroup>& ShapeGroup::getShapeGroups() noexcept {
+	return shapeGroups;
 }
 
-float* ShapeGroup::getAlphaChannelPointer() {
+float* ShapeGroup::getAlphaChannelPointer() noexcept {
 	return &alphaChannel;
 }
 
-float* ShapeGroup::getPositionXpointer() {
+float* ShapeGroup::getPositionXpointer() noexcept {
 	return &positionX;
 }
 
-float* ShapeGroup::getPositionYpointer() {
+float* ShapeGroup::getPositionYpointer() noexcept {
 	return &positionY;
 }
 
-int ShapeGroup::getLayer() const {
+int ShapeGroup::getLayer() const noexcept {
 	return layer;
 }
 
+const Shape* ShapeGroup::getShapesPointer() const noexcept {
+	return shapes;
+}
+
+const std::list<ShapeGroup>& ShapeGroup::getShapeGroups() const noexcept {
+	return shapeGroups;
+}
+
+const float* ShapeGroup::getAlphaChannelPointer() const noexcept {
+	return &alphaChannel;
+}
+
+const float* ShapeGroup::getPositionXpointer() const noexcept {
+	return &positionX;
+}
+
+const float* ShapeGroup::getPositionYpointer() const noexcept {
+	return &positionY;
+}

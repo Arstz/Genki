@@ -57,7 +57,7 @@ const std::vector<int>& GUIcanvas::getActivatedButtonIndexes() {
 }
 
 void GUIcanvas::draw() {
-		shapeController->draw();
+	shapeController->draw();
 }
 
 std::list<GUIinteractiveObject*>::iterator GUIcanvas::addSex(

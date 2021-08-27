@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{1a0d6657-a8b5-4fd9-a6ef-1268c46d342e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{453208e0-d13e-4fe5-a926-4c55e81d428d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\level.txt">
@@ -95,9 +98,6 @@
     <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\GUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\GUIcanvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,6 +115,24 @@
     </ClCompile>
     <ClCompile Include="source\ShaderSource.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\ActionButton.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\ButtonSex.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\CheckBox.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\GUIcontainer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\Slider.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GUI\GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +172,6 @@
     <ClInclude Include="source\Animation.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="source\GUI.h">
-      <Filter>Source Files\headers</Filter>
-    </ClInclude>
     <ClInclude Include="source\GUIcanvas.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
@@ -180,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="source\Shaders\shaders.h">
       <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GUI\GUI.h">
+      <Filter>Source Files\headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

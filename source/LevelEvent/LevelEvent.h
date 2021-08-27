@@ -34,7 +34,6 @@ enum class AnimatedValueType {
 	SHAPE_COLOR
 };
 
-
 class LevelEvent {
 	friend EventController;
 protected:

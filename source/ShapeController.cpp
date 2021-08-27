@@ -9,6 +9,18 @@
 
 GLFWwindow* ShapeController::window = nullptr;
 
+ShapeController::ShapeController(Shader* shader, void** buffersData) :
+	shader {shader},
+	bufferProperties {shader->getBufferProperties()},
+	bufferCount {(int)shader->getBufferProperties().size()}
+{
+	glUseProgram(shader->getGLshaderID());
+		
+	if (window) {
+		initBuffers(buffersData);
+	}
+}
+
 void ShapeController::updateBuffers() {
 	uint positionOffsetCounter = 0;
 	uint colorOffsetCounter = vertexCount * 2;
@@ -17,7 +29,7 @@ void ShapeController::updateBuffers() {
 }
 
 void ShapeController::writeToVertexbuffer(
-	ShapeGroup &shapeGroup,
+	const ShapeGroup& shapeGroup,
 	uint& positionOffsetCounter,
 	uint& colorOffsetCounter,
 	float alphaChannel,
@@ -28,12 +40,12 @@ void ShapeController::writeToVertexbuffer(
 	positionX += *shapeGroup.getPositionXpointer();
 	positionY += *shapeGroup.getPositionYpointer();
 
-	Shape* shapes = shapeGroup.getShapesPointer();
-	std::list<ShapeGroup>* shapeGroups = shapeGroup.getShapeGroups();
+	const Shape* shapes = shapeGroup.getShapesPointer();
+	const std::list<ShapeGroup> shapeGroups = shapeGroup.getShapeGroups();
 
 	for (unsigned int i = 0; i < shapeGroup.getShapeCount(); i++) {
-		float* shapeVertexCoords = shapes[i].getVertexCoordsPointer();
-		float* shapeVertexColors = shapes[i].getVertexColorsPointer();
+		const float* shapeVertexCoords = shapes[i].getVertexCoordsPointer();
+		const float* shapeVertexColors = shapes[i].getVertexColorsPointer();
 
 		uint shapeVertexCount = shapes[i].getVertexCount();
 		
@@ -48,14 +60,14 @@ void ShapeController::writeToVertexbuffer(
 		}
 		colorOffsetCounter += shapeVertexCount * 4;
 	}
-	for (auto &shapeGroup : *shapeGroups) {
+	for (const auto &shapeGroup : shapeGroups) {
 		writeToVertexbuffer(shapeGroup, positionOffsetCounter, colorOffsetCounter, alphaChannel, positionX, positionY);
 	}
 }
 
 void ShapeController::writeToEBObuffer(
-	ShapeGroup &shapeGroup, 
-	uint &EBOoffsetCounter, 
+	const ShapeGroup& shapeGroup, 
+	uint& EBOoffsetCounter, 
 	uint& vertexCounter
 ) {
 	for (unsigned int i = 0; i < shapeGroup.getShapeCount(); i++) {
@@ -65,7 +77,7 @@ void ShapeController::writeToEBObuffer(
 		EBOoffsetCounter += shapeGroup.getShapesPointer()[i].getEBOsize();
 		vertexCounter += shapeGroup.getShapesPointer()[i].getVertexCount();
 	}
-	for (auto& shapeGroup : *shapeGroup.getShapeGroups()) {
+	for (const auto& shapeGroup : shapeGroup.getShapeGroups()) {
 		writeToEBObuffer(shapeGroup, EBOoffsetCounter, vertexCounter);
 	}
 }
@@ -161,7 +173,6 @@ void ShapeController::initBuffers(void** buffersData) {
 	);
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_1);
 	glDisableVertexAttribArray(VERTEX_ATTRIB_ARRAY_2);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -250,29 +261,28 @@ std::list<ShapeGroup>::iterator ShapeController::addShapeGroup(
 	return otherShapeGroupIterator;
 }
 
-Vector2f ShapeController::screenCoordsToEngineCoords(Vector2f vector) {
+Vector2f ShapeController::screenCoordsToEngineCoords(Vector2f vector) const {
 	return Vector2f(
 		(vector.x * 2 / Window::getWidth() - 1) / cameraBufferData[0],
 		-(vector.y * 2 / Window::getHeight() - 1) / cameraBufferData[1]
 	);
 }
 
-Vector2f ShapeController::engineCoordsToScreenCoords(Vector2f vector)
-{
+Vector2f ShapeController::engineCoordsToScreenCoords(Vector2f vector) const {
 	return Vector2f(
 		Window::getWidth() / 2  * (1 + vector.x * cameraBufferData[0]),
 		Window::getHeight() / 2  * (1 - vector.y * cameraBufferData[1])
 	);
 }
 
-Vector2f ShapeController::pxToValue(Vector2f px) {
+Vector2f ShapeController::pxToValue(Vector2f px) const {
 	return Vector2f(
 		px.x * 2 / Window::getWidth() / cameraBufferData[0],
 		px.y * 2 / Window::getHeight() / cameraBufferData[1]
 	);
 }
  
-Vector2f ShapeController::valueToPx(Vector2f value) {
+Vector2f ShapeController::valueToPx(Vector2f value) const {
 	return Vector2f(
 		Window::getWidth() / 2 * value.x * cameraBufferData[0],
 		Window::getHeight() / 2 * value.y * cameraBufferData[1]
@@ -301,29 +311,15 @@ void ShapeController::removeShapeGroup(std::list<ShapeGroup>::iterator shapeGrou
 	reallocateBuffers();
 }
 
-ShapeController::ShapeController(Shader* shader, void** buffersData) {
-	this->shapeGroup = ShapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0);
-	this->shader = shader;
-	this->bufferProperties = shader->getBufferProperties();
-	this->bufferCount = bufferProperties.size();
 
-	glUseProgram(shader->getGLshaderID());
-
-	this->VBO = 0;
-	this->VAO = 0;
-	this->EBO = 0;
-		
-	if (window) {
-		initBuffers(buffersData);
-	}
-}
 
 ShapeController::~ShapeController() {
 	if (window) {
 		free(EBObuffer);
 		free(vertexBuffer);
-		this->vertexBuffer = nullptr;
-		this->EBObuffer = nullptr;
+
+		vertexBuffer = nullptr;
+		EBObuffer = nullptr;
 
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);

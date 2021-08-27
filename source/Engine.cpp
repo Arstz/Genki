@@ -8,7 +8,7 @@
 #include "ShapeController.h"
 #include "GUIcanvas.h"
 #include "Vector2f.h"
-#include "GUI.h"
+#include "GUI/GUI.h"
 #include "Text.h"
 #include "Shader.h"
 #include <initializer_list>
@@ -278,7 +278,7 @@ void Engine::initGUI() {
 	GUIcanvas::addActionButton(Vector2f(0.5f, 0.f), Vector2f(0.2f, 0.2f), 4);
 
 	Text::setScale(Vector2f(0.03f, 0.03f));
-	GUIobject sampleText = GUIobject(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
+	GUIobject sampleText(Text::makeText("228AUE1337", Vector2f(-0.5f, -0.4f)), GUIcanvas::shapeController);
 }
 
 #define IS_UP_KEY_PRESSED (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)

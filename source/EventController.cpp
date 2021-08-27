@@ -17,8 +17,7 @@
 std::vector<LevelEvent*> EventController::level;
 int EventController::currentEvent = 0;
 
-void EventController::update(float currentTime)
-{
+void EventController::update(float currentTime) {
 	while (currentEvent < level.size() && level[currentEvent]->getInitTime() < currentTime) {
 		level[currentEvent]->start();
 //		delete level[currentEvent];
@@ -26,8 +25,7 @@ void EventController::update(float currentTime)
 	}
 }
 
-void EventController::destroy()
-{
+void EventController::destroy() {
 	for (auto a : level) {
 		delete a;
 	}
