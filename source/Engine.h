@@ -10,7 +10,6 @@ typedef void (*EngineFunction)();
 
 class Engine {
 private:
-
 	//engine data
 
 	static GLFWwindow* window;
