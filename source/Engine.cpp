@@ -8,7 +8,7 @@
 #include "ShapeController.h"
 #include "GUIcanvas.h"
 #include "Vector2f.h"
-#include "GUI.h"
+#include "GUI/GUI.h"
 #include "Text.h"
 #include "Shader.h"
 #include <initializer_list>

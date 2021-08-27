@@ -8,76 +8,84 @@
 typedef unsigned int uint;
 
 class Shape {
-	uint vertexCount;
-	uint EBOsize;
+	uint	vertexCount {0};
+	float*	vertexCoords {nullptr};
+	float*	vertexColors {nullptr};
 
-	uint* vertexIDs;
+	uint	EBOsize {0};
+	uint*	vertexIDs {nullptr};
 
-	int layer;	
+	float	positionX {0};
+	float	positionY {0};
 
-	float alphaChannel;
+	float	alphaChannel {1.f};
 
-	float positionX;
-	float positionY;
-
-	float* vertexCoords;
-	float* vertexColors;	
+	int		layer {0};
 public:
-	Shape();
+	Shape() = default;
 	Shape(
-		uint vertexCount,
-		float* vertexCoords,
-		float* vertexColors,
-		uint EBOsize,
-		uint* vertexIDs,
-		float alphaChannel,
-		float positionX,
-		float positionY,
-		int layer
+		uint	vertexCount,
+		float*	vertexCoords,
+		float*	vertexColors,
+		uint	EBOsize,
+		uint*	vertexIDs,
+		float	alphaChannel,
+		float	positionX,
+		float	positionY,
+		int		layer
 	);
 	Shape(
 		uint vertexCount,
-		float* vertexCoords,
-		Color color,
-		uint EBOsize,
-		uint* vertexIDs,
-		float alphaChannel,
-		float positionX,
-		float positionY,
-		int layer
+		float*	vertexCoords,
+		Color	color,
+		uint	EBOsize,
+		uint*	vertexIDs,
+		float	alphaChannel,
+		float	positionX,
+		float	positionY,
+		int		layer
 	);
 	~Shape();
-	Shape(const Shape& shape);
-	Shape& operator=(const Shape& shape);
-	Shape(Shape&& shape) noexcept;
-	Shape& operator=(Shape&& shape) noexcept;
+	Shape(const Shape& other);
+	Shape& operator=(const Shape& other);
+	Shape(Shape&& other) noexcept;
+	Shape& operator=(Shape&& other) noexcept;
 	Shape(ByteArray* byteArray);
 
 	static Shape makeRectangle(
-		Vector2f point1,
-		Vector2f point2,
-		Vector2f pos = Vector2f(0, 0),
-		Color col = Color(1, 1, 1, 1),
-		int layer = 0
+		Vector2f	point1,
+		Vector2f	point2,
+		Vector2f	pos = Vector2f(0, 0),
+		Color		col = Color(1, 1, 1, 1),
+		int			layer = 0
 	);
 
-	void setColor(Color color);
+	void setColor(const Color& color);
 
-	uint getVertexCount() const;
-	uint getEBOsize() const;
+	uint getVertexCount() const noexcept;
+	uint getEBOsize() const noexcept;
 
-	void scale(Vector2f multiplier);
+	float* getVertexCoordsPointer() noexcept;
+	float* getVertexColorsPointer() noexcept;
 
-	float* getVertexCoordsPointer();
-	float* getVertexColorsPointer();
+	uint* getVertexIDsPointer() noexcept;
+	
+	float* getAlphaChannelPointer() noexcept;
+	float* getPositionXpointer() noexcept;
+	float* getPositionYpointer() noexcept;
 
-	uint* getVertexIDsPointer();
+	int getLayer() const noexcept;
+
+	const float* getVertexCoordsPointer() const noexcept;
+	const float* getVertexColorsPointer() const noexcept;
+
+	const uint* getVertexIDsPointer() const noexcept;
+
+	const float* getAlphaChannelPointer() const noexcept;
+	const float* getPositionXpointer() const noexcept;
+	const float* getPositionYpointer() const noexcept;
 
 	std::tuple<float, float, float, float> getBounds();
-	float* getAlphaChannelPointer();
-	float* getPositionXpointer();
-	float* getPositionYpointer();
-
-	int getLayer() const;
+	void scale(Vector2f multiplier);
 	ByteArray getByteArray();
 };

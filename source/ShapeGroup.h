@@ -4,31 +4,32 @@
 #include <vector>
 
 class ShapeGroup {
-	uint shapeCount;
+	std::list<ShapeGroup> shapeGroups {};
 
-	int layer;
+	uint	shapeCount {0};
+	Shape*	shapes {nullptr};
 
-	float alphaChannel;
-	float positionX;
-	float positionY;
+	float	positionX {0.f};
+	float	positionY {0.f};
 
-	Shape* shapes;
-	std::list<ShapeGroup> shapeGroups;
+	float	alphaChannel {0.f};
+
+	int		layer {0};
 public:
 	~ShapeGroup();
-	ShapeGroup();
-	ShapeGroup(const ShapeGroup& shapeGroup);
-	ShapeGroup& operator=(const ShapeGroup& shapeGroup);
-	ShapeGroup(ShapeGroup&& shapeGroup) noexcept;
-	ShapeGroup& operator=(ShapeGroup&& shapeGroup) noexcept;
+	ShapeGroup() = default;
+	ShapeGroup(const ShapeGroup& other);
+	ShapeGroup& operator=(const ShapeGroup& other);
+	ShapeGroup(ShapeGroup&& other) noexcept;
+	ShapeGroup& operator=(ShapeGroup&& other) noexcept;
 
 	ShapeGroup(
-		uint shapeCount,
-		Shape* shapes,
-		float alphaChannel,
-		float positionX,
-		float positionY,
-		int layer
+		uint	shapeCount,
+		Shape*	shapes,
+		float	alphaChannel,
+		float	positionX,
+		float	positionY,
+		int		layer
 	);
 	ShapeGroup(const Shape& shape);
 	ShapeGroup(ByteArray* byteArray);
@@ -36,18 +37,28 @@ public:
 	std::list<ShapeGroup>::iterator addShapeGroup(const ShapeGroup& shapeGroup);
 	void removeShapeGroup(const std::list<ShapeGroup>::iterator& shapeGroupIterator);
 
-	float* getAlphaChannelPointer();
-	float* getPositionXpointer();
-	float* getPositionYpointer();
+	uint getShapeCount() const noexcept;
 
-	int getLayer() const;
+	uint getEBOsize() const noexcept;
+	uint getVertexCount() const noexcept;
 
-	uint getEBOsize() const;
-	uint getVertexCount() const;
+	Shape* getShapesPointer() noexcept;
 
-	uint getShapeCount() const;
+	std::list<ShapeGroup>& getShapeGroups() noexcept;
 
-	Shape* getShapesPointer();
-	std::list<ShapeGroup>* getShapeGroups();
-	ByteArray getByteArray();
+	float* getAlphaChannelPointer() noexcept;
+	float* getPositionXpointer() noexcept;
+	float* getPositionYpointer() noexcept;
+
+	int getLayer() const noexcept;
+
+	const Shape* getShapesPointer() const noexcept;
+
+	const std::list<ShapeGroup>& getShapeGroups() const noexcept;
+
+	const float* getAlphaChannelPointer() const noexcept;
+	const float* getPositionXpointer() const noexcept;
+	const float* getPositionYpointer() const noexcept;
+
+	ByteArray getByteArray() const;
 };

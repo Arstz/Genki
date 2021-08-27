@@ -170,8 +170,13 @@
     <ClCompile Include="source\Color.cpp" />
     <ClCompile Include="source\Engine.cpp" />
     <ClCompile Include="source\EventController.cpp" />
-    <ClCompile Include="source\GUI.cpp" />
     <ClCompile Include="source\GUIcanvas.cpp" />
+    <ClCompile Include="source\GUI\ActionButton.cpp" />
+    <ClCompile Include="source\GUI\ButtonSex.cpp" />
+    <ClCompile Include="source\GUI\CheckBox.cpp" />
+    <ClCompile Include="source\GUI\GUI.cpp" />
+    <ClCompile Include="source\GUI\GUIcontainer.cpp" />
+    <ClCompile Include="source\GUI\Slider.cpp" />
     <ClCompile Include="source\LevelEvent\BackgroundColorAnimationEvent.cpp" />
     <ClCompile Include="source\LevelEvent\CameraAnimationEvent.cpp" />
     <ClCompile Include="source\LevelEvent\LevelEvent.cpp" />
@@ -201,8 +206,8 @@
     <ClInclude Include="source\Color.h" />
     <ClInclude Include="source\Engine.h" />
     <ClInclude Include="source\EventController.h" />
-    <ClInclude Include="source\GUI.h" />
     <ClInclude Include="source\GUIcanvas.h" />
+    <ClInclude Include="source\GUI\GUI.h" />
     <ClInclude Include="source\LevelEvent\LevelEvent.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Shader.h" />

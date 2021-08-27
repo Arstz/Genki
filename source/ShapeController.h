@@ -14,24 +14,24 @@ class ShapeController {
 private:
 	Shader* shader;
 
-	GLuint* additionalBuffers;
-	void** additionalBuffersData;
+	GLuint* additionalBuffers {nullptr};
+	void** additionalBuffersData {nullptr};
 	std::vector<BufferProperties> bufferProperties;
 	int bufferCount;
 
-	float* cameraBufferData;
+	float* cameraBufferData {nullptr};
 
-	GLuint VBO;
-	GLuint VAO;
-	GLuint EBO;
+	GLuint	VBO {0};
+	GLuint	VAO {0};
+	GLuint	EBO {0};
 
-	uint EBOsize;
-	uint vertexCount;
+	uint	EBOsize {0};
+	uint	vertexCount {0};
 
-	uint* EBObuffer;
-	float* vertexBuffer;	
+	uint*	EBObuffer {nullptr};
+	float*	vertexBuffer {nullptr};	
 
-	ShapeGroup shapeGroup;
+	ShapeGroup shapeGroup {ShapeGroup(0, nullptr, 1.f, 0.f, 0.f, 0)};
 
 	static GLFWwindow* window;
 
@@ -41,7 +41,7 @@ private:
 		
 
 	void writeToVertexbuffer(
-		ShapeGroup& shapeGroup,
+		const ShapeGroup& shapeGroup,
 		uint& positionOffsetCounter,
 		uint& colorOffsetCounter,
 		float alphaChannel,
@@ -49,7 +49,7 @@ private:
 		float positionY
 	);
 	void writeToEBObuffer(
-		ShapeGroup& shapeGroup,
+		const ShapeGroup& shapeGroup,
 		uint& EBOoffsetCounter,
 		uint& vertexCounter
 	);
@@ -70,14 +70,14 @@ public:
 		const std::list<ShapeGroup>::iterator& shapeGroupIterator
 	);
 
-	Vector2f screenCoordsToEngineCoords(Vector2f vector);
-	Vector2f engineCoordsToScreenCoords(Vector2f vector);
+	Vector2f screenCoordsToEngineCoords(Vector2f vector) const;
+	Vector2f engineCoordsToScreenCoords(Vector2f vector) const;
 
-	Vector2f pxToValue(Vector2f px);
-	Vector2f valueToPx(Vector2f value);
+	Vector2f pxToValue(Vector2f px) const;
+	Vector2f valueToPx(Vector2f value) const;
 
 	int checkCameraBufferData();
-
+	ShapeController() = delete;
 	ShapeController(Shader* shader, void** BuffersData);
 	ShapeController& operator=(const ShapeController& shapeController) = delete;
 	ShapeController(const ShapeController& shapeController) = delete;
